@@ -1,4 +1,6 @@
 /**
+ * Creates a lookup object which can be used to show a pop-up form
+ * 
  * @public 
  * @param {String|JSFoundSet|JSRecord} dataSource The data source to lookup
  * @return {Lookup}
@@ -127,6 +129,18 @@ function LookupField(lookup, dataProvider){
 	this.valueListName = null;
 	
 	/**
+	 * @protected 
+	 * @type {String}
+	 */
+	this.format = null;
+	
+	/**
+	 * @protected 
+	 * @type {Boolean}
+	 */
+	this.visible = true;
+	
+	/**
 	 * Gets the data provider for this field
 	 * @public 
 	 * @return {String}
@@ -179,6 +193,8 @@ function LookupField(lookup, dataProvider){
 	}
 	
 	/**
+	 * Sets the valuelist to use to display this field
+	 * 
 	 * @public 
 	 * @param {String} valueListName
 	 * @return {LookupField}
@@ -195,5 +211,48 @@ function LookupField(lookup, dataProvider){
 	 */
 	this.getValueListName = function(){
 		return this.valueListName;
+	}
+	
+	/**
+	 * Sets this field's visibility in the lookup form
+	 * @public 
+	 * @param {Boolean} visible
+	 * @return {LookupField}
+	 */
+	this.setVisible = function(visible){
+		this.visible = visible;
+		return this;
+	}
+	
+	/**
+	 * Indicates if this field should be displayed
+	 * 
+	 * @public 
+	 * @return {Boolean}
+	 */
+	this.isVisible = function(){
+		return this.visible;
+	}
+	
+	/**
+	 * Sets the display format for this field
+	 * 
+	 * @public 
+	 * @param {String} format
+	 * @return {LookupField}
+	 */
+	this.setFormat = function(format){
+		this.format = format;
+		return this;
+	}
+	
+	/**
+	 * Gets the display format for this field;
+	 * 
+	 * @public 
+	 * @return {String}
+	 */
+	this.getFormat = function(){
+		return this.format;
 	}
 }
