@@ -60,5 +60,6 @@ namedFoundSet:"separate_table_lookup",
 navigatorID:"0",
 onShowMethodID:"0EB82C64-97A9-4B59-909D-629CA8A9305D",
 size:"100,100",
+styleClass:"lookup-table-form",
 typeid:3,
 uuid:"142128C8-A46D-47BB-86BA-5C48732A5DBD"

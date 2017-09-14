@@ -1,0 +1,41 @@
+@IMPORT url("samaple.css");
+
+.lookup-field
+{
+	background-color: #fff;
+	cursor: pointer;
+}
+
+.form-control[readonly]
+{
+	background-color: #fff;
+	cursor: pointer;
+}
+.table-servoyextra-selected {
+    background-color: #97cbff !important;
+}
+.tablewrapper td
+{
+	border-right: 1px solid #d0d0d0;
+}
+.tablewrapper td div
+{
+	margin-left: 3px;
+	margin-right: 3px;
+}
+.tablewrapper thead th 
+{
+	background-color: #f0f0f0;
+	color: #444;
+	height: 30px;
+	border-bottom: 2px solid #d0d0d0;
+}
+.tablewrapper thead th div 
+{
+	height: 100%;
+	margin-top: 10px;
+    margin-left: 4px;
+}
+.tablewrapper tr:nth-child(even) {
+    background-color: #fafafa;
+}

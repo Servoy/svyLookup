@@ -87,8 +87,10 @@ function Lookup(datasource){
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
+	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
 	this.showPopUp = function(callback, target, width, height, initialValue){
+		
 		var runtimeForm = forms.svyLookupTable.newInstance(this);
 		runtimeForm.showPopUp(callback,target,width,height,initialValue);
 	}
