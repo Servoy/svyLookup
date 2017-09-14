@@ -23,13 +23,19 @@ function selectProduct(event) {
 	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
 	
 	// add fields
+	
+	// related data is supported
 	lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
 	lookupObj.addField('productname').setTitleText('Product');
 	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+	
+	// Valuelists and non-searchable fields supported
 	lookupObj.addField('discontinued')
 		.setTitleText('Available')
 		.setSearchable(false)
 		.setvalueListName('product_availability');
+	
+	// formatted, non-searchable field example
 	lookupObj.addField('unitprice')
 		.setSearchable(false)
 		.setTitleText('Price')
