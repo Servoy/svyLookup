@@ -1,0 +1,13 @@
+{
+    "name":"svyLookup",
+    "displayName":"svyLookup",
+    "packageType": "Solution",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Incomplete.svg/2000px-Incomplete.svg.png",
+    "description": "Lookup UX pattern for searching and returning records",
+    "wikiUrl": "https://github.com/Servoy/svyLookup/wiki",
+    "sourceUrl" : "https://github.com/Servoy/svyLookup",
+    "releases" : [
+        {"version":"1.0.0","url":"https://github.com/Servoy/svyLookup/releases/download/v1.0.0/svyLookup.servoy", "servoy-version":"8.2.0"}
+
+     ]
+}
