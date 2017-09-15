@@ -2,7 +2,7 @@
     "name":"svyLookup",
     "displayName":"svyLookup",
     "packageType": "Solution",
-    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Incomplete.svg/2000px-Incomplete.svg.png",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Gnome-folder-saved-search.svg/768px-Gnome-folder-saved-search.svg.png",
     "description": "Lookup UX pattern for searching and returning records",
     "wikiUrl": "https://github.com/Servoy/svyLookup/wiki",
     "sourceUrl" : "https://github.com/Servoy/svyLookup",
