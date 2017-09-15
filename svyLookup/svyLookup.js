@@ -16,14 +16,15 @@ function createLookup(dataSource){
 }
 
 /**
- * @private
+ * @public 
  * @param {String} datasource
  * @constructor 
  * @properties={typeid:24,uuid:"DC5A7A69-5B84-4438-9BFD-06558632E4E8"}
  */
 function Lookup(datasource){
 	
-	/**  
+	/**
+	 * @private   
 	 * @type {Array<LookupField>} 
 	 */
 	var fields = [];
@@ -97,7 +98,7 @@ function Lookup(datasource){
 }
 
 /**
- * @private 
+ * @public  
  * @param {Lookup} lookup
  * @param dataProvider
  * @constructor 
@@ -107,40 +108,34 @@ function Lookup(datasource){
 function LookupField(lookup, dataProvider){
 	
 	/**
-	 * @protected 
+	 * @private  
 	 * @type {Boolean}
 	 */
-	this.searchable = true;
+	 var searchable = true;
 	
 	/**
-	 * @protected 
+	 * @private 
 	 * @type {String}
 	 */
-	this.dataProvider = dataProvider;
+	var titleText = dataProvider;
 	
 	/**
-	 * @protected 
+	 * @private 
 	 * @type {String}
 	 */
-	this.titleText = dataProvider;
+	var valueListName = null;
 	
 	/**
-	 * @protected 
+	 * @private 
 	 * @type {String}
 	 */
-	this.valueListName = null;
+	var format = null;
 	
 	/**
-	 * @protected 
-	 * @type {String}
-	 */
-	this.format = null;
-	
-	/**
-	 * @protected 
+	 * @private 
 	 * @type {Boolean}
 	 */
-	this.visible = true;
+	var visible = true;
 	
 	/**
 	 * Gets the data provider for this field
@@ -148,18 +143,18 @@ function LookupField(lookup, dataProvider){
 	 * @return {String}
 	 */
 	this.getDataProvider = function(){
-		return this.dataProvider;
+		return dataProvider;
 	}
 	
 	/**
 	 * Indicates if this field is searchable
 	 * 
 	 * @public 
-	 * @param {Boolean} searchable True to make searchable. False to make display-only
+	 * @param {Boolean} b True to make searchable. False to make display-only
 	 * @return {LookupField}
 	 */
-	this.setSearchable = function(searchable){
-		this.searchable = searchable;
+	this.setSearchable = function(b){
+		searchable = b;
 		return this;
 	}
 	
@@ -169,18 +164,18 @@ function LookupField(lookup, dataProvider){
 	 * @return {Boolean}
 	 */
 	this.isSearchable = function(){
-		return this.searchable;
+		return searchable;
 	}
 	
 	/**
 	 * Sets the display text for this field
 	 * 
 	 * @public 
-	 * @param {String} titleText
+	 * @param {String} txt
 	 * @return {LookupField}
 	 */
-	this.setTitleText = function(titleText){
-		this.titleText = titleText;
+	this.setTitleText = function(txt){
+		titleText = txt;
 		return this;
 	}
 	
@@ -191,18 +186,18 @@ function LookupField(lookup, dataProvider){
 	 * @return {String}
 	 */
 	this.getTitleText = function(){
-		return this.titleText;
+		return titleText;
 	}
 	
 	/**
 	 * Sets the valuelist to use to display this field
 	 * 
 	 * @public 
-	 * @param {String} valueListName
+	 * @param {String} vl
 	 * @return {LookupField}
 	 */
-	this.setvalueListName = function(valueListName){
-		this.valueListName = valueListName;
+	this.setvalueListName = function(vl){
+		valueListName = vl;
 		return this;
 	}
 	
@@ -212,17 +207,17 @@ function LookupField(lookup, dataProvider){
 	 * @return {String}
 	 */
 	this.getValueListName = function(){
-		return this.valueListName;
+		return valueListName;
 	}
 	
 	/**
 	 * Sets this field's visibility in the lookup form
 	 * @public 
-	 * @param {Boolean} visible
+	 * @param {Boolean} b
 	 * @return {LookupField}
 	 */
-	this.setVisible = function(visible){
-		this.visible = visible;
+	this.setVisible = function(b){
+		visible = b;
 		return this;
 	}
 	
@@ -233,18 +228,18 @@ function LookupField(lookup, dataProvider){
 	 * @return {Boolean}
 	 */
 	this.isVisible = function(){
-		return this.visible;
+		return visible;
 	}
 	
 	/**
 	 * Sets the display format for this field
 	 * 
 	 * @public 
-	 * @param {String} format
+	 * @param {String} f
 	 * @return {LookupField}
 	 */
-	this.setFormat = function(format){
-		this.format = format;
+	this.setFormat = function(f){
+		format = f;
 		return this;
 	}
 	
@@ -255,6 +250,6 @@ function LookupField(lookup, dataProvider){
 	 * @return {String}
 	 */
 	this.getFormat = function(){
-		return this.format;
+		return format;
 	}
 }

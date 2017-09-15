@@ -5,7 +5,7 @@ items:[
 dataProviderID:"selectedProductID",
 editable:false,
 location:"30,20",
-name:"productID",
+name:"selectedProductID",
 onActionMethodID:"7BE387D8-06C7-4E13-8E4F-7624666A3D07",
 placeholderText:"Choose a product",
 size:"590,40",

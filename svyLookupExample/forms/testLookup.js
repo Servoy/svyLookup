@@ -42,8 +42,8 @@ function selectProduct(event) {
 		.setFormat('#,###.00')
 	
 	// show pop-up
-	var component = elements.productID;
-	var initialValue = application.getValueListDisplayValue(elements.productID.getValueListName(),selectedProductID);
+	var component = elements.selectedProductID;
+	var initialValue = application.getValueListDisplayValue(elements.selectedProductID.getValueListName(),selectedProductID);
 	lookupObj.showPopUp(onSelect,component,null,null,initialValue);
 }
 

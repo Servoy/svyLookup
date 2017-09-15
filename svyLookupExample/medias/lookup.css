@@ -17,6 +17,8 @@
 .tablewrapper td
 {
 	border-right: 1px solid #d0d0d0;
+	color: #666;
+	font-size: 11px;
 }
 .tablewrapper td div
 {
