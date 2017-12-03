@@ -46,8 +46,7 @@ function Lookup(datasource){
 			throw new scopes.svyExceptions.IllegalArgumentException("The given formProvider must be an instance of AbstractLookup form.");
 		}
 		
-		// TODO remove warning
-		lookupFormProvider = formProvider.controller.getName();
+		lookupFormProvider = formProvider['controller'].getName();
 	} 
 
 	/**
@@ -127,18 +126,20 @@ function Lookup(datasource){
 	}
 	
 	/**
-	 * TODO need to set the x,y position instead of being attached to the target element
+	 * TODO can create an object insted of passing all params ?
+	 * 
 	 * Shows the lookup in a modal Window
 	 * 
-	 * @private
+	 * @public
 	 * @param {Function} callback The function that will be called when a selection is made
-	 * @param {RuntimeComponent} target The component to show relative to
+	 * @param {Number} [x]
+	 * @param {Number} [y]
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
-	this.showModalWindow = function(callback, target, width, height, initialValue){
+	this.showModalWindow = function(callback, x, y, width, height, initialValue){
 
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm;
@@ -150,7 +151,7 @@ function Lookup(datasource){
 		
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var runtimeForm = lookupForm.newInstance(this);
-		runtimeForm.showModalWindow(callback,target,width,height,initialValue);
+		runtimeForm.showModalWindow(callback,x,y,width,height,initialValue);
 	}
 	
 }

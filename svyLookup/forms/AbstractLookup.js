@@ -89,16 +89,16 @@ function showPopUp(callback, target, width, height, initialValue){
 /**
  * @public  
  * @param {Function} callback The function that is called when selection happens
- * @param {RuntimeComponent} target The component which will be shown
+ * @param {Number} [x]
+ * @param {Number} [y]
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
  *
  * @properties={typeid:24,uuid:"ED6B2A5C-5453-453D-B9AE-0824E9B495EF"}
  */
-function showModalWindow(callback, target, width, height, initialValue) {
+function showModalWindow(callback, x, y, width, height, initialValue) {
 	selectHandler = callback;
-	var w = !width ? target.getWidth() : width;
 	if(initialValue){
 		searchText = initialValue;
 		search(searchText);
@@ -106,12 +106,17 @@ function showModalWindow(callback, target, width, height, initialValue) {
 	}
 	
 	window = application.createWindow(controller.getName(), JSWindow.MODAL_DIALOG);
-	// TODO allow to configure window
+	
+	// TODO allow to setup window as wished; object/function provider
 	window.undecorated = true;
-	window.setSize(w, height);
+	if (width && height) {
+		window.setSize(width, height);
+	}
+	if (x >= 0 && y>=0) {
+		window.setLocation(x,y);
+	}
 	
 	// TODO it doesn't work
-	window.setLocation(target.getLocationX(), target.getLocationY());
 	window.show(controller.getName());
 }
 
