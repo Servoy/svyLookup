@@ -28,6 +28,27 @@ function Lookup(datasource){
 	 * @type {Array<LookupField>} 
 	 */
 	var fields = [];
+	
+	/** 
+	 * @type {String} 
+	 * @private 
+	 * */
+	var lookupFormProvider;
+
+	/**
+	 * @param {RuntimeForm<AbstractLookup>} formProvider
+	 *  */
+	this.setLookupFormProvider = function (formProvider) {
+		if (!formProvider) {
+			throw new scopes.svyExceptions.IllegalArgumentException("Illegal argument formProvider. formProvider must be an instance of AbstractLookup form")
+		} 
+		if (!scopes.svyUI.isJSFormInstanceOf(formProvider,"AbstractLookup")) {
+			throw new scopes.svyExceptions.IllegalArgumentException("The given formProvider must be an instance of AbstractLookup form.");
+		}
+		
+		// TODO remove warning
+		lookupFormProvider = formProvider.controller.getName();
+	} 
 
 	/**
 	 * Gets the data source for this Lookup object
@@ -91,10 +112,47 @@ function Lookup(datasource){
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
 	this.showPopUp = function(callback, target, width, height, initialValue){
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm;
+		if (lookupFormProvider) {
+			lookupForm = forms[lookupFormProvider];
+		} else {
+			lookupForm = forms.svyLookupTable;
+		}
 		
-		var runtimeForm = forms.svyLookupTable.newInstance(this);
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var runtimeForm = lookupForm.newInstance(this);
 		runtimeForm.showPopUp(callback,target,width,height,initialValue);
 	}
+	
+	/**
+	 * TODO need to set the x,y position instead of being attached to the target element
+	 * Shows the lookup in a modal Window
+	 * 
+	 * @private
+	 * @param {Function} callback The function that will be called when a selection is made
+	 * @param {RuntimeComponent} target The component to show relative to
+	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
+	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
+	 * @param {String} [initialValue] And initial value to show in the search
+	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
+	 */
+	this.showModalWindow = function(callback, target, width, height, initialValue){
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm;
+		if (lookupFormProvider) {
+			lookupForm = forms[lookupFormProvider];
+		} else {
+			lookupForm = forms.svyLookupTable;
+		}
+		
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var runtimeForm = lookupForm.newInstance(this);
+		runtimeForm.showModalWindow(callback,target,width,height,initialValue);
+	}
+	
 }
 
 /**
