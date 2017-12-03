@@ -161,14 +161,11 @@ function onActionSearch(event) {
  * @properties={typeid:24,uuid:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31"}
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
-
 	if (foundset['svy_lookup_selected']) {
-		foundset.svy_lookup_selected = null;
+		foundset['svy_lookup_selected'] = null;
 	} else {
-		foundset.svy_lookup_selected = "true";
-	}
-	
-	//onSelect();
+		foundset['svy_lookup_selected'] = "true";
+	}	
 }
 
 /**
@@ -192,7 +189,7 @@ function onSelect() {
 	
 	// invoke callback
 	if(selectHandler){
-		selectHandler.call(this, getSvyLookupSelectedRecords());
+		selectHandler.call(this, getSvyLookupSelectedRecords(), lookup.getParams());
 	}
 }
 
@@ -213,6 +210,7 @@ function setupDataSource(dataSourceName) {
 		jDS.newCalculation("function svy_lookup_selected() {}", JSColumn.TEXT);
 	}
 
+	// TODO better be a form method since is used only in svyLooup
 	if (!jDS.getMethod("getSvyLookupSelectedRecords")) {
 		var methodCode = "function getSvyLookupSelectedRecords() {\
 				var result = [];\
@@ -241,7 +239,7 @@ function getSvyLookupSelectedRecords() {
 	var result = [];
 	for (var index = 1; index <= fs.getSize(); index++) {
 		var record = fs.getRecord(index);
-		if (record.svy_lookup_selected) result.push(record);
+		if (record['svy_lookup_selected']) result.push(record);
 	}
 	return result;
 }
@@ -273,7 +271,7 @@ function deselectAllRecords() {
 	var result = [];
 	for (var index = 1; index <= fs.getSize(); index++) {
 		var record = fs.getRecord(index);
-		record.svy_lookup_selected = false;
+		record.svy_lookup_selected = null;
 	}
 	return result;
 }

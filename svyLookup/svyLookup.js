@@ -29,6 +29,8 @@ function Lookup(datasource){
 	 */
 	var fields = [];
 	
+	var params = [];
+	
 	/** 
 	 * @type {String} 
 	 * @private 
@@ -36,6 +38,7 @@ function Lookup(datasource){
 	var lookupFormProvider;
 
 	/**
+	 * @public 
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
 	this.setLookupFormProvider = function (formProvider) {
@@ -97,6 +100,40 @@ function Lookup(datasource){
 	 */
 	this.getFieldCount = function(){
 		return fields.length;
+	}
+	
+	/** 
+	 * Add a params to be added into the onSelect callback arguments
+	 * @param {Object} param
+	 * @public 
+	 * */
+	this.addParam = function(param) {
+		params.push(param);
+	}
+	
+	/** 
+	 * @public 
+	 * @return {Array}
+	 * */
+	this.getParams = function() {
+		return params;
+	}
+	
+	/**
+	 * Removes a param at the specified index
+	 * @public 
+	 * @param {Number} index
+	 */
+	this.removeParam = function(index){
+		params.splice(index,1);
+	}
+	
+	/**
+	 * Clear the params
+	 * @public 
+	 */
+	this.clearParams = function(){
+		params = [];
 	}
 
 	/**

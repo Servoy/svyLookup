@@ -166,7 +166,7 @@ function onSelect(){
 	
 	// invoke callback
 	if(selectHandler){
-		selectHandler.call(this,foundset.getSelectedRecord());
+		selectHandler.call(this, foundset.getSelectedRecord(), lookup.getParams());
 	}
 }
 
