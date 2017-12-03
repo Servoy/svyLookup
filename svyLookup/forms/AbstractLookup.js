@@ -20,11 +20,18 @@ var lookup = null;
 /**
  * Handler for the selection callback
  * 
- * @private 
+ * @protected 
  * @type {Function}
  * @properties={typeid:35,uuid:"A27AA3DA-D68C-4529-88C0-851F94635F0F",variableType:-4}
  */
 var selectHandler = null;
+
+/**
+ * @type {JSWindow}
+ *
+ * @properties={typeid:35,uuid:"34E49A93-ECA1-47ED-BBA4-FDE772865863",variableType:-4}
+ */
+var window;
 
 /**
  * Runs the search. Loads records in the foundset.
@@ -77,6 +84,35 @@ function showPopUp(callback, target, width, height, initialValue){
 		foundset.loadAllRecords();
 	}
 	plugins.window.showFormPopup(target,this,this,'foobar',w,height);
+}
+
+/**
+ * @public  
+ * @param {Function} callback The function that is called when selection happens
+ * @param {RuntimeComponent} target The component which will be shown
+ * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
+ * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
+ * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
+ *
+ * @properties={typeid:24,uuid:"ED6B2A5C-5453-453D-B9AE-0824E9B495EF"}
+ */
+function showModalWindow(callback, target, width, height, initialValue) {
+	selectHandler = callback;
+	var w = !width ? target.getWidth() : width;
+	if(initialValue){
+		searchText = initialValue;
+		search(searchText);
+		foundset.loadAllRecords();
+	}
+	
+	window = application.createWindow(controller.getName(), JSWindow.MODAL_DIALOG);
+	// TODO allow to configure window
+	window.undecorated = true;
+	window.setSize(w, height);
+	
+	// TODO it doesn't work
+	window.setLocation(target.getLocationX(), target.getLocationY());
+	window.show(controller.getName());
 }
 
 /**
@@ -135,6 +171,11 @@ function onSelect(){
  * @protected 
  * @properties={typeid:24,uuid:"D119BC9F-1137-445E-9E30-FDB3F4929484"}
  */
-function dismiss(){
-	plugins.window.closeFormPopup(null);
+function dismiss() {
+	if (window) {
+		window.hide();
+		window = null;
+	} else {
+		plugins.window.closeFormPopup(null);
+	}
 }

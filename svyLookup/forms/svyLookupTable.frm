@@ -26,7 +26,7 @@ x:0,
 y:40
 },
 onCellClick:"3A235A62-9AD6-4D7F-9F59-285B549AF54F",
-pageSize:100,
+pageSize:0,
 size:{
 height:260,
 width:100

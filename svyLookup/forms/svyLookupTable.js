@@ -1,7 +1,7 @@
 /**
  * Flag if keylistener has been added
  * 
- * @private 
+ * @protected  
  * @type {Boolean}
  * @properties={typeid:35,uuid:"93EFAD65-2890-4398-9396-BA06E9C6B530",variableType:-4}
  */
@@ -40,7 +40,7 @@ function onCreateInstance(jsForm, lookupObj){
 
 /**
  * Handle focus gained event of the search element. Adds the listener if not added
- * @private
+ * @protected 
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"13A82384-3F37-4342-A489-1A4E7D1F719E"}
@@ -59,7 +59,7 @@ function onFocusGainedSearch(event) {
  * @param {Boolean} firstShow form is shown first time after load
  * @param {JSEvent} event the event that triggered the action
  *
- * @private
+ * @protected 
  *
  * @properties={typeid:24,uuid:"0EB82C64-97A9-4B59-909D-629CA8A9305D"}
  * @AllowToRunInFind
@@ -83,7 +83,7 @@ function onEnter(){
 /**
  * Handles the key listener callback event
  * 
- * @private 
+ * @protected  
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
@@ -107,7 +107,7 @@ function onKey(value, keyCode, altKeyCode){
  * Runs search, refocuses on search field
  * @param {JSEvent} event the event that triggered the action
  *
- * @private
+ * @protected 
  *
  * @properties={typeid:24,uuid:"DAE25971-6B04-4212-AE61-AC2759604286"}
  * @AllowToRunInFind
@@ -122,7 +122,7 @@ function onActionSearch(event) {
  * when the ENTER key is used then only the selected foundset index is given
  * Use the record to exactly match where the user clicked on
  *
- * @private
+ * @protected 
  * 
  * @param {Number} foundsetindex
  * @param {Number} [columnindex]
