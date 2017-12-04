@@ -1,6 +1,7 @@
 customProperties:"formComponent:false",
 encapsulation:60,
 name:"AbstractLookup",
+namedFoundSet:"separate",
 navigatorID:"-1",
 scrollbars:36,
 showInMenu:true,

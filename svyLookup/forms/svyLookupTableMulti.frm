@@ -34,7 +34,7 @@ location:{
 x:1,
 y:1
 },
-onActionMethodID:"64A2E770-9249-449B-AF90-A1BF462A4B16",
+onActionMethodID:"6BF83414-0287-4156-A45A-480E41FA2AC7",
 size:{
 height:100,
 width:100
@@ -55,7 +55,7 @@ location:{
 x:2,
 y:2
 },
-onActionMethodID:"A74E5597-7E0D-4A9F-87D5-67835AB2AB5A",
+onActionMethodID:"C431A15B-170E-468B-89D4-29FA04BA5EC5",
 size:{
 height:100,
 width:100
