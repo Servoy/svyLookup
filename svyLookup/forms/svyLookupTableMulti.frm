@@ -112,12 +112,14 @@ location:{
 x:1,
 y:1
 },
+minRowHeight:"55px",
 onCellClick:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31",
 pageSize:0,
 size:{
 height:100,
 width:100
-}
+},
+styleClass:"table table-noheader"
 },
 location:"1,1",
 name:"table",

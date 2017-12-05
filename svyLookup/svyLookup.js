@@ -234,6 +234,18 @@ function LookupField(lookup, dataProvider){
 	var visible = true;
 	
 	/**
+	 * @private 
+	 * @type {String}
+	 */	
+	var styleClass;
+	
+	/**
+	 * @private 
+	 * @type {String}
+	 */	
+	var styleClassDataprovider;
+	
+	/**
 	 * Gets the data provider for this field
 	 * @public 
 	 * @return {String}
@@ -348,4 +360,45 @@ function LookupField(lookup, dataProvider){
 	this.getFormat = function(){
 		return format;
 	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @param {String} classes
+	 * @return {LookupField}
+	 */
+	this.setStyleClass = function(classes){
+		styleClass = classes;
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @return {String}
+	 */
+	this.getStyleClass = function(){
+		return styleClass;
+	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @param {String} classProvider
+	 * @return {LookupField}
+	 */
+	this.setStyleClassDataprovider = function(classProvider){
+		styleClassDataprovider = classProvider;
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @return {String}
+	 */
+	this.getStyleClassDataprovider = function(){
+		return styleClassDataprovider;
+	}
+	
 }

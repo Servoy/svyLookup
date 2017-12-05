@@ -60,6 +60,8 @@ function onCreateInstance(jsForm, lookupObj) {
 		column.headerText = field.getTitleText();
 		column.valuelist = field.getValueListName();
 		column.format = field.getFormat();
+		column.styleClass = field.getStyleClass();
+		column.styleClassDataprovider = field.getStyleClassDataprovider();
 		columns.push(column);
 	}
 	table.setJSONProperty('columns', columns);
