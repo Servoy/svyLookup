@@ -202,7 +202,8 @@ function onSelect() {
  * @properties={typeid:24,uuid:"EC0D94E7-9628-4A8D-B217-3B3809B53C4E"}
  */
 function setupDataSource(dataSourceName) {
-	if (dataSourceName && dataSourceName.indexOf("mem:") != 0) {
+	// TODO this should not be here
+	if (dataSourceName && dataSourceName.indexOf("mem:") != 0 && dataSourceName.indexOf("db:") != 0 ) {
 		dataSourceName = "mem:" + dataSourceName;
 	}
 

@@ -112,7 +112,7 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 	if (width && height) {
 		window.setSize(width, height);
 	}
-	if (x >= 0 && y>=0) {
+	if ((x == 0 || x > 0) && (y == 0 || y >=0)) {
 		window.setLocation(x,y);
 	}
 	
