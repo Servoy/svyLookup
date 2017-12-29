@@ -16,6 +16,35 @@ function createLookup(dataSource){
 }
 
 /**
+ * Creates a lookup object which can be used to show a pop-up form
+ * 
+ * @public 
+ * @param {String} valuelistName
+ * @return {Lookup}
+ *
+ * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
+ */
+function createLookupFromValuelist(valuelistName){
+	
+	// TODO check valuelist items
+	//var jsValuelist = solutionModel.getValueList(valuelistName);
+	//jsValuelist.getReturnDataProviderIds();
+	
+	// TODO split displayItem into realItem
+	// TODO it can be improved, adding displayValue as default field etc
+	// TODO it can be improved, checking the type of values, checking the type of dataprovider. 
+	// If is based on a dataset query, can look for more than > 500 values. It could actually run the query on the ds itself. Would the class clush in that case ?
+	
+	var items = application.getValueListItems(valuelistName);	
+	var dataSource = "mem:valuelist_" + valuelistName;
+	if (!databaseManager.dataSourceExists(dataSource)) {
+		dataSource = items.createDataSource("valuelist_" + valuelistName, [JSColumn.TEXT, JSColumn.TEXT]);
+		// TODO should allow to reset the selected values !?!?
+	}
+	return createLookup(dataSource);
+}
+
+/**
  * @public 
  * @param {String} datasource
  * @constructor 
