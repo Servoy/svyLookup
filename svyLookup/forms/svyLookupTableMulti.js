@@ -122,7 +122,7 @@ function onEnter() {
  */
 function onKey(value, keyCode, altKeyCode) {
 
-	application.output("onKey")
+//	application.output("onKey")
 	// handle down arrow
 	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();

@@ -53,7 +53,8 @@ function search(txt){
 	// Add search providers
 	for (var i = 0; i < lookup.getFieldCount(); i++) {
 		var field = lookup.getField(i);
-		if(field.isSearchable()){
+		// TODO check if dataprovider actually exists
+		if(field.isSearchable() && field.getDataProvider()){
 			simpleSearch.addSearchProvider(field.getDataProvider())
 				.setAlias(field.getTitleText());
 		}
