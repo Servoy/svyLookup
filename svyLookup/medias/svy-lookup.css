@@ -1,6 +1,32 @@
-.lookup-table-form
-{
+.lookup-table-form {
+	top: -34px !important;
 	border: 1px solid #e0e0e0;
 	border-top-width: 0px;
 	box-shadow: 0px 5px 5px #bbb;
+	top: -34px !important;
+	overflow: hidden;
+}
+
+.lookup-search-box {
+	font-size: 15px;
+}
+
+.svy-multids-header {
+	font-size: 15px;
+	font-weight: bold;
+	background-color: gray;
+	color: white;
+}
+
+.table-servoyextra-selected {
+	background-color: #CCCCFF !important;
+	color: black !important;
+}
+
+td div {
+	padding-left: 5px;
+}
+
+.table-servoyextra-header-label {
+	padding-left: 5px;
 }
