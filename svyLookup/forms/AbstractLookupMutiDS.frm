@@ -1,0 +1,9 @@
+customProperties:"formComponent:false",
+encapsulation:60,
+extendsID:"77E446E3-635B-45AF-973F-4A33FBB8B0B0",
+name:"AbstractLookupMutiDS",
+navigatorID:"-1",
+scrollbars:36,
+showInMenu:true,
+typeid:3,
+uuid:"F64085E6-16A8-405D-B8CB-ED40AF9A4C9F"
