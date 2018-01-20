@@ -25,7 +25,7 @@ function createLookup(dataSource){
  *
  * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
  */
-function createLookupFromValuelist(valuelistName){
+function createValuelistLookup(valuelistName){
 	
 	// TODO check valuelist items
 	//var jsValuelist = solutionModel.getValueList(valuelistName);
@@ -57,6 +57,92 @@ function createLookupFromValuelist(valuelistName){
 	valuelistLookup.addField("displayvalue");
 	
 	return valuelistLookup;
+}
+	
+/**
+ * Creates a set of lookup objects which can be used to show a pop-up form
+ * @public
+ * @param {Array<String|JSFoundSet|JSRecord>} dataSources The data source to lookup
+ * @return {MultiLookup}
+ *
+ * @properties={typeid:24,uuid:"A80BE700-B4A6-4168-AC6E-9289E8BF0E44"}
+ */
+function createMultiDSLookup(dataSources) {
+	var ml = new MultiLookup();
+	for (var i = 0; i < dataSources.length; i++) {
+		/** @type {String} */
+		var ds = dataSources[i];
+		if (dataSources[i] instanceof JSRecord || dataSources[i] instanceof JSFoundSet) {
+			ds = dataSources[i].getDataSource();
+		}
+		ml.addLookup(ds)
+	}
+	return ml;
+}
+
+/**
+ * @public
+ * @constructor
+ * @properties={typeid:24,uuid:"0C81E4B2-4943-40B4-BCF4-334C054D1DAA"}
+ */
+function MultiLookup() {
+
+	/**
+	 * @private
+	 * @type {Object<Lookup>}
+	 */
+	var Lookups = { };
+
+	/**
+	 * Adds a dataSource to list of Lookups
+	 *
+	 * @public
+	 * @param {String} dataSource
+	 * @return {Lookup}
+	 */
+	this.addLookup = function(dataSource) {
+		var lu = new Lookup(dataSource);
+		lu.setHeader(dataSource);
+		Lookups[dataSource] = lu;
+		return lu;
+	}
+
+	/**
+	 * Get a dataSource from list of Lookups
+	 *
+	 * @public
+	 * @param {String} dataSource
+	 * @return {Lookup}
+	 */
+	this.getLookup = function(dataSource) {
+		return Lookups[dataSource]
+	}
+	
+	/**
+	 * Get all lookup objects
+	 *
+	 * @public
+	 * @return {Object<Lookup>}
+	 */
+	this.getAllLookups = function() {
+		return Lookups;
+	}
+
+	/**
+	 * Shows the lookup
+	 *
+	 * @public
+	 * @param {Function} callback The function that will be called when a selection is made
+	 * @param {RuntimeComponent} target The component to show relative to
+	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
+	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
+	 * @param {String} [initialValue] And initial value to show in the search
+	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
+	 */
+	this.showPopUpMultiDS = function(callback, target, width, height, initialValue) {
+		var runtimeForm = forms.svyLookupTableMultiDS.newInstance(this);
+		runtimeForm.showPopUp(callback, target, width, height, initialValue);
+	}
 }
 
 /**
@@ -98,8 +184,72 @@ function Lookup(datasource){
 	// TODO datasource could be an existing foundset, used to filter lookup data ?
 	
 	/**
+<<<<<<< HEAD
 	 * Sets the lookup form. The lookup form must be an instance of the AbstractLookup form.
 	 * 
+=======
+	 * @private
+	 * @type {String}
+	 */
+	var header;
+
+	/**
+	 * @private
+	 * @type {String}
+	 */
+	var displayField;
+
+	/**
+	 * Set display field to the lookup object
+	 *
+	 * @public
+	 * @param {String} h HeaderText on datasource for Multi Lookup Popup
+	 * @return {String}
+	 */
+	this.setHeader = function(h) {
+		if (!h || h.length < 1) {
+			var ds = this.getDataSource().split('/')
+			header = ds[ds.length-1];
+		} else {
+			header = h
+		}
+		return header;
+	}
+
+	/**
+	 * get header field
+	 *
+	 * @public
+	 * @return {String}
+	 */
+	this.getHeader = function() {
+		return header;
+	}
+
+	/**
+	 * Set display field to the lookup object
+	 *
+	 * @public
+	 * @param {String} df Display dataprovider to be used for Multi Lookup Popup
+	 * @return {String}
+	 */
+	this.setDisplayField = function(df) {
+		displayField = df
+		return displayField;
+	}
+
+	/**
+	 * get display field to the lookup object
+	 *
+	 * @public
+	 * @return {String}
+	 */
+	this.getDisplayField = function() {
+		return displayField;
+	}
+
+	/**
+>>>>>>> master
 	 * @public 
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
