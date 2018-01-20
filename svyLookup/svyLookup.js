@@ -16,7 +16,8 @@ function createLookup(dataSource){
 }
 
 /**
- * Creates a lookup object which can be used to show a pop-up form
+ * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
+ * NOTE: Valuelist cannot be depends on a database relation or is a global method valuelist.
  * 
  * @public 
  * @param {String} valuelistName
@@ -35,13 +36,27 @@ function createLookupFromValuelist(valuelistName){
 	// TODO it can be improved, checking the type of values, checking the type of dataprovider. 
 	// If is based on a dataset query, can look for more than > 500 values. It could actually run the query on the ds itself. Would the class clush in that case ?
 	
+	var jsList = solutionModel.getValueList(valuelistName);
+	if (!jsList) {
+		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
+	}
+	if (jsList.valueListType != JSValueList.CUSTOM_VALUES && jsList.valueListType != JSValueList.DATABASE_VALUES) {
+		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE ");
+	}
+
 	var items = application.getValueListItems(valuelistName);	
 	var dataSource = "mem:valuelist_" + valuelistName;
 	if (!databaseManager.dataSourceExists(dataSource)) {
 		dataSource = items.createDataSource("valuelist_" + valuelistName, [JSColumn.TEXT, JSColumn.TEXT]);
 		// TODO should allow to reset the selected values !?!?
 	}
-	return createLookup(dataSource);
+	
+	// autoconfigure the valuelist lookup
+	var valuelistLookup = createLookup(dataSource);
+	valuelistLookup.setLoookupDataprovider("realvalue");
+	valuelistLookup.addField("displayvalue");
+	
+	return valuelistLookup;
 }
 
 /**
@@ -58,15 +73,33 @@ function Lookup(datasource){
 	 */
 	var fields = [];
 	
+	/** 
+	 * @private 
+	 * @type {Array} */
 	var params = [];
+
+	/** 
+	 * @private 
+	 * @type {String} */
+	var lookupDataprovider;
+
 	
 	/** 
 	 * @type {String} 
 	 * @private 
 	 * */
 	var lookupFormProvider;
+	
 
+	// TODO var sort
+	
+	// TODO lookup provider
+	
+	// TODO datasource could be an existing foundset, used to filter lookup data ?
+	
 	/**
+	 * Sets the lookup form. The lookup form must be an instance of the AbstractLookup form.
+	 * 
 	 * @public 
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
@@ -88,6 +121,25 @@ function Lookup(datasource){
 	 */
 	this.getDataSource = function(){
 		return datasource;
+	}
+	
+	/**
+	 * Sets the lookup dataprovider
+	 * 
+	 * @public 
+	 * @param {String} dataProvider
+	 */
+	this.setLoookupDataprovider = function(dataProvider){
+		lookupDataprovider = dataProvider;
+	}
+	
+	/**
+	 * Gets the lookup dataprovider
+	 * @public 
+	 * @return {String}
+	 */
+	this.getLookupDataprovider = function(){
+		return lookupDataprovider;
 	}
 	
 	/**
@@ -169,7 +221,7 @@ function Lookup(datasource){
 	 * Shows the lookup
 	 * 
 	 * @public  
-	 * @param {Function} callback The function that will be called when a selection is made
+	 * @param {Function} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array|Array<JSRecord>} record, {Array} param, {String|Date|Number|Array<String|Date|Number>} [lookupValue] , {String} [lookupDataprovider]
 	 * @param {RuntimeComponent} target The component to show relative to
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
@@ -197,7 +249,7 @@ function Lookup(datasource){
 	 * Shows the lookup in a modal Window
 	 * 
 	 * @public
-	 * @param {Function} callback The function that will be called when a selection is made
+	 * @param {Function} [callback] The function that will be called when a selection is made; the callback returns the following arguments: {Array|Array<JSRecord>} record, {Array} param, {String|Date|Number|Array<String|Date|Number>} [lookupValue], {String} [lookupDataprovider]
 	 * @param {Number} [x]
 	 * @param {Number} [y]
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
@@ -217,6 +269,8 @@ function Lookup(datasource){
 		
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var runtimeForm = lookupForm.newInstance(this);
+		
+		// TODO return the actual values, no need of params
 		runtimeForm.showModalWindow(callback,x,y,width,height,initialValue);
 	}
 	

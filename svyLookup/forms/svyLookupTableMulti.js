@@ -97,8 +97,16 @@ function onFocusGainedSearch(event) {
 function onShow(firstShow, event) {
 	keyListenerReady = false;
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER', onEnter, controller.getName());
+	plugins.window.createShortcut('ENTER', onEnter, elements.searchText.getName());
 	plugins.window.createShortcut('ESC', dismiss, controller.getName());
+	
+	// TODO set the inital values ?
+	if (searchText) {
+		// TODO make sure values are selected
+	} else {
+		// remove the inital values
+	}
+	
 }
 
 /**
@@ -189,10 +197,28 @@ function onSelect() {
 	// dismiss popup
 	dismiss();
 	
-	// invoke callback
-	if(selectHandler){
-		selectHandler.call(this, getSvyLookupSelectedRecords(), lookup.getParams());
+	// get records by lookup values
+	var lookupDataprovider = lookup.getLookupDataprovider();
+	var records = getSvyLookupSelectedRecords();
+	var lookupValues = [];
+	if (records && lookupDataprovider) {
+		for (var i = 0; i < records.length; i++) {
+			lookupValues.push(records[i][lookupDataprovider]);
+		}
 	}
+	
+	// invoke callback
+	if (selectHandler) {
+		selectHandler.call(this, records, lookup.getParams(), lookupValues, lookupDataprovider);
+	}
+	
+	// return the value. May be used by a modal dialog
+	if (lookupValues && lookupValues.length) {
+		return lookupValues;
+	} else {
+		return records;
+	}
+	
 }
 
 /**
@@ -272,6 +298,7 @@ function deselectAllRecords() {
 	var fs = foundset.duplicateFoundSet();
 	fs.loadAllRecords();
 	var result = [];
+	
 	for (var index = 1; index <= fs.getSize(); index++) {
 		var record = fs.getRecord(index);
 		record.svy_lookup_selected = null;

@@ -89,7 +89,7 @@ function showPopUp(callback, target, width, height, initialValue){
 
 /**
  * @public  
- * @param {Function} callback The function that is called when selection happens
+ * @param {Function} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
  * @param {Number} [x]
  * @param {Number} [y]
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
@@ -118,7 +118,8 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 	}
 	
 	// TODO it doesn't work
-	window.show(controller.getName());
+	return window.show(controller.getName());
+	// TODO return selected value
 }
 
 /**
@@ -157,6 +158,7 @@ function newInstance(lookupObj){
 
 /**
  * Callback when item is selected
+ * @return {JSRecord|String|Date|Number}
  * @protected 
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
@@ -165,9 +167,24 @@ function onSelect(){
 	// dismiss popup
 	dismiss();
 	
+	var lookupDataprovider = lookup.getLookupDataprovider();
+	var record = foundset.getSelectedRecord();
+	var lookupValue;
+	if (record && lookupDataprovider) {
+		lookupValue = lookupDataprovider;
+	}
+	
 	// invoke callback
-	if(selectHandler){
-		selectHandler.call(this, foundset.getSelectedRecord(), lookup.getParams());
+	if (selectHandler) {
+		// TODO can we just return the selected values and the lookupObject itself instead of so many arguments ?
+		selectHandler.call(this, foundset.getSelectedRecord(), lookup.getParams(), lookupValue, lookupDataprovider);
+	}
+	
+	// return the value. May be used by a modal dialog
+	if (record && lookupDataprovider) {
+		return lookupValue;
+	} else {
+		return record;
 	}
 }
 
