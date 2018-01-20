@@ -61,6 +61,6 @@ navigatorID:"0",
 onShowMethodID:"4D6F3D0D-1B25-43F3-BD4F-BDBB7B26787B",
 showInMenu:true,
 size:"100,100",
-styleClass:"lookup-table-form",
+styleClass:"svy-lookup lookup-table-form",
 typeid:3,
 uuid:"71E71A33-7B5D-4F70-A1AB-DC76B7610B06"

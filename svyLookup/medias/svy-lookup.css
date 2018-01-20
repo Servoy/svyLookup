@@ -18,15 +18,24 @@
 	color: white;
 }
 
-.table-servoyextra-selected {
+.svy-lookup {
+	background-color: white;
+}
+
+.svy-lookup .table-servoyextra-selected {
 	background-color: #CCCCFF !important;
 	color: black !important;
 }
 
-td div {
+.svy-lookup td div {
 	padding-left: 5px;
 }
 
-.table-servoyextra-header-label {
+.svy-lookup .table-servoyextra-header-label {
 	padding-left: 5px;
+}
+
+.label-block .bts-label, .label-block.bts-block,
+.label-block .svy-label, .label-block.svy-block {
+	display: block;
 }

@@ -36,6 +36,7 @@ styleClass:"table-hover"
 location:"0,40",
 name:"table",
 size:"100,260",
+styleClass:"table-hover",
 typeName:"servoyextra-table",
 typeid:47,
 uuid:"677C24E8-3312-478F-941B-361D722A4C59"
@@ -58,6 +59,6 @@ name:"svyLookupTable",
 navigatorID:"0",
 onShowMethodID:"0EB82C64-97A9-4B59-909D-629CA8A9305D",
 size:"100,100",
-styleClass:"lookup-table-form",
+styleClass:"svy-lookup lookup-table-form",
 typeid:3,
 uuid:"142128C8-A46D-47BB-86BA-5C48732A5DBD"

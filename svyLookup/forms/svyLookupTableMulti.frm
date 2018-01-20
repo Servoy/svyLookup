@@ -39,7 +39,7 @@ size:{
 height:100,
 width:100
 },
-styleClass:"line btn-label",
+styleClass:"line btn-label label-block",
 text:"Select All"
 },
 location:"1,1",
@@ -60,7 +60,7 @@ size:{
 height:100,
 width:100
 },
-styleClass:"line btn-label",
+styleClass:"line btn-label label-block",
 text:"Deselect all"
 },
 location:"2,2",
@@ -213,6 +213,5 @@ uuid:"E3C7272D-1E1A-450A-8B26-D349EA086D75"
 ],
 name:"svyLookupTableMulti",
 onShowMethodID:"91F6E73C-C166-4DB1-A5E6-5CCFA98584F1",
-styleClass:"frm-filter",
 typeid:3,
 uuid:"A4F31626-43DC-4159-AD5E-75EB04AF3BEB"
