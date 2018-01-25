@@ -186,17 +186,18 @@ function onCellClick(foundsetindex, columnindex, record, event) {
  * @properties={typeid:24,uuid:"699F9BA4-D0C3-4C45-8812-96B8796C45A3"}
  */
 function onClose(event) {
-	onSelect();
+	dismiss();
 }
 
 
 /**
+ * Always called at the onHide
+ * @protected 
+ * 
  * @properties={typeid:24,uuid:"6EF609DB-150A-4C1E-A0C2-BDBD8AB7A3AB"}
  */
 function onSelect() {
-	// dismiss popup
-	dismiss();
-	
+
 	// get records by lookup values
 	var lookupDataprovider = lookup.getLookupDataprovider();
 	var records = getSvyLookupSelectedRecords();
@@ -228,10 +229,10 @@ function onSelect() {
  * @properties={typeid:24,uuid:"EC0D94E7-9628-4A8D-B217-3B3809B53C4E"}
  */
 function setupDataSource(dataSourceName) {
-	// TODO this should not be here
-	if (dataSourceName && dataSourceName.indexOf("mem:") != 0 && dataSourceName.indexOf("db:") != 0 ) {
-		dataSourceName = "mem:" + dataSourceName;
-	}
+//	// TODO this should not be here
+//	if (dataSourceName && dataSourceName.indexOf("mem:") != 0 && dataSourceName.indexOf("db:") != 0 ) {
+//		dataSourceName = "mem:" + dataSourceName;
+//	}
 
 	var jDS = solutionModel.getDataSourceNode(dataSourceName);
 
@@ -304,4 +305,20 @@ function deselectAllRecords() {
 		record.svy_lookup_selected = null;
 	}
 	return result;
+}
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @return {Boolean}
+ *
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"2C64734A-241C-4289-A33A-7C1F19BBB548"}
+ */
+function onHide(event) {
+	// return selected items
+	onSelect();
+	return true
 }

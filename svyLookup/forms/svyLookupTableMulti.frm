@@ -3,6 +3,10 @@ layout:{\
 responsive:true\
 },\
 methods:{\
+onHideMethodID:{\
+arguments:null,\
+parameters:null\
+},\
 onShowMethodID:{\
 arguments:null,\
 parameters:null\
@@ -212,6 +216,7 @@ uuid:"E3C7272D-1E1A-450A-8B26-D349EA086D75"
 }
 ],
 name:"svyLookupTableMulti",
+onHideMethodID:"2C64734A-241C-4289-A33A-7C1F19BBB548",
 onShowMethodID:"91F6E73C-C166-4DB1-A5E6-5CCFA98584F1",
 typeid:3,
 uuid:"A4F31626-43DC-4159-AD5E-75EB04AF3BEB"
