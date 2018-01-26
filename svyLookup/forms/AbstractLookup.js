@@ -171,7 +171,7 @@ function onSelect(){
 	var record = foundset.getSelectedRecord();
 	var lookupValue;
 	if (record && lookupDataprovider) {
-		lookupValue = lookupDataprovider;
+		lookupValue = record[lookupDataprovider];
 	}
 	
 	// invoke callback

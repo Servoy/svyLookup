@@ -1,9 +1,9 @@
+.svy-lookup,
 .lookup-table-form {
 	top: -34px !important;
 	border: 1px solid #e0e0e0;
 	border-top-width: 0px;
 	box-shadow: 0px 5px 5px #bbb;
-	top: -34px !important;
 	overflow: hidden;
 }
 
@@ -38,4 +38,42 @@
 .label-block .bts-label, .label-block.bts-block,
 .label-block .svy-label, .label-block.svy-block {
 	display: block;
+}
+
+/** svyLookupTableMulti style */
+.svy-lookup-multi .tablewrapper {
+	border-top: 1px solid #ddd
+}
+
+.svy-lookup-multi .btn-close {
+	position: absolute;
+    line-height: 24px;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.svy-lookup-multi .btn-label {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.svy-lookup  .ag-table .table-cell-icon, 
+.svy-lookup  td.table-cell-icon > div {
+    font-family: 'Glyphicons Halflings';
+    text-align: center;
+}
+
+.svy-lookup .ag-table .icon-selection:before, 
+.svy-lookup  td.icon-selection > div:before {
+	content: "\e157";
+	cursor: pointer;
+}
+
+.svy-lookup .ag-table .icon-selection.true:before,
+.svy-lookup td.icon-selection.true > div:before {
+	content: "\e067";
+	cursor: pointer;
 }
