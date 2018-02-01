@@ -57,7 +57,6 @@ uuid:"D6D48B1F-81E7-4B18-91BD-9C9C74693782"
 ],
 name:"svyLookupTableMultiDS",
 namedFoundSet:"separate_table_lookup",
-navigatorID:"0",
 onShowMethodID:"4D6F3D0D-1B25-43F3-BD4F-BDBB7B26787B",
 showInMenu:true,
 size:"100,100",
