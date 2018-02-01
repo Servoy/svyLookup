@@ -191,6 +191,7 @@ function onClose(event) {
 
 /**
  * Always called at the onHide
+ * @return {Array<JSRecord|String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
  * @protected 
  * 
  * @properties={typeid:24,uuid:"6EF609DB-150A-4C1E-A0C2-BDBD8AB7A3AB"}
@@ -209,7 +210,7 @@ function onSelect() {
 	
 	// invoke callback
 	if (selectHandler) {
-		selectHandler.call(this, records, lookup.getParams(), lookupValues, lookupDataprovider);
+		selectHandler.call(this, records, lookupValues, lookup);
 	}
 	
 	// return the value. May be used by a modal dialog

@@ -205,6 +205,8 @@ function dismiss() {
 		fs.search()
 		// invoke callback
 		if (selectHandler) {
+			// TODO this callback 
+			// TODO, do we need the searchText ?
 			selectHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord() });
 		}
 	}

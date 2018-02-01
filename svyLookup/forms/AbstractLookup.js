@@ -21,7 +21,7 @@ var lookup = null;
  * Handler for the selection callback
  * 
  * @protected 
- * @type {Function}
+ * @type {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)}
  * @properties={typeid:35,uuid:"A27AA3DA-D68C-4529-88C0-851F94635F0F",variableType:-4}
  */
 var selectHandler = null;
@@ -68,7 +68,7 @@ function search(txt){
  * Shows this form as pop-up, returns selection in callback
  * 
  * @public  
- * @param {Function} callback The function that is called when selection happens
+ * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
  * @param {RuntimeComponent} target The component which will be shown
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
@@ -89,7 +89,7 @@ function showPopUp(callback, target, width, height, initialValue){
 
 /**
  * @public  
- * @param {Function} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
+ * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
  * @param {Number} [x]
  * @param {Number} [y]
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
@@ -158,7 +158,7 @@ function newInstance(lookupObj){
 
 /**
  * Callback when item is selected
- * @return {JSRecord|String|Date|Number}
+ * @return {Array<JSRecord|String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
  * @protected 
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
@@ -177,14 +177,14 @@ function onSelect(){
 	// invoke callback
 	if (selectHandler) {
 		// TODO can we just return the selected values and the lookupObject itself instead of so many arguments ?
-		selectHandler.call(this, foundset.getSelectedRecord(), lookup.getParams(), lookupValue, lookupDataprovider);
+		selectHandler.call(this, [foundset.getSelectedRecord()], [lookupValue], lookup);
 	}
 	
 	// return the value. May be used by a modal dialog
 	if (record && lookupDataprovider) {
-		return lookupValue;
+		return [lookupValue];
 	} else {
-		return record;
+		return [record];
 	}
 }
 

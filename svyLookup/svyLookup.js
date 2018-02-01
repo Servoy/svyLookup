@@ -249,7 +249,6 @@ function Lookup(datasource){
 	}
 
 	/**
->>>>>>> master
 	 * @public 
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
@@ -371,7 +370,7 @@ function Lookup(datasource){
 	 * Shows the lookup
 	 * 
 	 * @public  
-	 * @param {Function} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array|Array<JSRecord>} record, {Array} param, {String|Date|Number|Array<String|Date|Number>} [lookupValue] , {String} [lookupDataprovider]
+	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {RuntimeComponent} target The component to show relative to
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
@@ -399,7 +398,7 @@ function Lookup(datasource){
 	 * Shows the lookup in a modal Window
 	 * 
 	 * @public
-	 * @param {Function} [callback] The function that will be called when a selection is made; the callback returns the following arguments: {Array|Array<JSRecord>} record, {Array} param, {String|Date|Number|Array<String|Date|Number>} [lookupValue], {String} [lookupDataprovider]
+	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {Number} [x]
 	 * @param {Number} [y]
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component

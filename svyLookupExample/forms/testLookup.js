@@ -155,15 +155,14 @@ function onShowLookup(event) {
  * Callback for pop-up, passes the selected record
  *
  * @private
- * @param {JSRecord<db:/example_data/products>} record
- * @param {Object} params
- * @param {String|Date|Number} value
- * @param {String} lookupProvider
+ * @param {Array<JSRecord<db:/example_data/products>>} records
+ * @param {Array<String|Date|Number>} values
+ * @param {scopes.svyLookup.Lookup} lookup
  *  @properties={typeid:24,uuid:"2DA1542B-A67D-46B2-92AD-FAAAF2A4DFA0"}
  */
-function onSelectLookup(record, params, value, lookupProvider) {
-	if (record) {
-		selectedLookupValue = record.productname;
+function onSelectLookup(records, values, lookup) {
+	if (records && records.length) {
+		selectedLookupValue = records[0].productname;
 	}
 }
 
@@ -219,14 +218,13 @@ function onShowLookupMultiSelection(event) {
 
 /**
  * @param {Array<JSRecord<db:/example_data/products>>} records
- * @param {Object} params
- * @param {Array} values
- * @param {String} lookupProvider
+ * @param {Array<String|Date|Number>} values
+ * @param {scopes.svyLookup.Lookup} lookup
  * @private
  *
  * @properties={typeid:24,uuid:"D41BB50A-A49B-46F2-AEAC-9D5214908236"}
  */
-function onSelectMulti(records, params, values, lookupProvider) {
+function onSelectMulti(records, values, lookup) {
 	if (values) {
 		selectedLookupValues = values.join(",");
 	} else {
@@ -267,14 +265,13 @@ function onShowValuelistLookup(event) {
 
 /**
  * @private
- * @param {JSRecord<db:/example_data/products>} record
- * @param {Object} params
- * @param {String|Date|Number} value
- * @param {String} lookupProvider
+ * @param {Array<JSRecord<db:/example_data/products>>} records
+ * @param {Array<String|Date|Number>} values
+ * @param {scopes.svyLookup.Lookup} lookup
  *  @properties={typeid:24,uuid:"F99C70C5-28F1-4628-ACD0-77068383E6FD"}
  */
-function onSelectValuelist(record, params, value, lookupProvider) {
-	selectedLooupValue$valuelist = value;
+function onSelectValuelist(records, values, lookup) {
+	selectedLooupValue$valuelist = values[0];
 }
 
 /**
@@ -312,13 +309,12 @@ function onShowValuelistLookupMulti(event) {
 
 /**
  * @private
- * @param {Array<JSRecord>} records
- * @param {Object} params
+ * @param {Array<JSRecord<db:/example_data/products>>} records
  * @param {Array<String|Date|Number>} values
- * @param {String} lookupProvider
+ * @param {scopes.svyLookup.Lookup} lookup
  *  @properties={typeid:24,uuid:"41E91869-0D41-47E5-9500-4F268EAA3946"}
  */
-function onSelectValuelistMulti(records, params, values, lookupProvider) {
+function onSelectValuelistMulti(records, values, lookup) {
 	selectedLooupValues$valuelist = values ? values.join(",") : null;
 }
 
