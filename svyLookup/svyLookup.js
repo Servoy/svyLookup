@@ -184,10 +184,8 @@ function Lookup(datasource){
 	// TODO datasource could be an existing foundset, used to filter lookup data ?
 	
 	/**
-<<<<<<< HEAD
 	 * Sets the lookup form. The lookup form must be an instance of the AbstractLookup form.
 	 * 
-=======
 	 * @private
 	 * @type {String}
 	 */
@@ -398,12 +396,16 @@ function Lookup(datasource){
 	 * Shows the lookup in a modal Window
 	 * 
 	 * @public
-	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
+	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {Number} [x]
 	 * @param {Number} [y]
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
+	 * 
+	 * TODO check me, does this make sense ? should i always return records instead ?
+	 * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
+	 * 
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
 	this.showModalWindow = function(callback, x, y, width, height, initialValue){
@@ -420,7 +422,7 @@ function Lookup(datasource){
 		var runtimeForm = lookupForm.newInstance(this);
 		
 		// TODO return the actual values, no need of params
-		runtimeForm.showModalWindow(callback,x,y,width,height,initialValue);
+		return runtimeForm.showModalWindow(callback,x,y,width,height,initialValue);
 	}
 	
 }
