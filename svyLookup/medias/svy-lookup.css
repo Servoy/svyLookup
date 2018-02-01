@@ -23,8 +23,10 @@
 }
 
 .svy-lookup .table-servoyextra-selected {
+	/* TODO why to use a default color different than table default and why to use important ?
 	background-color: #CCCCFF !important;
-	color: black !important;
+	color: black !important; 
+	*/
 }
 
 .svy-lookup td div {
