@@ -266,7 +266,7 @@ function clearLookupValues(event) {
  */
 function onShowValuelistLookup(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable");
+	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
 
 	// show pop-up
 	var component = elements[event.getElementName()];

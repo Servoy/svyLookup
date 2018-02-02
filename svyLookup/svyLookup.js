@@ -21,18 +21,15 @@ function createLookup(dataSource){
  * 
  * @public 
  * @param {String} valuelistName
+ * @param {String} [titleText] Sets the display text for the valuelist field. Default is 'Value';
+ * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
+ * 
  * @return {Lookup}
  *
  * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
  */
-function createValuelistLookup(valuelistName){
+function createValuelistLookup(valuelistName, titleText){
 	
-	// TODO check valuelist items
-	//var jsValuelist = solutionModel.getValueList(valuelistName);
-	//jsValuelist.getReturnDataProviderIds();
-	
-	// TODO split displayItem into realItem
-	// TODO it can be improved, adding displayValue as default field etc
 	// TODO it can be improved, checking the type of values, checking the type of dataprovider. 
 	// If is based on a dataset query, can look for more than > 500 values. It could actually run the query on the ds itself. Would the class clush in that case ?
 	
@@ -54,7 +51,12 @@ function createValuelistLookup(valuelistName){
 	// autoconfigure the valuelist lookup
 	var valuelistLookup = createLookup(dataSource);
 	valuelistLookup.setLoookupDataprovider("realvalue");
-	valuelistLookup.addField("displayvalue");
+	var field = valuelistLookup.addField("displayvalue");
+	if (titleText) {
+		field.setTitleText(titleText);
+	} else {
+		field.setTitleText("Value");
+	}
 	
 	return valuelistLookup;
 }
