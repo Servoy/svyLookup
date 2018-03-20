@@ -137,11 +137,12 @@ function MultiLookup() {
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
+	 * @param {Number} [index] The initial index of previous search if any.
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
-	this.showPopUpMultiDS = function(callback, target, width, height, initialValue) {
+	this.showPopUpMultiDS = function(callback, target, width, height, initialValue, index) {		
 		var runtimeForm = forms.svyLookupTableMultiDS.newInstance(this);
-		runtimeForm.showPopUp(callback, target, width, height, initialValue);
+		runtimeForm.showPopUp(callback, target, width, height, initialValue, index);
 	}
 }
 

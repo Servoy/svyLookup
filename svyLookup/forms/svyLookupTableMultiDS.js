@@ -13,28 +13,32 @@ var keyListenerReady = false;
  * @param {JSForm} jsForm
  * @override
  * @properties={typeid:24,uuid:"1DAC279D-64EE-402D-9801-73A998B021B4"}
+ * @AllowToRunInFind
  */
 function onCreateInstance(jsForm) {
+	var f = solutionModel.getForm(jsForm.name)
+	f.getButton('display').dataProviderID = 'display';
+	controller.recreateUI();
 	// table component
-	var table = jsForm.getWebComponent(elements.table.getName());
-	
+	//	var table = jsForm.getWebComponent(elements.table.getName());
+
 	// add columns
-	/** @type {Array<servoyextra-table.column>} */
-	var columns = table.getJSONProperty('columns');
-
-	var fields = [{ dataprovider: 'display' },
-		]
-
-	for (var i = 0; i < fields.length; i++) {
-		var field = fields[i];
-		/** @type {servoyextra-table.column} */
-		var column = { };
-		column.dataprovider = field.dataprovider;		
-		columns.push(column);
-	}
-	
-	table.setJSONProperty('columns', columns);
-	table.setJSONProperty('rowStyleClassDataprovider', 'rec_type');	
+	//	/** @type {Array<servoyextra-table.column>} */
+	//	var columns = table.getJSONProperty('columns');
+	//
+	//	var fields = [{ dataprovider: 'display' },
+	//		]
+	//
+	//	for (var i = 0; i < fields.length; i++) {
+	//		var field = fields[i];
+	//		/** @type {servoyextra-table.column} */
+	//		var column = { };
+	//		column.dataprovider = field.dataprovider;
+	//		columns.push(column);
+	//	}
+	//
+	//	table.setJSONProperty('columns', columns);
+	//	table.setJSONProperty('rowStyleClassDataprovider', 'rec_type');
 }
 
 /**
@@ -47,7 +51,7 @@ function onCreateInstance(jsForm) {
  */
 function onFocusGainedSearch(event) {
 	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchText, onKey);
+		plugins.keyListener.addKeyListener(elements.searchBox, onKey);
 		keyListenerReady = true;
 	}
 }
@@ -65,8 +69,9 @@ function onFocusGainedSearch(event) {
  */
 function onShow(firstShow, event) {
 	keyListenerReady = false;
-	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ESC',dismiss,controller.getName());
+	elements.searchBox.requestFocus();
+	plugins.window.createShortcut('ESC', dismiss, controller.getName());
+	plugins.window.createShortcut('ENTER', onSelect, controller.getName());
 }
 
 /**
@@ -87,14 +92,20 @@ function onEnter() {
  * @param {Number} altKeyCode
  *
  * @properties={typeid:24,uuid:"DF0B5C6F-03A1-4251-BABD-8367C0CB2976"}
+ * @AllowToRunInFind
  */
 function onKey(value, keyCode, altKeyCode) {
-	// handle down arrow
+	// handle up/down arrow
 	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
-		elements.table.requestFocus();
+		elements.display.requestFocus();
 		return;
 	}
-	
+
+	if (keyCode == java.awt.event.KeyEvent.VK_UP) {
+		elements.display.requestFocus();
+		return;
+	}
+
 	// run search
 	search(value);
 }
@@ -111,23 +122,5 @@ function onKey(value, keyCode, altKeyCode) {
  */
 function onActionSearch(event) {
 	search(searchText);
-	elements.searchText.requestFocus();
-}
-
-/**
- * Called when the mouse is clicked on a row/cell (foundset and column indexes are given) or.
- * when the ENTER key is used then only the selected foundset index is given
- * Use the record to exactly match where the user clicked on
- *
- * @private
- *
- * @param {Number} foundsetindex
- * @param {Number} [columnindex]
- * @param {JSRecord} [record]
- * @param {JSEvent} [event]
- *
- * @properties={typeid:24,uuid:"65D064BB-6D4B-4F60-ACA9-AAFF4F60B197"}
- */
-function onCellClick(foundsetindex, columnindex, record, event) {
-	onSelect();
+	elements.searchBox.requestFocus();
 }
