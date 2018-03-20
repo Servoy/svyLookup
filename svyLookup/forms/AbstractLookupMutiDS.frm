@@ -1,8 +1,15 @@
-customProperties:"formComponent:false",
+customProperties:"formComponent:false,\
+methods:{\
+onHideMethodID:{\
+arguments:null,\
+parameters:null\
+}\
+}",
 encapsulation:60,
 extendsID:"77E446E3-635B-45AF-973F-4A33FBB8B0B0",
 name:"AbstractLookupMutiDS",
 navigatorID:"-1",
+onHideMethodID:"E674095B-8810-4DB3-9F67-2B8159C158D6",
 scrollbars:36,
 showInMenu:true,
 typeid:3,

@@ -9,6 +9,11 @@
 var searchText = '';
 
 /**
+ * @properties={typeid:35,uuid:"C05745D9-28AE-4AAF-87C1-1E52DF7FCB3D",variableType:-4}
+ */
+var selected = false;
+
+/**
  * The MultiLookup object used by this lookup form
  *
  * @protected
@@ -30,15 +35,27 @@ var selectHandler = null;
  * Runs the search. Loads records in the foundset.
  *
  * @protected
+ * @param {String} txt Search Text
+ * @param {Number} minlen Minimum length of search text to enter before starting search
  * @properties={typeid:24,uuid:"ECD9F461-ACE8-4DCB-B0F7-5193D7FF4752"}
  * @AllowToRunInFind
  */
-function search(txt) {
+function search(txt,minlen) {
 	var order = 1;
 	var size = 0;
 
 	//clear in-memory ds
 	foundset.deleteAllRecords();
+
+	if (txt.length < minlen) {
+		searchText = txt;
+		foundset.newRecord();
+		nr = foundset.getSelectedRecord();
+		nr['rec_type'] = 'svy-multids-detail';
+		nr['display'] = '<i>Enter search criteria..</i>';
+		nr['rec_order'] = 0;
+		return;
+	}
 
 	//iterate through MultiLookup object and setup search object.
 	var mlk = MultiLookup.getAllLookups();
@@ -127,7 +144,7 @@ function showPopUp(callback, target, width, height, initialValue, index) {
 	var w = !width ? target.getWidth() : width;
 	if (initialValue) {
 		searchText = initialValue;
-		search(searchText);
+		search(searchText, 2);
 		foundset.loadAllRecords();
 		foundset.setSelectedIndex(index);
 	}
@@ -185,8 +202,8 @@ function newInstance(multiLookupObj) {
  * @properties={typeid:24,uuid:"5A59560F-F374-408D-98FB-A8601B7AA54D"}
  */
 function onSelect() {
-	// dismiss popup
-	dismiss();
+	selected = true;
+	plugins.window.closeFormPopup(null);
 }
 
 /**
@@ -197,6 +214,23 @@ function onSelect() {
  * @AllowToRunInFind
  */
 function dismiss() {
+	selected = false;
+	plugins.window.closeFormPopup(null);
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @return {Boolean}
+ *
+ * @private
+ *
+ * @properties={typeid:24,uuid:"E674095B-8810-4DB3-9F67-2B8159C158D6"}
+ * @AllowToRunInFind
+ */
+function onHide(event) {
 	//identify record
 	if (foundset.getSelectedRecord()['rec_ds']) {
 		var fs = databaseManager.getFoundSet(foundset.getSelectedRecord()['rec_ds']);
@@ -208,9 +242,9 @@ function dismiss() {
 		}
 		fs.search()
 		// invoke callback
-		if (selectHandler) {
+		if (selectHandler && selected) {
 			selectHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord(), index: foundset.getSelectedIndex() });
 		}
-		plugins.window.closeFormPopup(null);
 	}
+	return true
 }
