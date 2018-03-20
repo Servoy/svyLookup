@@ -15,6 +15,7 @@ name:"searchBox",
 onActionMethodID:"2187BFEA-18E9-4DE1-8510-BC643D2DF290",
 onFocusGainedMethodID:"3140D5C1-6BB9-4EEC-9B5D-24143D027778",
 size:"222,36",
+styleClass:"search-box",
 typeid:4,
 uuid:"092B7AF7-0E3A-4DDF-A084-2DC81568E1E1"
 },

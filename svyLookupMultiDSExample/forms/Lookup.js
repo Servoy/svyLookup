@@ -81,6 +81,7 @@ function onSelect(data) {
 	result = '';
 	searchText = data.searchtext;
 	index = data.index;
+	if (!data.record)return;
 	var cols = databaseManager.getTable(data.record.getDataSource()).getColumnNames()
 	result += '<b>' + data.record.getDataSource() + '<br></b>';
 	for (var i = 0; i < cols.length; i++) {

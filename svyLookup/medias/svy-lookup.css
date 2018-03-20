@@ -1,7 +1,11 @@
 .hide {
-	width:85%;
+	width: 85%;
 	opacity: 0.5;
 	background-color: red;
+}
+
+.search-box {
+	font-size: 14px;
 }
 
 .ui-grid-row:nth-child(even) .ui-grid-cell {

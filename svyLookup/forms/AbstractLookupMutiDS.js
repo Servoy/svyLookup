@@ -40,7 +40,7 @@ var selectHandler = null;
  * @properties={typeid:24,uuid:"ECD9F461-ACE8-4DCB-B0F7-5193D7FF4752"}
  * @AllowToRunInFind
  */
-function search(txt,minlen) {
+function search(txt, minlen) {
 	var order = 1;
 	var size = 0;
 
@@ -215,6 +215,10 @@ function onSelect() {
  */
 function dismiss() {
 	selected = false;
+	// invoke callback
+	if (selectHandler) {
+		selectHandler.call(this, { searchtext: searchText, index: foundset.getSelectedIndex() });
+	}
 	plugins.window.closeFormPopup(null);
 }
 
