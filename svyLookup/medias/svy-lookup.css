@@ -1,3 +1,9 @@
+.hide {
+	width:85%;
+	opacity: 0.5;
+	background-color: red;
+}
+
 .ui-grid-row:nth-child(even) .ui-grid-cell {
 	background-color: white;
 }
@@ -12,7 +18,7 @@ button.lookup-display {
 	box-shadow: none !important;
 }
 
-button.lookup-display:hover {	
+button.lookup-display:hover {
 	border: none !important;
 	outline: none !important;
 	box-shadow: none !important;
