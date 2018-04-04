@@ -41,6 +41,9 @@ var window;
  */
 function search(txt){
 	
+	// fix search disappear while typing
+	searchText = txt;
+
 	// load all records if no input
 	if(!txt){
 		foundset.loadAllRecords();
@@ -62,7 +65,6 @@ function search(txt){
 	
 	// apply search
 	simpleSearch.loadRecords(foundset);
-	searchText = txt;
 }
 
 /**
