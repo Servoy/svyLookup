@@ -40,6 +40,9 @@ var window;
  * @properties={typeid:24,uuid:"8FD91534-39A2-428C-9910-49B19E1FF3E5"}
  */
 function search(txt) {
+	
+	// fix search disappear while typing
+	searchText = txt;
 
 	// load all records if no input
 	if (!txt) {
@@ -61,7 +64,6 @@ function search(txt) {
 
 	// apply search
 	simpleSearch.loadRecords(foundset);
-	searchText = txt;
 }
 
 /**
