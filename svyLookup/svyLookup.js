@@ -50,7 +50,7 @@ function createValuelistLookup(valuelistName, titleText){
 	
 	// autoconfigure the valuelist lookup
 	var valuelistLookup = createLookup(dataSource);
-	valuelistLookup.setLoookupDataprovider("realvalue");
+	valuelistLookup.setLookupDataprovider("realvalue");
 	var field = valuelistLookup.addField("displayvalue");
 	if (titleText) {
 		field.setTitleText(titleText);
@@ -278,7 +278,7 @@ function Lookup(datasource){
 	 * @public 
 	 * @param {String} dataProvider
 	 */
-	this.setLoookupDataprovider = function(dataProvider){
+	this.setLookupDataprovider = function(dataProvider){
 		lookupDataprovider = dataProvider;
 	}
 	

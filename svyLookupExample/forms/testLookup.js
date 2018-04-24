@@ -127,7 +127,7 @@ function onShowLookup(event, expand) {
 	// create lookup object
 	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
 
-	lookupObj.setLoookupDataprovider("productname");
+	lookupObj.setLookupDataprovider("productname");
 
 	// add fields
 
@@ -196,7 +196,7 @@ function onShowLookupMultiSelection(event, expand) {
 	// create lookup object
 	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
 
-	lookupObj.setLoookupDataprovider("productname");
+	lookupObj.setLookupDataprovider("productname");
 
 	// add fields
 
