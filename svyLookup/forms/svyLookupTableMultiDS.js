@@ -11,17 +11,20 @@ var keyListenerReady = false;
  * Overrides creation hook and adds columns
  * @protected
  * @param {JSForm} jsForm
+ * @param {scopes.svyLookup.Lookup} lookupObj
+ * 
  * @override
  * @properties={typeid:24,uuid:"1DAC279D-64EE-402D-9801-73A998B021B4"}
  */
-function onCreateInstance(jsForm) {
+function onCreateInstance(jsForm, lookupObj) {
 	// table component
 	var table = jsForm.getWebComponent(elements.table.getName());
 	
 	// add columns
 	/** @type {Array<servoyextra-table.column>} */
 	var columns = table.getJSONProperty('columns');
-
+	
+	// TODO, don't you want to use other lookupField properties ?
 	var fields = [{ dataprovider: 'display' },
 		]
 

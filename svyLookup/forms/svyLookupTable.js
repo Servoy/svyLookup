@@ -28,14 +28,31 @@ function onCreateInstance(jsForm, lookupObj){
 		if(!field.isVisible()) continue;
 		
 		/** @type {servoyextra-table.column} */
-		var column = {};
-		column.dataprovider = field.getDataProvider();
-		column.headerText = field.getTitleText();
-		column.valuelist = field.getValueListName();
-		column.format = field.getFormat();
+		var column = onCreateFieldInstance(field)
 		columns.push(column);
 	}
 	table.setJSONProperty('columns',columns);
+}
+
+/**
+ * @return {servoyextra-table.column}
+ * @param {scopes.svyLookup.LookupField} lookupFieldObj
+ * @protected
+ * @override 
+ *
+ * @properties={typeid:24,uuid:"4F635DCD-4F3F-4B6E-96DB-5AFD60E5F235"}
+ */
+function onCreateFieldInstance(lookupFieldObj) {
+	/** @type {servoyextra-table.column} */
+	var column = {};
+	column.dataprovider = lookupFieldObj.getDataProvider();
+	column.headerText = lookupFieldObj.getTitleText();
+	column.valuelist = lookupFieldObj.getValueListName();
+	column.format = lookupFieldObj.getFormat();
+	column.styleClass = lookupFieldObj.getStyleClass();
+	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
+	column.width = lookupFieldObj.getWidth();
+	return column;
 }
 
 /**

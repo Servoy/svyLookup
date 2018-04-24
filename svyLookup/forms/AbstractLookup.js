@@ -148,6 +148,18 @@ function onCreateInstance(jsForm, lookupObj) {
 }
 
 /**
+ * 
+ * @param {scopes.svyLookup.LookupField} lookupFieldObj
+ * @protected 
+ * @return {Object}
+ *
+ * @properties={typeid:24,uuid:"3ED4AF93-157E-4A51-B208-304FBC1F6758"}
+ */
+function onCreateFieldInstance(lookupFieldObj) {
+	// to be overridden
+}
+
+/**
  * @public
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @return {RuntimeForm<AbstractLookup>}

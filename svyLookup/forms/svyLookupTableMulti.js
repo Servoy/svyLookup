@@ -53,18 +53,36 @@ function onCreateInstance(jsForm, lookupObj) {
 	for (var i = 0; i < lookupObj.getFieldCount(); i++) {
 		var field = lookupObj.getField(i);
 		if (!field.isVisible()) continue;
-
+		
 		/** @type {servoyextra-table.column} */
-		var column = { };
-		column.dataprovider = field.getDataProvider();
-		column.headerText = field.getTitleText();
-		column.valuelist = field.getValueListName();
-		column.format = field.getFormat();
-		column.styleClass = field.getStyleClass();
-		column.styleClassDataprovider = field.getStyleClassDataprovider();
+		var column = onCreateFieldInstance(field);
 		columns.push(column);
 	}
 	table.setJSONProperty('columns', columns);
+}
+
+/**
+ * @return {servoyextra-table.column}
+ * @param {scopes.svyLookup.LookupField} lookupFieldObj
+ * @protected
+ * @override 
+ *
+ * @properties={typeid:24,uuid:"D82A1AFC-E688-4DE3-BD02-CEF0D726574E"}
+ */
+function onCreateFieldInstance(lookupFieldObj) {
+	/** @type {servoyextra-table.column} */
+	var column = {};
+	column.dataprovider = lookupFieldObj.getDataProvider();
+	column.headerText = lookupFieldObj.getTitleText();
+	column.valuelist = lookupFieldObj.getValueListName();
+	column.format = lookupFieldObj.getFormat();
+	column.styleClass = lookupFieldObj.getStyleClass();
+	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
+	column.width = lookupFieldObj.getWidth();
+	if (column.width != "auto") {
+		column.autoResize = false;
+	}
+	return column;
 }
 
 /**

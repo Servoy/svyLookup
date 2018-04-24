@@ -140,7 +140,7 @@ function onShowLookup(event, expand) {
 	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
 
 	// formatted, non-searchable field example
-	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00');
+	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50');
 
 	// show pop-up
 	var component = elements[event.getElementName()];
@@ -209,7 +209,7 @@ function onShowLookupMultiSelection(event, expand) {
 	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
 
 	// formatted, non-searchable field example
-	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00')
+	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
 
 	// change lookup provider
 	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);

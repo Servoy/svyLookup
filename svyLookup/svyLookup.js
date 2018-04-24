@@ -479,6 +479,12 @@ function LookupField(lookup, dataProvider){
 	 * @private 
 	 * @type {String}
 	 */	
+	var width = 'auto';
+	
+	/**
+	 * @private 
+	 * @type {String}
+	 */	
 	var styleClassDataprovider;
 	
 	/**
@@ -635,6 +641,26 @@ function LookupField(lookup, dataProvider){
 	 */
 	this.getStyleClassDataprovider = function(){
 		return styleClassDataprovider;
+	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @param {String} w Default auto
+	 * @return {LookupField}
+	 */
+	this.setWidth = function(w){
+		width = w;
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @public 
+	 * @return {String}
+	 */
+	this.getWidth = function(){
+		return width;
 	}
 	
 }
