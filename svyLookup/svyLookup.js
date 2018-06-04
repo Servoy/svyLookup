@@ -1,15 +1,15 @@
 /**
  * Creates a lookup object which can be used to show a pop-up form
- * 
- * @public 
+ *
+ * @public
  * @param {String|JSFoundSet|JSRecord} dataSource The data source to lookup
  * @return {Lookup}
  * @properties={typeid:24,uuid:"65E8E051-667D-4118-A873-8024C2648F09"}
  */
-function createLookup(dataSource){
+function createLookup(dataSource) {
 	/** @type {String} */
 	var ds = dataSource;
-	if(dataSource instanceof JSRecord || dataSource instanceof JSFoundSet){
+	if (dataSource instanceof JSRecord || dataSource instanceof JSFoundSet) {
 		ds = dataSource.getDataSource();
 	}
 	return new Lookup(ds);
@@ -18,21 +18,21 @@ function createLookup(dataSource){
 /**
  * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
  * NOTE: Valuelist cannot be depends on a database relation or is a global method valuelist.
- * 
- * @public 
+ *
+ * @public
  * @param {String} valuelistName
  * @param {String} [titleText] Sets the display text for the valuelist field. Default is 'Value';
  * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
- * 
+ *
  * @return {Lookup}
  *
  * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
  */
-function createValuelistLookup(valuelistName, titleText){
-	
-	// TODO it can be improved, checking the type of values, checking the type of dataprovider. 
+function createValuelistLookup(valuelistName, titleText) {
+
+	// TODO it can be improved, checking the type of values, checking the type of dataprovider.
 	// If is based on a dataset query, can look for more than > 500 values. It could actually run the query on the ds itself. Would the class clush in that case ?
-	
+
 	var jsList = solutionModel.getValueList(valuelistName);
 	if (!jsList) {
 		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
@@ -41,13 +41,13 @@ function createValuelistLookup(valuelistName, titleText){
 		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE ");
 	}
 
-	var items = application.getValueListItems(valuelistName);	
+	var items = application.getValueListItems(valuelistName);
 	var dataSource = "mem:valuelist_" + valuelistName;
 	if (!databaseManager.dataSourceExists(dataSource)) {
 		dataSource = items.createDataSource("valuelist_" + valuelistName, [JSColumn.TEXT, JSColumn.TEXT]);
 		// TODO should allow to reset the selected values !?!?
 	}
-	
+
 	// autoconfigure the valuelist lookup
 	var valuelistLookup = createLookup(dataSource);
 	valuelistLookup.setLookupDataprovider("realvalue");
@@ -57,10 +57,10 @@ function createValuelistLookup(valuelistName, titleText){
 	} else {
 		field.setTitleText("Value");
 	}
-	
+
 	return valuelistLookup;
 }
-	
+
 /**
  * Creates a set of lookup objects which can be used to show a pop-up form
  * @public
@@ -119,7 +119,7 @@ function MultiLookup() {
 	this.getLookup = function(dataSource) {
 		return Lookups[dataSource]
 	}
-	
+
 	/**
 	 * Get all lookup objects
 	 *
@@ -148,46 +148,44 @@ function MultiLookup() {
 }
 
 /**
- * @public 
+ * @public
  * @param {String} datasource
- * @constructor 
+ * @constructor
  * @properties={typeid:24,uuid:"DC5A7A69-5B84-4438-9BFD-06558632E4E8"}
  */
-function Lookup(datasource){
-	
+function Lookup(datasource) {
+
 	/**
-	 * @private   
-	 * @type {Array<LookupField>} 
+	 * @private
+	 * @type {Array<LookupField>}
 	 */
 	var fields = [];
-	
-	/** 
-	 * @private 
+
+	/**
+	 * @private
 	 * @type {Array} */
 	var params = [];
 
-	/** 
-	 * @private 
+	/**
+	 * @private
 	 * @type {String} */
 	var lookupDataprovider;
 
-	
-	/** 
-	 * @type {String} 
-	 * @private 
+	/**
+	 * @type {String}
+	 * @private
 	 * */
 	var lookupFormProvider;
-	
 
 	// TODO var sort
-	
+
 	// TODO lookup provider
-	
+
 	// TODO datasource could be an existing foundset, used to filter lookup data ?
-	
+
 	/**
 	 * Sets the lookup form. The lookup form must be an instance of the AbstractLookup form.
-	 * 
+	 *
 	 * @private
 	 * @type {String}
 	 */
@@ -209,7 +207,7 @@ function Lookup(datasource){
 	this.setHeader = function(h) {
 		if (!h || h.length < 1) {
 			var ds = this.getDataSource().split('/')
-			header = ds[ds.length-1];
+			header = ds[ds.length - 1];
 		} else {
 			header = h
 		}
@@ -249,127 +247,127 @@ function Lookup(datasource){
 	}
 
 	/**
-	 * @public 
+	 * @public
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
-	this.setLookupFormProvider = function (formProvider) {
+	this.setLookupFormProvider = function(formProvider) {
 		if (!formProvider) {
 			throw new scopes.svyExceptions.IllegalArgumentException("Illegal argument formProvider. formProvider must be an instance of AbstractLookup form")
-		} 
-		if (!scopes.svyUI.isJSFormInstanceOf(formProvider,"AbstractLookup")) {
+		}
+		if (!scopes.svyUI.isJSFormInstanceOf(formProvider, "AbstractLookup")) {
 			throw new scopes.svyExceptions.IllegalArgumentException("The given formProvider must be an instance of AbstractLookup form.");
 		}
-		
+
 		lookupFormProvider = formProvider['controller'].getName();
-	} 
+	}
 
 	/**
 	 * Gets the data source for this Lookup object
-	 * @public 
+	 * @public
 	 * @return {String}
 	 */
-	this.getDataSource = function(){
+	this.getDataSource = function() {
 		return datasource;
 	}
-	
+
 	/**
 	 * Sets the lookup dataprovider
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} dataProvider
 	 */
-	this.setLookupDataprovider = function(dataProvider){
+	this.setLookupDataprovider = function(dataProvider) {
 		lookupDataprovider = dataProvider;
 	}
-	
+
 	/**
 	 * Gets the lookup dataprovider
-	 * @public 
+	 * @public
 	 * @return {String}
 	 */
-	this.getLookupDataprovider = function(){
+	this.getLookupDataprovider = function() {
 		return lookupDataprovider;
 	}
-	
+
 	/**
 	 * Adds a field to the lookup object
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} dataProvider
 	 * @return {LookupField}
 	 */
-	this.addField = function(dataProvider){
-		var provider = new LookupField(this,dataProvider);
+	this.addField = function(dataProvider) {
+		var provider = new LookupField(this, dataProvider);
 		fields.push(provider);
 		return provider;
 	}
-	
+
 	/**
 	 * Gets the field at the specified index
-	 * @public 
+	 * @public
 	 * @param {Number} index
 	 * @return {LookupField}
 	 */
-	this.getField = function(index){
+	this.getField = function(index) {
 		return fields[index];
 	}
-	
+
 	/**
 	 * Removes a field at the specified index
-	 * @public 
+	 * @public
 	 * @param {Number} index
 	 */
-	this.removeField = function(index){
-		fields.splice(index,1);
+	this.removeField = function(index) {
+		fields.splice(index, 1);
 	}
-	
+
 	/**
 	 * Gets the number of fields in the lookup object
-	 * @public 
+	 * @public
 	 * @return {Number}
 	 */
-	this.getFieldCount = function(){
+	this.getFieldCount = function() {
 		return fields.length;
 	}
-	
-	/** 
+
+	/**
 	 * Add a params to be added into the onSelect callback arguments
 	 * @param {Object} param
-	 * @public 
+	 * @public
 	 * */
 	this.addParam = function(param) {
 		params.push(param);
 	}
-	
-	/** 
-	 * @public 
+
+	/**
+	 * @public
 	 * @return {Array}
 	 * */
 	this.getParams = function() {
 		return params;
 	}
-	
+
 	/**
 	 * Removes a param at the specified index
-	 * @public 
+	 * @public
 	 * @param {Number} index
 	 */
-	this.removeParam = function(index){
-		params.splice(index,1);
+	this.removeParam = function(index) {
+		params.splice(index, 1);
 	}
-	
+
 	/**
 	 * Clear the params
-	 * @public 
+	 * @public
 	 */
-	this.clearParams = function(){
+	this.clearParams = function() {
 		params = [];
 	}
 
 	/**
 	 * Shows the lookup
-	 * 
-	 * @public  
+	 *
+	 * @public
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {RuntimeComponent} target The component to show relative to
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
@@ -377,7 +375,7 @@ function Lookup(datasource){
 	 * @param {String} [initialValue] And initial value to show in the search
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
-	this.showPopUp = function(callback, target, width, height, initialValue){
+	this.showPopUp = function(callback, target, width, height, initialValue) {
 
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm;
@@ -386,17 +384,17 @@ function Lookup(datasource){
 		} else {
 			lookupForm = forms.svyLookupTable;
 		}
-		
+
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var runtimeForm = lookupForm.newInstance(this);
-		runtimeForm.showPopUp(callback,target,width,height,initialValue);
+		runtimeForm.showPopUp(callback, target, width, height, initialValue);
 	}
-	
+
 	/**
 	 * TODO can create an object insted of passing all params ?
-	 * 
+	 *
 	 * Shows the lookup in a modal Window
-	 * 
+	 *
 	 * @public
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {Number} [x]
@@ -404,13 +402,13 @@ function Lookup(datasource){
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
-	 * 
+	 *
 	 * TODO check me, does this make sense ? should i always return records instead ?
 	 * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
-	 * 
+	 *
 	 * @SuppressWarnings(wrongparameters) Fixes illegitmate warning
 	 */
-	this.showModalWindow = function(callback, x, y, width, height, initialValue){
+	this.showModalWindow = function(callback, x, y, width, height, initialValue) {
 
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm;
@@ -419,248 +417,248 @@ function Lookup(datasource){
 		} else {
 			lookupForm = forms.svyLookupTable;
 		}
-		
+
 		/** @type {RuntimeForm<AbstractLookup>} */
 		var runtimeForm = lookupForm.newInstance(this);
-		
+
 		// TODO return the actual values, no need of params
-		return runtimeForm.showModalWindow(callback,x,y,width,height,initialValue);
+		return runtimeForm.showModalWindow(callback, x, y, width, height, initialValue);
 	}
-	
+
 }
 
 /**
- * @public  
+ * @public
  * @param {Lookup} lookup
  * @param dataProvider
- * @constructor 
+ * @constructor
  * @properties={typeid:24,uuid:"298B728E-ED51-4ECD-BB3B-0878B766BCBB"}
  * @AllowToRunInFind
  */
-function LookupField(lookup, dataProvider){
-	
+function LookupField(lookup, dataProvider) {
+
 	/**
-	 * @private  
+	 * @private
 	 * @type {Boolean}
 	 */
-	 var searchable = true;
-	
+	var searchable = true;
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
 	 */
 	var titleText = dataProvider;
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
 	 */
 	var valueListName = null;
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
 	 */
 	var format = null;
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {Boolean}
 	 */
 	var visible = true;
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
-	 */	
+	 */
 	var styleClass;
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
-	 */	
+	 */
 	var width = 'auto';
-	
+
 	/**
-	 * @private 
+	 * @private
 	 * @type {String}
-	 */	
+	 */
 	var styleClassDataprovider;
-	
+
 	/**
 	 * Gets the data provider for this field
-	 * @public 
+	 * @public
 	 * @return {String}
 	 */
-	this.getDataProvider = function(){
+	this.getDataProvider = function() {
 		return dataProvider;
 	}
-	
+
 	/**
 	 * Indicates if this field is searchable
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {Boolean} b True to make searchable. False to make display-only
 	 * @return {LookupField}
 	 */
-	this.setSearchable = function(b){
+	this.setSearchable = function(b) {
 		searchable = b;
 		return this;
 	}
-	
+
 	/**
 	 * Gets the searchability of this field
-	 * @public 
+	 * @public
 	 * @return {Boolean}
 	 */
-	this.isSearchable = function(){
+	this.isSearchable = function() {
 		return searchable;
 	}
-	
+
 	/**
 	 * Sets the display text for this field
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} txt
 	 * @return {LookupField}
 	 */
-	this.setTitleText = function(txt){
+	this.setTitleText = function(txt) {
 		titleText = txt;
 		return this;
 	}
-	
+
 	/**
 	 * Gets the display text for this field
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {String}
 	 */
-	this.getTitleText = function(){
+	this.getTitleText = function() {
 		return titleText;
 	}
-	
+
 	/**
 	 * Sets the valuelist to use to display this field
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} vl
 	 * @return {LookupField}
 	 */
-	this.setvalueListName = function(vl){
+	this.setvalueListName = function(vl) {
 		valueListName = vl;
 		return this;
 	}
-	
+
 	/**
 	 * Gets the value list name for this field
-	 * @public 
+	 * @public
 	 * @return {String}
 	 */
-	this.getValueListName = function(){
+	this.getValueListName = function() {
 		return valueListName;
 	}
-	
+
 	/**
 	 * Sets this field's visibility in the lookup form
-	 * @public 
+	 * @public
 	 * @param {Boolean} b
 	 * @return {LookupField}
 	 */
-	this.setVisible = function(b){
+	this.setVisible = function(b) {
 		visible = b;
 		return this;
 	}
-	
+
 	/**
 	 * Indicates if this field should be displayed
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {Boolean}
 	 */
-	this.isVisible = function(){
+	this.isVisible = function() {
 		return visible;
 	}
-	
+
 	/**
 	 * Sets the display format for this field
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} f
 	 * @return {LookupField}
 	 */
-	this.setFormat = function(f){
+	this.setFormat = function(f) {
 		format = f;
 		return this;
 	}
-	
+
 	/**
 	 * Gets the display format for this field;
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {String}
 	 */
-	this.getFormat = function(){
+	this.getFormat = function() {
 		return format;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} classes
 	 * @return {LookupField}
 	 */
-	this.setStyleClass = function(classes){
+	this.setStyleClass = function(classes) {
 		styleClass = classes;
 		return this;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {String}
 	 */
-	this.getStyleClass = function(){
+	this.getStyleClass = function() {
 		return styleClass;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} classProvider
 	 * @return {LookupField}
 	 */
-	this.setStyleClassDataprovider = function(classProvider){
+	this.setStyleClassDataprovider = function(classProvider) {
 		styleClassDataprovider = classProvider;
 		return this;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {String}
 	 */
-	this.getStyleClassDataprovider = function(){
+	this.getStyleClassDataprovider = function() {
 		return styleClassDataprovider;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @param {String} w Default auto
 	 * @return {LookupField}
 	 */
-	this.setWidth = function(w){
+	this.setWidth = function(w) {
 		width = w;
 		return this;
 	}
-	
+
 	/**
-	 * 
-	 * @public 
+	 *
+	 * @public
 	 * @return {String}
 	 */
-	this.getWidth = function(){
+	this.getWidth = function() {
 		return width;
 	}
-	
+
 }
