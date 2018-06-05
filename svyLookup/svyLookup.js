@@ -9,7 +9,7 @@
 function createLookup(dataSource) {
 	/** @type {String} */
 	var ds = dataSource;
-	if (dataSource instanceof JSRecord || dataSource instanceof JSFoundSet) {
+	if (dataSource instanceof JSRecord) {
 		ds = dataSource.getDataSource();
 	}
 	return new Lookup(ds);
@@ -74,7 +74,7 @@ function createMultiDSLookup(dataSources) {
 	for (var i = 0; i < dataSources.length; i++) {
 		/** @type {String} */
 		var ds = dataSources[i];
-		if (dataSources[i] instanceof JSRecord || dataSources[i] instanceof JSFoundSet) {
+		if (dataSources[i] instanceof JSRecord) {
 			ds = dataSources[i].getDataSource();
 		}
 		ml.addLookup(ds)
@@ -149,7 +149,7 @@ function MultiLookup() {
 
 /**
  * @public
- * @param {String} datasource
+ * @param {String|JSFoundSet} datasource
  * @constructor
  * @properties={typeid:24,uuid:"DC5A7A69-5B84-4438-9BFD-06558632E4E8"}
  */
@@ -267,7 +267,37 @@ function Lookup(datasource) {
 	 * @return {String}
 	 */
 	this.getDataSource = function() {
-		return datasource;
+		/** @type {String} */
+		var ds;
+		if (datasource instanceof JSRecord || datasource instanceof JSFoundSet) {
+			ds = datasource.getDataSource();
+		} else if (datasource instanceof String) {
+			ds = datasource;
+		} 
+		return ds;
+	}
+	
+	/** 
+	 * Gets the foundset for this Lookup object.
+	 * @public 
+	 * @return {JSFoundSet}
+	 * */
+	this.getFoundSet = function() {
+		/** @type {JSFoundSet} */
+		var fs;
+		if (datasource instanceof JSRecord) {
+			/** @type {JSRecord} */
+			var record = datasource;
+			fs = record.foundset;
+		} else if (datasource instanceof JSFoundSet) { // return the given foundset
+			fs = datasource;
+		} else {	// return a separate foundset
+			/** @type {String} */
+			var ds = datasource;
+			fs = databaseManager.getFoundSet(ds);
+			fs.loadRecords();
+		}
+		return fs;
 	}
 
 	/**

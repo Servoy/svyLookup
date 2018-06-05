@@ -44,7 +44,9 @@ function search(txt) {
 	var mlk = MultiLookup.getAllLookups();
 	for (var i in mlk) {
 		var lu = MultiLookup.getLookup(i);
-		var fs = databaseManager.getFoundSet(i);
+		
+		// TODO for Tuan please test this, i am passing a foundset which may contain filters.
+		var fs = lu.getFoundSet();
 
 		//load all records when search is cleared
 		if (!txt) {

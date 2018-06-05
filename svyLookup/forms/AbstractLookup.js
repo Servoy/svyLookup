@@ -178,6 +178,8 @@ function newInstance(lookupObj) {
 	/** @type {RuntimeForm<AbstractLookup>} */
 	var form = forms[jsForm.name];
 	form['lookup'] = lookupObj;
+	form.setupControllerFoundset(); // TODO suppress warning or load controller at the onShow ?
+
 	return form;
 }
 
@@ -253,5 +255,24 @@ function dismiss() {
 		window = null;
 	} else {
 		plugins.window.closeFormPopup(null);
+	}
+}
+
+/**
+ * 
+ * @private 
+ * @properties={typeid:24,uuid:"B7F0631F-DA16-4FD9-B722-DAE714D8E714"}
+ */
+function setupControllerFoundset() {
+	var fs = lookup.getFoundSet()
+	if (fs) {
+		controller.loadRecords(fs);
+		
+		// FIXME SVY-12494 copy over the foundset filter params because are not copied via controller.loadRecords(fs) on a separate foundset  
+		var foundsetFilterParams = fs.getFoundSetFilterParams();
+		for (var i = 0; foundsetFilterParams && i < foundsetFilterParams.length; i++) {
+			var filterParam = foundsetFilterParams[i]
+			foundset.addFoundSetFilterParam(filterParam[1], filterParam[2], filterParam[3], filterParam[4])
+		}
 	}
 }
