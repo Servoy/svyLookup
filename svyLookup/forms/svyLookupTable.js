@@ -48,7 +48,7 @@ function onCreateInstance(jsForm, lookupObj){
  */
 function onFocusGainedSearch(event) {
 	if(!keyListenerReady){
-		plugins.keyListener.addKeyListener(elements.searchText,onKey);
+		plugins.keyListener.addKeyListenerInterval(elements.searchText,onKey,250);
 		keyListenerReady = true;
 	}
 }

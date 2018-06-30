@@ -30,8 +30,8 @@ function onCreateInstance(jsForm) {
  * @AllowToRunInFind
  */
 function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchBox, onKey);
+	if (!keyListenerReady) {		
+		plugins.keyListener.addKeyListenerInterval(elements.searchBox, onKey,250);
 		keyListenerReady = true;
 	}
 	search(searchText,2);
