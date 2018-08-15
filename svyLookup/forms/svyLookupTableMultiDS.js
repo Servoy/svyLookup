@@ -1,13 +1,4 @@
 /**
- * Flag if keylistener has been added
- *
- * @private
- * @type {Boolean}
- * @properties={typeid:35,uuid:"A24A87FE-FFB5-46E1-B869-CAB47FEAB6D7",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
  * Overrides creation hook and adds columns
  * @protected
  * @param {JSForm} jsForm
@@ -30,11 +21,7 @@ function onCreateInstance(jsForm) {
  * @AllowToRunInFind
  */
 function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {		
-		plugins.keyListener.addKeyListenerInterval(elements.searchBox, onKey,250);
-		keyListenerReady = true;
-	}
-	search(searchText,2);
+	search(searchText, 2);
 }
 
 /**
@@ -49,11 +36,6 @@ function onFocusGainedSearch(event) {
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
-	keyListenerReady = false;
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchBox, onKey);
-		keyListenerReady = true;
-	}
 	elements.searchBox.requestFocus();
 	plugins.window.createShortcut('ESC', dismiss, controller.getName());
 	plugins.window.createShortcut('ENTER', onSelect, controller.getName());
@@ -92,7 +74,7 @@ function onKey(value, keyCode, altKeyCode) {
 	}
 
 	// run search
-	search(value,2);
+	search(value, 2);
 }
 
 /**
@@ -106,6 +88,19 @@ function onKey(value, keyCode, altKeyCode) {
  * @AllowToRunInFind
  */
 function onActionSearch(event) {
-	search(searchText,2);
+	search(searchText, 2);
 	elements.searchBox.requestFocus();
+}
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @private
+ *
+ * @properties={typeid:24,uuid:"53B1D5AD-EF6F-4053-87AF-5E50B5ABDC33"}
+ */
+function onLoad(event) {
+	plugins.keyListener.addKeyListener('keylistener', onKey, true);
 }

@@ -1,5 +1,9 @@
 customProperties:"formComponent:false,\
 methods:{\
+onLoadMethodID:{\
+arguments:null,\
+parameters:null\
+},\
 onShowMethodID:{\
 arguments:null,\
 parameters:null\
@@ -9,6 +13,9 @@ extendsID:"F64085E6-16A8-405D-B8CB-ED40AF9A4C9F",
 items:[
 {
 anchors:11,
+customProperties:"attributes:{\
+keylistener:\"keylistener\"\
+}",
 dataProviderID:"searchText",
 location:"0,0",
 name:"searchBox",
@@ -52,6 +59,7 @@ anchors:3,
 formIndex:1,
 json:{
 anchors:3,
+formIndex:1,
 location:{
 x:152,
 y:0
@@ -73,6 +81,7 @@ uuid:"ED0B501D-9B33-48EC-8962-D279100F287A"
 name:"svyLookupTableMultiDS",
 namedFoundSet:"separate_table_lookup",
 navigatorID:"0",
+onLoadMethodID:"53B1D5AD-EF6F-4053-87AF-5E50B5ABDC33",
 onShowMethodID:"4D6F3D0D-1B25-43F3-BD4F-BDBB7B26787B",
 showInMenu:true,
 size:"223,54",
