@@ -61,9 +61,6 @@ function search(txt) {
 
 	// apply search
 	simpleSearch.loadRecords(foundset);
-
-	// fix search disappear while typing
-	searchText = txt;
 }
 
 /**
