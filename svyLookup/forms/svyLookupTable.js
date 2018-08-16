@@ -70,13 +70,14 @@ function onEnter() {
  * Handles the key listener callback event
  *
  * @protected
+ * @param {String} event
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
  *
  * @properties={typeid:24,uuid:"3FE98DB9-C152-41AF-8B4B-15A7AE6FA121"}
  */
-function onKey(value, keyCode, altKeyCode) {
+function onKey(event, value, keyCode, altKeyCode) {
 	// handle down arrow
 	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();
