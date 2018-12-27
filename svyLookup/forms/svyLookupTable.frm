@@ -1,5 +1,9 @@
 customProperties:"formComponent:false,\
 methods:{\
+onHideMethodID:{\
+arguments:null,\
+parameters:null\
+},\
 onShowMethodID:{\
 arguments:null,\
 parameters:null\
@@ -42,6 +46,9 @@ uuid:"677C24E8-3312-478F-941B-361D722A4C59"
 },
 {
 anchors:11,
+customProperties:"attributes:{\
+keylistener:\"data-svylookup-search\"\
+}",
 dataProviderID:"searchText",
 location:"0,0",
 name:"searchText",
@@ -55,6 +62,7 @@ uuid:"ACD5CC3A-8EBB-464C-85BF-48BC24C10C5B"
 }
 ],
 name:"svyLookupTable",
+onHideMethodID:"41909C3A-B65C-465E-B04E-51C4632EE36E",
 onShowMethodID:"0EB82C64-97A9-4B59-909D-629CA8A9305D",
 size:"100,100",
 styleClass:"svy-lookup lookup-table-form",

@@ -65,7 +65,7 @@ function onCreateFieldInstance(lookupFieldObj) {
  */
 function onFocusGainedSearch(event) {
 	if(!keyListenerReady){
-		plugins.keyListener.addKeyListener(elements.searchText,onKey);
+		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
 		keyListenerReady = true;
 	}
 }
@@ -100,14 +100,16 @@ function onEnter(){
 /**
  * Handles the key listener callback event
  * 
- * @protected  
+ * @protected 
+ * @param {JSEvent} event
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
  *
  * @properties={typeid:24,uuid:"3FE98DB9-C152-41AF-8B4B-15A7AE6FA121"}
  */
-function onKey(value, keyCode, altKeyCode){
+function onKey(event, value, keyCode, altKeyCode){
+	application.output(value)
 	
 	// handle down arrow
 	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
@@ -150,4 +152,20 @@ function onActionSearch(event) {
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
 	onSelect();
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @return {Boolean}
+ *
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"41909C3A-B65C-465E-B04E-51C4632EE36E"}
+ */
+function onHide(event) {
+	plugins.keyListener.removeKeyListener("data-svylookup-search");
+	return true
 }

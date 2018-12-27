@@ -139,13 +139,14 @@ function onEnter() {
  * Handles the key listener callback event
  *
  * @protected
+ * @param {JSEvent} event
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
  *
  * @properties={typeid:24,uuid:"79382901-AE01-454F-A685-F2ECD7A9723A"}
  */
-function onKey(value, keyCode, altKeyCode) {
+function onKey(event, value, keyCode, altKeyCode) {
 
 //	application.output("onKey")
 	// handle down arrow
@@ -304,5 +305,6 @@ function deselectAllRecords() {
 function onHide(event) {
 	// return selected items
 	onSelect();
+	plugins.keyListener.removeKeyListener("data-svylookup-search");
 	return true
 }
