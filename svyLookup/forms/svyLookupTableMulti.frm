@@ -182,8 +182,8 @@ typeid:47,
 uuid:"1F48624E-2692-4AB4-8C1E-1C458CED8440"
 },
 {
-customProperties:"design:{\
-keylistener:\"'data-svylookup-search'\"\
+customProperties:"attributes:{\
+keylistener:\"data-svylookup-search\"\
 }",
 json:{
 dataProviderID:"searchText",

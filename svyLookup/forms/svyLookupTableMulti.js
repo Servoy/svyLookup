@@ -95,7 +95,7 @@ function onCreateFieldInstance(lookupFieldObj) {
  */
 function onFocusGainedSearch(event) {
 	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchText, onKey);
+		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
 		keyListenerReady = true;
 	}
 }
