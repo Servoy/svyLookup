@@ -1,14 +1,4 @@
 /**
- * User input for text searching
- *
- * @protected
- * @type {String}
- *
- * @properties={typeid:35,uuid:"0C32DA9C-BC50-46F9-A8F7-6BB9E86D7370"}
- */
-var searchText = '';
-
-/**
  * The MultiLookup object used by this lookup form
  *
  * @protected
@@ -24,7 +14,7 @@ var MultiLookup = null;
  * @type {Function}
  * @properties={typeid:35,uuid:"AEF95A40-FE41-44D7-97D2-AFD10E7D45EC",variableType:-4}
  */
-var selectHandler = null;
+var callbackHandler = null;
 
 /**
  * Runs the search. Loads records in the foundset.
@@ -122,7 +112,7 @@ function search(txt) {
  * @properties={typeid:24,uuid:"3882A299-CE63-4F09-A85D-E597D90358CA"}
  */
 function showPopUp(callback, target, width, height, initialValue) {
-	selectHandler = callback;
+	callbackHandler = callback;
 	var w = !width ? target.getWidth() : width;
 	if (initialValue) {
 		searchText = initialValue;
@@ -130,6 +120,21 @@ function showPopUp(callback, target, width, height, initialValue) {
 		foundset.loadAllRecords();
 	}
 	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
+}
+
+/**
+ * Creates a form popup for this form and returns it
+ * 
+ * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
+ * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
+ * 
+ * @return {plugins.window.FormPopup}
+ *
+ * @properties={typeid:24,uuid:"BFB5A1CE-DC48-492A-B3FE-9CD2C9EFFEA8"}
+ */
+function createPopUp(callback, initialValue) {
+	callbackHandler = callback;
+	return plugins.window.createFormPopup(this);
 }
 
 /**
@@ -206,10 +211,10 @@ function dismiss() {
 		}
 		fs.search()
 		// invoke callback
-		if (selectHandler) {
+		if (callbackHandler) {
 			// TODO this callback 
 			// TODO, do we need the searchText ?
-			selectHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord() });
+			callbackHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord() });
 		}
 	}
 	plugins.window.closeFormPopup(null);

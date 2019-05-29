@@ -90,6 +90,21 @@ function showPopUp(callback, target, width, height, initialValue) {
 }
 
 /**
+ * Creates a form popup for this form and returns it
+ * 
+ * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
+ * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
+ * 
+ * @return {plugins.window.FormPopup}
+ *
+ * @properties={typeid:24,uuid:"5C984EAD-5E26-406F-8624-F04ED865A7FF"}
+ */
+function createPopUp(callback, initialValue) {
+	selectHandler = callback;
+	return plugins.window.createFormPopup(this); 
+}
+
+/**
  * @public
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
  * @param {Number} [x]
@@ -157,6 +172,7 @@ function onCreateInstance(jsForm, lookupObj) {
  */
 function onCreateFieldInstance(lookupFieldObj) {
 	// to be overridden
+	return null;
 }
 
 /**
@@ -178,7 +194,7 @@ function newInstance(lookupObj) {
 	/** @type {RuntimeForm<AbstractLookup>} */
 	var form = forms[jsForm.name];
 	form['lookup'] = lookupObj;
-	form.setupControllerFoundset(); // TODO suppress warning or load controller at the onShow ?
+	form['setupController' + 'Foundset'](); // TODO suppress warning or load controller at the onShow ?
 
 	return form;
 }
@@ -229,7 +245,7 @@ function getSvyLookupSelectedRecords() {
  */
 function getSvyLookupSelectedValues() {
 	var lookupValues;
-	var lookupDataprovider = lookup.getLookupDataprovider();
+	var lookupDataprovider = lookup.getLookupDataProvider();
 	if (lookupDataprovider) {
 		var records = getSvyLookupSelectedRecords();
 		lookupValues = [];
@@ -259,7 +275,6 @@ function dismiss() {
 }
 
 /**
- * 
  * @private 
  * @properties={typeid:24,uuid:"B7F0631F-DA16-4FD9-B722-DAE714D8E714"}
  */
