@@ -841,7 +841,7 @@ function init_LookupField() {
 			return null;
 		}
 		var intValue = parseInt(this.width);
-		if (isNaN(intValue)) {
+		if (!isNaN(intValue)) {
 			return intValue;
 		}
 		return null;
