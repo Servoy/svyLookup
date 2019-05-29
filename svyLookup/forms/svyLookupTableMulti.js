@@ -137,24 +137,25 @@ function onEnter() {
 
 /**
  * Handles the key listener callback event
- *
- * @protected
- * @param {JSEvent} event
+ * 
+ * @protected 
  * @param {String} value
+ * @param {JSEvent} event
  * @param {Number} keyCode
- * @param {Number} altKeyCode
+ * @param {Number} altKey
+ * @param {Number} ctrlKey
+ * @param {Number} shiftKey
+ * @param {Number} capsLock
  *
- * @properties={typeid:24,uuid:"79382901-AE01-454F-A685-F2ECD7A9723A"}
+ * @properties={typeid:24,uuid:"D1AC782C-E0AF-4625-BBBA-2AF96C646B22"}
  */
-function onKey(event, value, keyCode, altKeyCode) {
-
-//	application.output("onKey")
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
 	// handle down arrow
-	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
+	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
 		elements.table.requestFocus();
 		return;
 	}
-
+	
 	// run search
 	search(value);
 }

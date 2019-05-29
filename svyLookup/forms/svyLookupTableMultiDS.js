@@ -83,18 +83,21 @@ function onEnter() {
 
 /**
  * Handles the key listener callback event
- *
- * @private
- * @param {JSEvent} event
+ * 
+ * @protected 
  * @param {String} value
+ * @param {JSEvent} event
  * @param {Number} keyCode
- * @param {Number} altKeyCode
+ * @param {Number} altKey
+ * @param {Number} ctrlKey
+ * @param {Number} shiftKey
+ * @param {Number} capsLock
  *
- * @properties={typeid:24,uuid:"DF0B5C6F-03A1-4251-BABD-8367C0CB2976"}
+ * @properties={typeid:24,uuid:"6E0203BE-7D8B-47A8-ADB9-FA2070C20180"}
  */
-function onKey(event, value, keyCode, altKeyCode) {
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
 	// handle down arrow
-	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
+	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
 		elements.table.requestFocus();
 		return;
 	}
