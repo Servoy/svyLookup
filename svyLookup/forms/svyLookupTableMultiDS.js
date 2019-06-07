@@ -69,7 +69,7 @@ function onFocusGainedSearch(event) {
 function onShow(firstShow, event) {
 	keyListenerReady = false;
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ESC',dismiss,controller.getName());
+	plugins.window.createShortcut('ESC',cancel,controller.getName());
 }
 
 /**

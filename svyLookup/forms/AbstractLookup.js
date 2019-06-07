@@ -34,6 +34,30 @@ var selectHandler = null;
 var window;
 
 /**
+ * True is the lookup is dismissed without a selection
+ * 
+ * @private 
+ * @properties={typeid:35,uuid:"7BFADF2C-E772-42FB-8E38-2A8FD286C299",variableType:-4}
+ */
+var isCancelled = false;
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"CFE7E857-BEFB-4EDA-A0B4-8DCD34693093"}
+ */
+function onShow(firstShow, event) {
+	
+	// reset is cancelled;
+	isCancelled = false;
+}
+
+/**
  * Runs the search. Loads records in the foundset.
  *
  * @protected
@@ -90,6 +114,7 @@ function showPopUp(callback, target, width, height, initialValue) {
 }
 
 /**
+ * @private 
  * Creates a form popup for this form and returns it
  * 
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
@@ -143,6 +168,10 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 	// return the selected values
 	var records = getSvyLookupSelectedRecords();
 	var lookupValues = getSvyLookupSelectedValues();
+	
+	// reset is cancelled;
+	isCancelled = false;
+	
 	if (lookupValues) {
 		return lookupValues
 	} else {
@@ -219,6 +248,9 @@ function onSelect() {
 		selectHandler.call(this, records, lookupValues, lookup);
 	}
 
+	// reset is cancelled;
+	isCancelled = false;
+	
 	// return the value. May be used by a modal dialog
 	if (lookupValues) {
 		return lookupValues
@@ -234,6 +266,10 @@ function onSelect() {
  * @properties={typeid:24,uuid:"BE8C41AF-D193-467E-BA8D-8E2BAB5096C6"}
  */
 function getSvyLookupSelectedRecords() {
+	if (isCancelled === true) {
+		return [];
+	}
+	
 	var record = foundset.getSelectedRecord();
 	return [record];
 }
@@ -258,6 +294,15 @@ function getSvyLookupSelectedValues() {
 	return lookupValues;
 }
 
+/**
+ * Cancek the selection and dismiss the popup;
+ * @protected 
+ * @properties={typeid:24,uuid:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2"}
+ */
+function cancel() {
+	isCancelled = true;
+	dismiss();
+}
 
 /**
  * Dismisses the popup

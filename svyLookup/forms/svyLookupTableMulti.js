@@ -115,7 +115,7 @@ function onShow(firstShow, event) {
 	keyListenerReady = false;
 	elements.searchText.requestFocus(true);
 	plugins.window.createShortcut('ENTER', onEnter, elements.searchText.getName());
-	plugins.window.createShortcut('ESC', dismiss, controller.getName());
+	plugins.window.createShortcut('ESC', cancel, controller.getName());
 	
 	// TODO set the inital values ?
 	if (searchText) {
