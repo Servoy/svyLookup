@@ -34,12 +34,20 @@ var selectHandler = null;
 var window;
 
 /**
- * True is the lookup is dismissed without a selection
+ * Set to true when the selection is confirmed. Return a value only when the selection is confirmed.
+ * Force an explicit selection to return the selected values
  * 
- * @private 
- * @properties={typeid:35,uuid:"7BFADF2C-E772-42FB-8E38-2A8FD286C299",variableType:-4}
+ * @protected 
+ * @properties={typeid:35,uuid:"BF6DB2F6-6167-457A-8D40-21E808ABB61F",variableType:-4}
  */
-var isCancelled = false;
+var confirmSelection = false;
+
+/**
+ * If true will select an empty value
+ * @private  
+ * @properties={typeid:35,uuid:"B2FFC5BF-711D-4C8C-8A5B-C498FCC349D2",variableType:-4}
+ */
+var confirmSelectEmptyValue = false;
 
 /**
  * Callback method for when form is shown.
@@ -53,8 +61,9 @@ var isCancelled = false;
  */
 function onShow(firstShow, event) {
 	
-	// reset is cancelled;
-	isCancelled = false;
+	// reset confirmSeleciton to init state false
+	confirmSelection = false;
+	confirmSelectEmptyValue = false;
 }
 
 /**
@@ -150,33 +159,103 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 		foundset.loadAllRecords();
 	}
 
-	window = application.createWindow(controller.getName(), JSWindow.MODAL_DIALOG);
-
-	// TODO allow to setup window as wished; object/function provider
-	window.undecorated = true;
-	if (width && height) {
-		window.setSize(width, height);
-	}
-	if ( (x == 0 || x > 0) && (y == 0 || y >= 0)) {
-		window.setLocation(x, y);
-	}
-
+	window = createWindow(x, y, width, height);
 	window.show(controller.getName());
 	
-	// TODO in svyLookupTable there is not an event to close the dialog preventing a selection
+	// return null if selection is not confirmed
+	if (confirmSelection !== true) {
+		confirmSelection = false;
+		return null;
+	}
 	
+	// return empty selection
+	if (confirmSelectEmptyValue === true) {
+		confirmSelectEmptyValue = false;
+		return [];
+	}
+		
+		
 	// return the selected values
 	var records = getSvyLookupSelectedRecords();
 	var lookupValues = getSvyLookupSelectedValues();
-	
-	// reset is cancelled;
-	isCancelled = false;
 	
 	if (lookupValues) {
 		return lookupValues
 	} else {
 		return records;
 	}
+}
+
+/**
+ * @public
+ * @param {JSWindow} win the JSWindow object to show
+ * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
+ * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
+ * 
+ * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
+ *
+ * @properties={typeid:24,uuid:"951F2497-B395-4B7E-9055-82ED8876C997"}
+ */
+function showWindow(win, callback, initialValue) {
+	selectHandler = callback;
+	if (initialValue) {
+		searchText = initialValue;
+		search(searchText);
+		foundset.loadAllRecords();
+	}
+
+	window = win;
+	window.show(controller.getName());
+	
+	// return null if selection is not confirmed
+	if (confirmSelection !== true) {
+		confirmSelection = false;
+		return null;
+	}
+	
+	// return empty selection
+	if (confirmSelectEmptyValue === true) {
+		confirmSelectEmptyValue = false;
+		return [];
+	}
+		
+	// return the selected values
+	var records = getSvyLookupSelectedRecords();
+	var lookupValues = getSvyLookupSelectedValues();
+	
+	if (lookupValues) {
+		return lookupValues
+	} else {
+		return records;
+	}
+}
+
+/**
+ * @public 
+ * @param {Number} [x]
+ * @param {Number} [y]
+ * @param {Number} [width] The width of the pop-up. Optional. Default is component width
+ * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
+ * @param {Number} [jsWindowType] Type of window; should be an option of JSWindow, Default JSWindow.MODAL_DIALOG
+ * 
+ * @return {JSWindow}
+ * @properties={typeid:24,uuid:"1A05B913-0859-41AA-8B57-F65FF1E29750"}
+ */
+function createWindow(x, y, width, height, jsWindowType) {
+	if (!jsWindowType) jsWindowType = JSWindow.MODAL_DIALOG;
+	
+	var win = application.createWindow(controller.getName(), jsWindowType);
+
+	// TODO allow to setup window as wished; object/function provider
+	win.undecorated = true;
+	if (width && height) {
+		win.setSize(width, height);
+	}
+	if ( (x == 0 || x > 0) && (y == 0 || y >= 0)) {
+		win.setLocation(x, y);
+	}
+	
+	return win;
 }
 
 /**
@@ -235,9 +314,20 @@ function newInstance(lookupObj) {
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
 function onSelect() {
+	
+	// confirmSelection
+	confirmSelection = true;
 
 	// dismiss popup
 	dismiss();
+	
+	if (confirmSelectEmptyValue === true) {
+		// invoke callback
+		if (selectHandler) {
+			selectHandler.call(this, [], [], lookup);
+		}		
+		return [];
+	}
 
 	var records = getSvyLookupSelectedRecords();
 	var lookupValues = getSvyLookupSelectedValues();
@@ -248,9 +338,6 @@ function onSelect() {
 		selectHandler.call(this, records, lookupValues, lookup);
 	}
 
-	// reset is cancelled;
-	isCancelled = false;
-	
 	// return the value. May be used by a modal dialog
 	if (lookupValues) {
 		return lookupValues
@@ -260,16 +347,35 @@ function onSelect() {
 }
 
 /**
+ * Dismiss the lookup returning an empty selection; returns an empty array [] as result.
+ * 
+ * @return {Array}
+ * 
+ * @protected 
+ * @properties={typeid:24,uuid:"C2172FB4-650C-4643-81F0-7EBEED31A6C5"}
+ */
+function selectEmptyValue() {
+	confirmSelection = true;
+	confirmSelectEmptyValue = true;
+	
+	dismiss();
+	
+	// invoke callback
+	if (selectHandler) {
+		// TODO can we just return the selected values and the lookupObject itself instead of so many arguments ?
+		selectHandler.call(this, [], [], lookup);
+	}
+	
+	return [];
+}
+
+/**
  * @protected
  *
  * @return {Array<JSRecord>}
  * @properties={typeid:24,uuid:"BE8C41AF-D193-467E-BA8D-8E2BAB5096C6"}
  */
 function getSvyLookupSelectedRecords() {
-	if (isCancelled === true) {
-		return [];
-	}
-	
 	var record = foundset.getSelectedRecord();
 	return [record];
 }
@@ -300,7 +406,8 @@ function getSvyLookupSelectedValues() {
  * @properties={typeid:24,uuid:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2"}
  */
 function cancel() {
-	isCancelled = true;
+	// discard any selection
+	confirmSelection = false;
 	dismiss();
 }
 

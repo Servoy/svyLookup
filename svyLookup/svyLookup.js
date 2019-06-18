@@ -529,7 +529,7 @@ function init_Lookup() {
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search
 	 *
-	 * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
+	 * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records. Returns null if the window is closed without a selection or an empty selection
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showModalWindow = function(callback, x, y, width, height, initialValue) {
@@ -548,6 +548,65 @@ function init_Lookup() {
 		// TODO return the actual values, no need of params
 		return runtimeForm.showModalWindow(callback, x, y, width, height, initialValue);
 	}	
+	
+	
+	/**
+	 * Shows the lookup in a Window
+	 *
+	 * @public
+	 * @param {JSWindow} win the JSWindow object to show
+	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,Lookup)} [callback] The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
+	 * @param {String} [initialValue] And initial value to show in the search
+	 *
+	 * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records. Returns null if the window is closed without a selection or an empty selection
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.showWindow = function(win, callback, initialValue) {
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm;
+		if (this.lookupFormProvider) {
+			lookupForm = forms[this.lookupFormProvider];
+		} else {
+			lookupForm = forms.svyLookupTable;
+		}
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var runtimeForm = lookupForm.newInstance(this);
+
+		// TODO return the actual values, no need of params
+		return runtimeForm.showWindow(win, callback, initialValue);
+	}
+	
+	/**
+	 * @public
+	 * Creates a window object for the lookup; call lookup.showWindow(win); to show the lookup window
+	 *
+	 * @param {Number} [x]
+ 	 * @param {Number} [y]
+ 	 * @param {Number} [width] The width of the pop-up. Optional. Default is component width
+ 	 * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
+ 	 * @param {Number} [jsWindowType] Type of window; should be an option of JSWindow, Default JSWindow.MODAL_DIALOG
+	 *
+	 * @return {JSWindow} returns a JSWindow which can be used to show the lookup in it using lookup.showWindow(window)
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.createWindow = function(x, y, width, height, jsWindowType) {
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm;
+		if (this.lookupFormProvider) {
+			lookupForm = forms[this.lookupFormProvider];
+		} else {
+			lookupForm = forms.svyLookupTable;
+		}
+
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var runtimeForm = lookupForm.newInstance(this);
+
+		// TODO return the actual values, no need of params
+		return runtimeForm.createWindow(x, y, width, height, jsWindowType);
+	}
 }
 
 /**

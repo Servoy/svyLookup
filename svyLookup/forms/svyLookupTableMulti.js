@@ -6,7 +6,9 @@
  * @properties={typeid:24,uuid:"379EC9E6-AB8B-4393-94DE-77C4CFCBF71D"}
  */
 function onSelectAll(event) {
-	selectAllRecords();	
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	selectAllRecords();
 }
 
 /**
@@ -16,6 +18,8 @@ function onSelectAll(event) {
  * @properties={typeid:24,uuid:"457DDE15-213F-4BA3-AFA4-B2EE5417CDE6"}
  */
 function onDeselectAll(event) {
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
 	deselectAllRecords();
 }
 
@@ -190,6 +194,9 @@ function onActionSearch(event) {
  * @properties={typeid:24,uuid:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31"}
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	
 	if (foundset['svy_lookup_selected']) {
 		foundset['svy_lookup_selected'] = null;
 	} else {
