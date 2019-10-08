@@ -47,11 +47,6 @@
 	padding-left: 5px;
 }
 
-.label-block .bts-label, .label-block.bts-block,
-.label-block .svy-label, .label-block.svy-block {
-	display: block;
-}
-
 /** svyLookupTableMulti style */
 .svy-lookup-multi .tablewrapper {
 	border-top: 1px solid #ddd
