@@ -1,3 +1,7 @@
+.svy-lookup {
+	background-color: white;
+}
+
 .svy-lookup,
 .lookup-table-form {
 	border: 1px solid #e0e0e0;
@@ -26,10 +30,6 @@
 	font-weight: bold;
 	background-color: gray;
 	color: white;
-}
-
-.svy-lookup {
-	background-color: white;
 }
 
 .svy-lookup .table-servoyextra-selected {

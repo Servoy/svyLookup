@@ -116,18 +116,19 @@ location:{
 x:1,
 y:1
 },
-minRowHeight:"55px",
+minRowHeight:"35px",
 onCellClick:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31",
 pageSize:0,
 size:{
 height:100,
 width:100
 },
-styleClass:"table table-noheader table-lookup-multi"
+styleClass:"table table-noheader no-border table-lookup-multi"
 },
 location:"1,1",
 name:"table",
 size:"100,100",
+styleClass:"table table-noheader no-border table-lookup-multi",
 typeName:"servoyextra-table",
 typeid:47,
 uuid:"13B824EE-DC6A-46F0-AFAB-4ECF1D1A9FCD"
@@ -198,11 +199,12 @@ size:{
 height:100,
 width:100
 },
-styleClass:"form-control line-padding"
+styleClass:"form-control svy-lookup-searchbox"
 },
 location:"1,1",
 name:"searchText",
 size:"100,100",
+styleClass:"form-control svy-lookup-searchbox",
 typeName:"bootstrapcomponents-textbox",
 typeid:47,
 uuid:"A5CF925E-F136-417A-8CED-4F2E3B858870"
