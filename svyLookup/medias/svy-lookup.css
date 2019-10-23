@@ -60,7 +60,7 @@
     cursor: pointer;
 }
 
-.svy-lookup-multi .btn-label {
+.svy-lookup-multi .svy-lookup-action-label {
 	display: block;
 	margin-top: 10px;
 	margin-bottom: 10px;

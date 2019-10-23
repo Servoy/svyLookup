@@ -43,12 +43,13 @@ size:{
 height:100,
 width:100
 },
-styleClass:"btn-label label-block",
+styleClass:"svy-lookup-action-label",
 text:"Select All"
 },
 location:"1,1",
 name:"labelSelectAll",
 size:"100,100",
+styleClass:"svy-lookup-action-label",
 typeName:"bootstrapcomponents-label",
 typeid:47,
 uuid:"6A1107B1-4D99-4719-ACA6-B9781ED26E0A"
@@ -64,12 +65,13 @@ size:{
 height:100,
 width:100
 },
-styleClass:"btn-label label-block",
+styleClass:"svy-lookup-action-label",
 text:"Deselect all"
 },
 location:"2,2",
 name:"labelDeselectAll",
 size:"100,100",
+styleClass:"svy-lookup-action-label",
 typeName:"bootstrapcomponents-label",
 typeid:47,
 uuid:"DF131635-94AF-4414-BEF2-CBB54DAA9887"
