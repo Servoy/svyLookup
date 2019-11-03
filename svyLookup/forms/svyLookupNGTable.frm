@@ -8,11 +8,13 @@ onShowMethodID:{\
 arguments:null,\
 parameters:null\
 }\
-}",
+},\
+useCssPosition:true",
 extendsID:"77E446E3-635B-45AF-973F-4A33FBB8B0B0",
 items:[
 {
 anchors:11,
+cssPosition:"10,10,-1,10,180,30",
 customProperties:"attributes:{\
 keylistener:\"data-svylookup-search\"\
 }",
@@ -29,6 +31,7 @@ uuid:"7A53611C-3B62-4FC7-B951-DA5B8C8D42FC"
 },
 {
 anchors:15,
+cssPosition:"51,10,10,10,180,39",
 json:{
 anchors:15,
 columns:[
@@ -37,6 +40,14 @@ svyUUID:"0B12E2E9-53F9-45E1-8C39-3596BDB72AD1",
 width:70
 }
 ],
+cssPosition:{
+bottom:"10",
+height:"39",
+left:"10",
+right:"10",
+top:"51",
+width:"180"
+},
 gridOptions:{
 sideBar:"false"
 },

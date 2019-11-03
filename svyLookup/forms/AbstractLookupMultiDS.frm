@@ -1,7 +1,7 @@
 customProperties:"formComponent:false",
 encapsulation:60,
 extendsID:"77E446E3-635B-45AF-973F-4A33FBB8B0B0",
-name:"AbstractLookupMutiDS",
+name:"AbstractLookupMultiDS",
 navigatorID:"-1",
 scrollbars:36,
 showInMenu:true,

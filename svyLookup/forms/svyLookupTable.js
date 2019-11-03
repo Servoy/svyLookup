@@ -21,13 +21,13 @@ function onCreateInstance(jsForm, lookupObj){
 	var table = jsForm.getWebComponent(elements.table.getName());
 
 	// addd columns
-	/** @type {Array<servoyextra-table.column>} */
+	/** @type {Array<CustomType<servoyextra-table.column>>} */
 	var columns = table.getJSONProperty('columns');
 	for (var i = 0; i < lookupObj.getFieldCount(); i++) {
 		var field = lookupObj.getField(i);
 		if(!field.isVisible()) continue;
 		
-		/** @type {servoyextra-table.column} */
+		/** @type {CustomType<servoyextra-table.column>} */
 		var column = onCreateFieldInstance(field)
 		columns.push(column);
 	}
@@ -35,7 +35,7 @@ function onCreateInstance(jsForm, lookupObj){
 }
 
 /**
- * @return {servoyextra-table.column}
+ * @return {CustomType<servoyextra-table.column>}
  * @param {scopes.svyLookup.LookupField} lookupFieldObj
  * @protected
  * @override 
@@ -43,7 +43,7 @@ function onCreateInstance(jsForm, lookupObj){
  * @properties={typeid:24,uuid:"4F635DCD-4F3F-4B6E-96DB-5AFD60E5F235"}
  */
 function onCreateFieldInstance(lookupFieldObj) {
-	/** @type {servoyextra-table.column} */
+	/** @type {CustomType<servoyextra-table.column>} */
 	var column = {};
 	column.dataprovider = lookupFieldObj.getDataProvider();
 	column.headerText = lookupFieldObj.getTitleText();

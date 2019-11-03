@@ -1,4 +1,12 @@
 /**
+ * @type {Array<JSRecord>}
+ * @private 
+ *
+ * @properties={typeid:35,uuid:"76EB55B5-DAF9-478B-BB34-D4C9FCBC57A3",variableType:-4}
+ */
+var checkedRecords = [];
+
+/**
  * @param {JSEvent} event
  *
  * @protected
@@ -48,7 +56,7 @@ function onCreateInstance(jsForm, lookupObj) {
 	var table = jsForm.findWebComponent(elements.table.getName());
 
 	// addd columns
-	/** @type {Array<servoyextra-table.column>} */
+	/** @type {Array<CustomType<servoyextra-table.column>>} */
 	var columns = table.getJSONProperty('columns');
 	
 	var columnSelection = columns[0];
@@ -58,7 +66,7 @@ function onCreateInstance(jsForm, lookupObj) {
 		var field = lookupObj.getField(i);
 		if (!field.isVisible()) continue;
 		
-		/** @type {servoyextra-table.column} */
+		/** @type {CustomType<servoyextra-table.column>} */
 		var column = onCreateFieldInstance(field);
 		columns.push(column);
 	}
@@ -66,7 +74,7 @@ function onCreateInstance(jsForm, lookupObj) {
 }
 
 /**
- * @return {servoyextra-table.column}
+ * @return {CustomType<servoyextra-table.column>}
  * @param {scopes.svyLookup.LookupField} lookupFieldObj
  * @protected
  * @override 
@@ -74,7 +82,7 @@ function onCreateInstance(jsForm, lookupObj) {
  * @properties={typeid:24,uuid:"D82A1AFC-E688-4DE3-BD02-CEF0D726574E"}
  */
 function onCreateFieldInstance(lookupFieldObj) {
-	/** @type {servoyextra-table.column} */
+	/** @type {CustomType<servoyextra-table.column>} */
 	var column = {};
 	column.dataprovider = lookupFieldObj.getDataProvider();
 	column.headerText = lookupFieldObj.getTitleText();
@@ -197,10 +205,13 @@ function onCellClick(foundsetindex, columnindex, record, event) {
 	// confirm selection at change. Dismissed only by explicit cancel
 	confirmSelection = true;
 	
-	if (foundset['svy_lookup_selected']) {
-		foundset['svy_lookup_selected'] = null;
+	var actualRecord = foundset.getRecord(foundsetindex);
+	if (actualRecord['svy_lookup_selected']) {
+		actualRecord['svy_lookup_selected'] = null;
+		checkedRecords.splice(checkedRecords.indexOf(actualRecord), 1);
 	} else {
-		foundset['svy_lookup_selected'] = "true";
+		actualRecord['svy_lookup_selected'] = "true";
+		checkedRecords.push(actualRecord);
 	}	
 }
 
@@ -248,24 +259,23 @@ function setupDataSource(dataSourceName) {
 	}
 }
 
-
 /**
- * WARNING: loops over all the foundset can be very expensive
- * @protected 
- * 
+ * @protected
+ *
  * @return {Array<JSRecord>}
+ * @override
  * @properties={typeid:24,uuid:"FCF69282-8B96-4DFB-9C5D-04F32A246CA1"}
  */
 function getSvyLookupSelectedRecords() {
-	var fs = foundset.duplicateFoundSet();
-	fs.loadAllRecords();
-	var result = [];
-	for (var index = 1; index <= fs.getSize(); index++) {
-		var record = fs.getRecord(index);
-		if (record['svy_lookup_selected']) result.push(record);
+	if (checkedRecords && checkedRecords.length > 0) {
+		for (var c = 0; c < checkedRecords.length; c++) {
+			var checkedRecord = checkedRecords[c];
+			checkedRecord['svy_lookup_selected'] = '';
+		}
 	}
-	return result;
+	return checkedRecords;
 }
+
 
 /**
  * WARNING: loops over all the foundset, can be very expensive
@@ -278,6 +288,7 @@ function selectAllRecords() {
 	var result = [];
 	for (var index = 1; index <= fs.getSize(); index++) {
 		var record = fs.getRecord(index);
+		checkedRecords.push(record);
 		record.svy_lookup_selected = "true";
 	}
 	return result;
@@ -292,7 +303,7 @@ function deselectAllRecords() {
 	var fs = foundset.duplicateFoundSet();
 	fs.loadAllRecords();
 	var result = [];
-	
+	checkedRecords = [];
 	for (var index = 1; index <= fs.getSize(); index++) {
 		var record = fs.getRecord(index);
 		record.svy_lookup_selected = null;

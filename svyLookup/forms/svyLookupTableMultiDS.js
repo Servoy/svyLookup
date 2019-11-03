@@ -21,7 +21,7 @@ function onCreateInstance(jsForm, lookupObj) {
 	var table = jsForm.getWebComponent(elements.table.getName());
 	
 	// add columns
-	/** @type {Array<servoyextra-table.column>} */
+	/** @type {Array<CustomType<servoyextra-table.column>>} */
 	var columns = table.getJSONProperty('columns');
 	
 	// TODO, don't you want to use other lookupField properties ?
@@ -30,7 +30,7 @@ function onCreateInstance(jsForm, lookupObj) {
 
 	for (var i = 0; i < fields.length; i++) {
 		var field = fields[i];
-		/** @type {servoyextra-table.column} */
+		/** @type {CustomType<servoyextra-table.column>} */
 		var column = { };
 		column.dataprovider = field.dataprovider;		
 		columns.push(column);

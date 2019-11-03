@@ -9,7 +9,7 @@
 var searchText = '';
 
 /**
- * The lookup object used by this lokup form
+ * The lookup object used by this lookup form
  *
  * @protected
  * @type {scopes.svyLookup.Lookup}
@@ -122,8 +122,7 @@ function showPopUp(callback, target, width, height, initialValue) {
 	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
 }
 
-/**
- * @private 
+/** 
  * Creates a form popup for this form and returns it
  * 
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
@@ -401,7 +400,7 @@ function getSvyLookupSelectedValues() {
 }
 
 /**
- * Cancek the selection and dismiss the popup;
+ * Cancel the selection and dismiss the popup;
  * @protected 
  * @properties={typeid:24,uuid:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2"}
  */

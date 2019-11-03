@@ -67,14 +67,14 @@
 	cursor: pointer;
 }
 
-.svy-lookup  .ag-table .table-cell-icon, 
+.svy-lookup .ag-table .icon-selection, 
 .svy-lookup  td.table-cell-icon > div {
     font-family: 'Glyphicons Halflings';
     text-align: center;
 }
 
 .svy-lookup .ag-table .icon-selection:before, 
-.svy-lookup  td.icon-selection > div:before {
+.svy-lookup td.icon-selection > div:before {
 	content: "\e157";
 	cursor: pointer;
 }
