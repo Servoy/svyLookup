@@ -15,21 +15,6 @@ function onCreateInstance(jsForm, lookupObj) {
 }
 
 /**
- * Handle focus gained event of the search element. Adds the listener if not added
- * @protected
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"F50BBF9A-FF73-4D70-AB93-D3B2868FB94E"}
- * @AllowToRunInFind
- */
-function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
-		keyListenerReady = true;
-	}
-}
-
-/**
  * Callback method for when form is shown.
  * Focuses first field and adds shortcuts
  * 
