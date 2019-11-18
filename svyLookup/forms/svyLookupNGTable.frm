@@ -78,7 +78,7 @@ uuid:"FE9C8028-57CB-41D8-A08F-D7F3FB6863CB"
 }
 ],
 name:"svyLookupNGTable",
-onHideMethodID:"72FC15EA-45FE-4AAD-A5D7-5917CB85F818",
+onHideMethodID:"B6070ACF-1805-4690-820D-F216DD156B31",
 onShowMethodID:"882CB3AC-65EC-4A00-80F4-F3A20621E4B6",
 size:"200,200",
 styleClass:"svy-lookup lookup-table-form",

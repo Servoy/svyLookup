@@ -1,15 +1,8 @@
 /**
- * Flag if keylistener has been added
- *
- * @private
- * @type {Boolean}
- * @properties={typeid:35,uuid:"A24A87FE-FFB5-46E1-B869-CAB47FEAB6D7",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
  * Overrides creation hook and adds columns
+ * 
  * @protected
+ * 
  * @param {JSForm} jsForm
  * @param {scopes.svyLookup.Lookup} lookupObj
  * 
@@ -41,50 +34,26 @@ function onCreateInstance(jsForm, lookupObj) {
 }
 
 /**
- * Handle focus gained event of the search element. Adds the listener if not added
- * @private
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"3140D5C1-6BB9-4EEC-9B5D-24143D027778"}
- * @AllowToRunInFind
- */
-function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
-		keyListenerReady = true;
-	}
-}
-
-/**
  * Callback method for when form is shown.
  * Focuses first field and adds shortcuts
  * @param {Boolean} firstShow form is shown first time after load
  * @param {JSEvent} event the event that triggered the action
  *
  * @private
+ * 
+ * @override 
  *
  * @properties={typeid:24,uuid:"4D6F3D0D-1B25-43F3-BD4F-BDBB7B26787B"}
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
-	keyListenerReady = false;
+	_super.onShow(firstShow, event);
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ESC',cancel,controller.getName());
-}
-
-/**
- * @private
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"479174F2-8A95-40E1-938D-1CC40CC0B4CF"}
- */
-function onEnter() {
-	onSelect();
 }
 
 /**
  * Handles the key listener callback event
  * 
- * @protected 
  * @param {String} value
  * @param {JSEvent} event
  * @param {Number} keyCode
@@ -93,18 +62,22 @@ function onEnter() {
  * @param {Number} shiftKey
  * @param {Number} capsLock
  *
+ * @protected 
+ * 
+ * @override 
+ * 
  * @properties={typeid:24,uuid:"6E0203BE-7D8B-47A8-ADB9-FA2070C20180"}
  */
-function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
-	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
+	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();
 		return;
 	}
-	
-	// run search
-	search(value);
+
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
+
 
 /**
  * Handles the action event of the search field
@@ -137,20 +110,4 @@ function onActionSearch(event) {
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
 	onSelect();
-}
-
-/**
- * Handle hide window.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @return {Boolean}
- *
- * @protected
- *
- * @properties={typeid:24,uuid:"8D181F5A-7DB5-461D-A956-142703CA9465"}
- */
-function onHide(event) {
-	plugins.keyListener.removeKeyListener("data-svylookup-search");
-	return true
 }
