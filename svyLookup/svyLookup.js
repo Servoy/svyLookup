@@ -226,6 +226,12 @@ function Lookup(datasource) {
 	 * @type {String}
 	 */
 	this.displayField = null;
+
+	/**
+	 * @protected 
+	 * @type {Array<Array<Object>>}
+	 */
+	this.selectedPks = [];
 }
 
 /**
@@ -453,6 +459,31 @@ function init_Lookup() {
 	}
 
 	/**
+	 * @public
+	 * @return {Array<JSRecord>}
+	 * @this {Lookup}
+	 * */
+	Lookup.prototype.getSelectedRecords = function() {
+		var result = [];
+		if (this.selectedPks && this.selectedPks.length > 0) {
+			/** @type {String} */
+			var ds = this.getDataSource();
+			var fs = databaseManager.getFoundSet(ds);
+			var pks = databaseManager.createEmptyDataSet(this.selectedPks.length, this.selectedPks[0].length);
+			for (var i = 0; i < this.selectedPks.length; i++) {
+				pks.addRow(this.selectedPks[i]);
+			}
+			fs.loadRecords(pks);
+			if (utils.hasRecords(fs)) {
+				for (var f = 1; f <= fs.getSize(); f++) {
+					result.push(fs.getRecord(f));
+				}
+			}
+		}
+		return result;
+	}	
+
+	/**
 	 * Removes a param at the specified index
 	 * @public
 	 * @param {Number} index
@@ -607,6 +638,64 @@ function init_Lookup() {
 		// TODO return the actual values, no need of params
 		return runtimeForm.createWindow(x, y, width, height, jsWindowType);
 	}
+	
+	/**
+	 * Clears the selected records of this Lookup
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.clearSelectedRecords = function() {
+		this.selectedPks = [];
+	}	
+	
+	/**
+	 * Sets the selected records of this Lookup
+	 * @param {Array<JSRecord>} records
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.setSelectedRecords = function(records) {
+		this.selectedPks = [];
+		for (var r = 0; r < records.length; r++) {
+			this.addSelectedRecord(records[r]);
+		}
+	}
+	
+	/**
+	 * Adds the given record to the list of selected records
+	 * @param {JSRecord} record
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.addSelectedRecord = function(record) {
+		this.selectedPks.push(record.getPKs());
+	}	
+	
+	/**
+	 * Removes the given record from the list of selected records
+	 * @param {JSRecord} record
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.removeSelectedRecord = function(record) {
+		for (var s = 0; s < this.selectedPks.length; s++) {
+			if (scopes.svyJSUtils.areObjectsEqual(this.selectedPks[s], record.getPKs())) {
+				this.selectedPks.splice(s, 1);
+			}
+		}
+	}	
+	
+	/**
+	 * Sets the selected records of this Lookup from the given primary keys
+	 * @param {Array<*>} pks
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.setSelectedPks = function(pks) {
+		this.selectedPks = [];
+		for (var s = 0; s < pks.length; s++) {
+			if (pks[s] instanceof Array) {
+				this.selectedPks.push(pks[s]);
+			} else {
+				this.selectedPks.push([pks[s]]);				
+			}
+		}
+	}	
 }
 
 /**
