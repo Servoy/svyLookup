@@ -50,6 +50,15 @@ var confirmSelection = false;
 var confirmSelectEmptyValue = false;
 
 /**
+ * Flag if keylistener has been added
+ *
+ * @protected
+ * @type {Boolean}
+ * @properties={typeid:35,uuid:"5874BF2B-403A-4175-B91D-79E4C7404F98",variableType:-4}
+ */
+var keyListenerReady = false;
+
+/**
  * Callback method for when form is shown.
  *
  * @param {Boolean} firstShow form is shown first time after load
@@ -60,10 +69,69 @@ var confirmSelectEmptyValue = false;
  * @properties={typeid:24,uuid:"CFE7E857-BEFB-4EDA-A0B4-8DCD34693093"}
  */
 function onShow(firstShow, event) {
+	setupControllerFoundset();
 	
-	// reset confirmSeleciton to init state false
+	// reset confirmSelection to init state false
 	confirmSelection = false;
 	confirmSelectEmptyValue = false;
+	
+	keyListenerReady = false;
+	
+	plugins.window.createShortcut('ENTER', onSelect, controller.getName());
+	plugins.window.createShortcut('ESC', cancel, controller.getName());
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @return {Boolean}
+ *
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"B6070ACF-1805-4690-820D-F216DD156B31"}
+ */
+function onHide(event) {
+	if (keyListenerReady && 'keyListener' in plugins) {
+		plugins.keyListener.removeKeyListener("data-svylookup-search");
+	}
+	return true
+}
+
+/**
+ * When attached to a search field, will add a keylistener to any element having an attribute keylistener='data-svylookup-search'
+ * 
+ * @protected
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"99D05750-C075-497A-8ABA-F7AA2BFF3C23"}
+ * @AllowToRunInFind
+ */
+function onFocusGainedSearch(event) {
+	if (!keyListenerReady && 'keyListener' in plugins) {
+		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
+		keyListenerReady = true;
+	}
+}
+
+/**
+ * Handles the key listener callback event
+ * 
+ * @protected 
+ * @param {String} value
+ * @param {JSEvent} event
+ * @param {Number} keyCode
+ * @param {Number} altKey
+ * @param {Number} ctrlKey
+ * @param {Number} shiftKey
+ * @param {Number} capsLock
+ *
+ * @properties={typeid:24,uuid:"5F784C8C-896E-4CD9-9215-53D6A6576FD8"}
+ */
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
+	// run search
+	search(value);
 }
 
 /**
@@ -73,7 +141,6 @@ function onShow(firstShow, event) {
  * @properties={typeid:24,uuid:"8FD91534-39A2-428C-9910-49B19E1FF3E5"}
  */
 function search(txt) {
-	
 	// fix search disappear while typing
 	searchText = txt;
 
@@ -258,11 +325,13 @@ function createWindow(x, y, width, height, jsWindowType) {
 }
 
 /**
- * Hook for sub form(s) to implement specific sol model additions
+ * Hook for sub form(s) to implement specific solution model additions
  *
  * @protected
+ * 
  * @param {JSForm} jsForm
  * @param {scopes.svyLookup.Lookup} lookupObj
+ * 
  * @properties={typeid:24,uuid:"56B3D22A-78BB-4AA6-9B1C-78D6FBA40230"}
  */
 function onCreateInstance(jsForm, lookupObj) {
@@ -277,19 +346,22 @@ function onCreateInstance(jsForm, lookupObj) {
  *
  * @properties={typeid:24,uuid:"3ED4AF93-157E-4A51-B208-304FBC1F6758"}
  */
-function onCreateFieldInstance(lookupFieldObj) {
+function createFieldInstance(lookupFieldObj) {
 	// to be overridden
 	return null;
 }
 
 /**
+ * Creates a new instance of the lookup form
+ * 
  * @public
+ * 
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @return {RuntimeForm<AbstractLookup>}
+ * 
  * @properties={typeid:24,uuid:"8147DBC9-8AE2-47EC-B6B6-A3C10971DCF3"}
  */
 function newInstance(lookupObj) {
-
 	// create JSForm clone
 	var formName = application.getUUID().toString();
 	var jsForm = solutionModel.cloneForm(formName, solutionModel.getForm(controller.getName()));
@@ -301,15 +373,17 @@ function newInstance(lookupObj) {
 	/** @type {RuntimeForm<AbstractLookup>} */
 	var form = forms[jsForm.name];
 	form['lookup'] = lookupObj;
-	form['setupController' + 'Foundset'](); // TODO suppress warning or load controller at the onShow ?
 
 	return form;
 }
 
 /**
  * Callback when item is selected
+ * 
  * @return {Array<JSRecord|String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
+ * 
  * @protected
+ * 
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
 function onSelect() {
@@ -351,6 +425,7 @@ function onSelect() {
  * @return {Array}
  * 
  * @protected 
+ * 
  * @properties={typeid:24,uuid:"C2172FB4-650C-4643-81F0-7EBEED31A6C5"}
  */
 function selectEmptyValue() {
@@ -369,9 +444,12 @@ function selectEmptyValue() {
 }
 
 /**
+ * Returns the selected record(s)
+ * 
  * @protected
  *
  * @return {Array<JSRecord>}
+ * 
  * @properties={typeid:24,uuid:"BE8C41AF-D193-467E-BA8D-8E2BAB5096C6"}
  */
 function getSvyLookupSelectedRecords() {
@@ -380,8 +458,12 @@ function getSvyLookupSelectedRecords() {
 }
 
 /**
+ * Returns the lookupDataProvider values for the selected record
+ * 
  * @return {Array<String|Date|Number>}
+ * 
  * @protected 
+ * 
  * @properties={typeid:24,uuid:"23E4DF81-EBD7-4B5B-A292-85DA622FD743"}
  */
 function getSvyLookupSelectedValues() {
@@ -400,8 +482,10 @@ function getSvyLookupSelectedValues() {
 }
 
 /**
- * Cancel the selection and dismiss the popup;
+ * Cancel the selection and dismiss the popup
+ * 
  * @protected 
+ * 
  * @properties={typeid:24,uuid:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2"}
  */
 function cancel() {
@@ -414,6 +498,7 @@ function cancel() {
  * Dismisses the popup
  *
  * @protected
+ * 
  * @properties={typeid:24,uuid:"D119BC9F-1137-445E-9E30-FDB3F4929484"}
  */
 function dismiss() {
@@ -427,6 +512,7 @@ function dismiss() {
 
 /**
  * @private 
+ * 
  * @properties={typeid:24,uuid:"B7F0631F-DA16-4FD9-B722-DAE714D8E714"}
  */
 function setupControllerFoundset() {
