@@ -1,13 +1,4 @@
 /**
- * Flag if keylistener has been added
- * 
- * @protected  
- * @type {Boolean}
- * @properties={typeid:35,uuid:"93EFAD65-2890-4398-9396-BA06E9C6B530",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
  * Overrides creation hook and adds columns 
  * @protected 
  * @param {JSForm} jsForm
@@ -28,7 +19,7 @@ function onCreateInstance(jsForm, lookupObj){
 		if(!field.isVisible()) continue;
 		
 		/** @type {CustomType<servoyextra-table.column>} */
-		var column = onCreateFieldInstance(field)
+		var column = createFieldInstance(field)
 		columns.push(column);
 	}
 	table.setJSONProperty('columns',columns);
@@ -42,7 +33,7 @@ function onCreateInstance(jsForm, lookupObj){
  *
  * @properties={typeid:24,uuid:"4F635DCD-4F3F-4B6E-96DB-5AFD60E5F235"}
  */
-function onCreateFieldInstance(lookupFieldObj) {
+function createFieldInstance(lookupFieldObj) {
 	/** @type {CustomType<servoyextra-table.column>} */
 	var column = {};
 	column.dataprovider = lookupFieldObj.getDataProvider();
@@ -53,21 +44,6 @@ function onCreateFieldInstance(lookupFieldObj) {
 	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
 	column.width = lookupFieldObj.getWidth();
 	return column;
-}
-
-/**
- * Handle focus gained event of the search element. Adds the listener if not added
- * @protected 
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"13A82384-3F37-4342-A489-1A4E7D1F719E"}
- * @AllowToRunInFind
- */
-function onFocusGainedSearch(event) {
-	if(!keyListenerReady){
-		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
-		keyListenerReady = true;
-	}
 }
 
 /**
@@ -82,19 +58,8 @@ function onFocusGainedSearch(event) {
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
-	keyListenerReady = false;
+	_super.onShow(firstShow, event);
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER',onEnter,controller.getName());
-	plugins.window.createShortcut('ESC',cancel,controller.getName());
-}
-
-/**
- * @private 
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"9AEF797A-8906-4A0B-B6AB-CAC5BB93C161"}
- */
-function onEnter(){
-	onSelect();
 }
 
 /**
@@ -111,15 +76,14 @@ function onEnter(){
  *
  * @properties={typeid:24,uuid:"3FE98DB9-C152-41AF-8B4B-15A7AE6FA121"}
  */
-function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
-	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
+	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();
 		return;
 	}
-	
-	// run search
-	search(value);
+
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
 
 /**
@@ -153,20 +117,4 @@ function onActionSearch(event) {
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
 	onSelect();
-}
-
-/**
- * Handle hide window.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @return {Boolean}
- *
- * @protected
- *
- * @properties={typeid:24,uuid:"41909C3A-B65C-465E-B04E-51C4632EE36E"}
- */
-function onHide(event) {
-	plugins.keyListener.removeKeyListener("data-svylookup-search");
-	return true
 }

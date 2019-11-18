@@ -67,20 +67,20 @@
 	cursor: pointer;
 }
 
-.svy-lookup .ag-table .icon-selection, 
-.svy-lookup  td.table-cell-icon > div {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div, 
+.svy-lookup  td.svy-lookup-icon-selection > div {
     font-family: 'Glyphicons Halflings';
     text-align: center;
 }
 
-.svy-lookup .ag-table .icon-selection:before, 
-.svy-lookup td.icon-selection > div:before {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div:before, 
+.svy-lookup td.svy-lookup-icon-selection > div:before {
 	content: "\e157";
 	cursor: pointer;
 }
 
-.svy-lookup .ag-table .icon-selection.true:before,
-.svy-lookup td.icon-selection.true > div:before {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div.true:before,
+.svy-lookup td.svy-lookup-icon-selection.true > div:before {
 	content: "\e067";
 	cursor: pointer;
 }

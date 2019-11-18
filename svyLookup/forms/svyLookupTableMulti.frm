@@ -12,11 +12,20 @@ arguments:null,\
 parameters:null\
 }\
 }",
-extendsID:"77E446E3-635B-45AF-973F-4A33FBB8B0B0",
+extendsID:"9DB384C5-C20C-4295-BB5E-21E8052968A4",
 items:[
 {
 customProperties:"attributes:{\
-class:\"row\"\
+class:\"svy-lookup-table-container\"\
+},\
+properties:{\
+packagename:\"12grid\",\
+specname:\"div\"\
+}",
+items:[
+{
+customProperties:"attributes:{\
+class:\"svy-lookup-table-select-labels\"\
 },\
 properties:{\
 packagename:\"12grid\",\
@@ -38,7 +47,7 @@ location:{
 x:1,
 y:1
 },
-onActionMethodID:"6BF83414-0287-4156-A45A-480E41FA2AC7",
+onActionMethodID:"C2698839-E2AB-4E6E-8F34-FAF3C0223F79",
 size:{
 height:100,
 width:100
@@ -60,7 +69,7 @@ location:{
 x:2,
 y:2
 },
-onActionMethodID:"C431A15B-170E-468B-89D4-29FA04BA5EC5",
+onActionMethodID:"0AAC4CAD-309E-4B2A-AE9F-D364A59193B1",
 size:{
 height:100,
 width:100
@@ -82,22 +91,25 @@ typeid:46,
 uuid:"799E0C09-B33A-40E3-B426-C1756C225BC1"
 }
 ],
-location:"5,5",
+location:"3,3",
 typeid:46,
 uuid:"03173E80-6A8F-4989-80A0-7D185877B1F2"
 },
 {
 customProperties:"attributes:{\
-class:\"customDiv\"\
+class:\"svy-lookup-table-results\"\
 },\
 properties:{\
 packagename:\"12grid\",\
 specname:\"div\"\
 }",
-items:[
+location:"2,2",
+typeid:46,
+uuid:"C6ECB64B-6B36-40BB-B0C8-F0A4254B579E"
+},
 {
 customProperties:"attributes:{\
-class:\"customDiv\"\
+class:\"svy-lookup-table-table\"\
 },\
 properties:{\
 packagename:\"12grid\",\
@@ -108,15 +120,15 @@ items:[
 json:{
 columns:[
 {
-headerStyleClass:"table-cell-icon icon-selection",
-styleClass:"table-cell-icon icon-selection",
+headerStyleClass:"table-cell-icon svy-lookup-icon-selection",
+styleClass:"table-cell-icon svy-lookup-icon-selection",
 svyUUID:"0F23090D-42D5-4BAF-8C03-42FB68FFC177",
 width:"50"
 }
 ],
 location:{
-x:1,
-y:1
+x:2,
+y:2
 },
 minRowHeight:"35px",
 onCellClick:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31",
@@ -127,7 +139,7 @@ width:100
 },
 styleClass:"table table-noheader no-border table-lookup-multi"
 },
-location:"1,1",
+location:"2,2",
 name:"table",
 size:"100,100",
 styleClass:"table table-noheader no-border table-lookup-multi",
@@ -136,27 +148,13 @@ typeid:47,
 uuid:"13B824EE-DC6A-46F0-AFAB-4ECF1D1A9FCD"
 }
 ],
-location:"1,1",
-typeid:46,
-uuid:"6C78C70D-C4EC-4DF6-8416-033A3D347998"
-}
-],
-location:"6,6",
+location:"4,4",
 typeid:46,
 uuid:"CBF53915-0C16-4134-882C-6C4F5BB34E3B"
 },
 {
 customProperties:"attributes:{\
-class:\"customDiv\"\
-},\
-properties:{\
-packagename:\"12grid\",\
-specname:\"div\"\
-}",
-items:[
-{
-customProperties:"attributes:{\
-class:\"customDiv\"\
+class:\"svy-lookup-table-header\"\
 },\
 properties:{\
 packagename:\"12grid\",\
@@ -167,8 +165,8 @@ items:[
 json:{
 faclass:"fa fa-close",
 location:{
-x:2,
-y:2
+x:3,
+y:3
 },
 onActionMethodID:"699F9BA4-D0C3-4C45-8812-96B8796C45A3",
 size:{
@@ -177,7 +175,7 @@ width:25
 },
 styleclass:"pull-right btn-close"
 },
-location:"2,2",
+location:"3,3",
 name:"faClose",
 size:"25,25",
 typeName:"servoyextra-fontawesome",
@@ -191,11 +189,11 @@ keylistener:\"data-svylookup-search\"\
 json:{
 dataProviderID:"searchText",
 location:{
-x:1,
-y:1
+x:2,
+y:2
 },
 onActionMethodID:"18991F70-7B68-4758-8537-4826B373C9EC",
-onFocusGainedMethodID:"C4C58A66-748A-4406-8F4A-082C9AF13EB9",
+onFocusGainedMethodID:"99D05750-C075-497A-8ABA-F7AA2BFF3C23",
 placeholderText:"Search...",
 size:{
 height:100,
@@ -203,7 +201,7 @@ width:100
 },
 styleClass:"form-control svy-lookup-searchbox"
 },
-location:"1,1",
+location:"2,2",
 name:"searchText",
 size:"100,100",
 styleClass:"form-control svy-lookup-searchbox",
@@ -214,12 +212,12 @@ uuid:"A5CF925E-F136-417A-8CED-4F2E3B858870"
 ],
 location:"1,1",
 typeid:46,
-uuid:"3C8E3ED8-EFDF-48D7-B443-B7B6D66151E4"
+uuid:"E3C7272D-1E1A-450A-8B26-D349EA086D75"
 }
 ],
 location:"4,4",
 typeid:46,
-uuid:"E3C7272D-1E1A-450A-8B26-D349EA086D75"
+uuid:"24BFB484-18EA-4CD1-AF40-1AC598E00BE5"
 }
 ],
 name:"svyLookupTableMulti",

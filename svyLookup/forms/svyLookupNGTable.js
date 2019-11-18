@@ -1,30 +1,9 @@
 /**
- * Flag if keylistener has been added
- *
- * @protected
- * @type {Boolean}
- * @properties={typeid:35,uuid:"A08FACCE-3541-417A-87A1-9CBEFEDE3C17",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
- * Overrides creation hook and adds columns
- * @protected
- * @param {JSForm} jsForm
- * @param {scopes.svyLookup.Lookup} lookupObj
- * @override
- * @properties={typeid:24,uuid:"D3E09F60-9795-4887-ADA3-048AC0E96584"}
- */
-function onCreateInstance(jsForm, lookupObj) {
-	
-}
-
-/**
  * Handle focus gained event of the search element. Adds the listener if not added
  * @protected
  * @param {JSEvent} event the event that triggered the action
  *
- * @properties={typeid:24,uuid:"82F2767D-02BC-44F6-881D-478D95FFFB27"}
+ * @properties={typeid:24,uuid:"3FB44475-778A-4341-BBAD-3DC8FF095DBC"}
  * @AllowToRunInFind
  */
 function onFocusGainedSearch(event) {
@@ -36,52 +15,37 @@ function onFocusGainedSearch(event) {
 
 /**
  * Callback method for when form is shown.
+ * 
  * Focuses first field and adds shortcuts
+ * 
  * @param {Boolean} firstShow form is shown first time after load
  * @param {JSEvent} event the event that triggered the action
  *
  * @protected
+ * 
+ * @override 
  *
- * @properties={typeid:24,uuid:"27ACDC79-66C6-4E3B-856B-A66195C572B7"}
+ * @properties={typeid:24,uuid:"882CB3AC-65EC-4A00-80F4-F3A20621E4B6"}
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
+	_super.onShow(firstShow, event);
+
 	if (firstShow) {
 		if (elements.table.columns) {
 			elements.table.removeAllColumns();
-		}		
+		}
 
 		for (var i = 0; i < lookup.getFieldCount(); i++) {
 			var field = lookup.getField(i);
 			if (!field.isVisible()) continue;
-
-			var column = elements.table.newColumn(field.getDataProvider());
-			column.headerTitle = field.getTitleText();
-			column.valuelist = field.getValueListName();
-			column.format = field.getFormat();
-			column.styleClass = field.getStyleClass();
-			column.styleClassDataprovider = field.getStyleClassDataprovider();
-			column.width = field.getWidthAsInteger();
-			column.minWidth = field.getWidthAsInteger()
-			column.columnDef = {
-				suppressMenu: true
-			}
+			createFieldInstance(field);
 		}
 	}
-	keyListenerReady = false;
+
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER', onEnter, controller.getName());
-	plugins.window.createShortcut('ESC', cancel, controller.getName());
 }
 
-/**
- * @private
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"ABB70676-E140-40A5-9738-6029BEC55097"}
- */
-function onEnter() {
-	onSelect();
-}
 
 /**
  * Handles the key listener callback event
@@ -95,7 +59,7 @@ function onEnter() {
  * @param {Number} shiftKey
  * @param {Number} capsLock
  *
- * @properties={typeid:24,uuid:"F934927E-8A4F-40D2-B0DC-4A56A8C85DEE"}
+ * @properties={typeid:24,uuid:"D9952CAE-2591-4E80-9F01-2F652434CFBE"}
  */
 function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
@@ -104,8 +68,7 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 		return;
 	}
 
-	// run search
-	search(value);
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
 
 /**
@@ -115,28 +78,12 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"264A65AC-9A97-4C5F-A24C-C664A59BED15"}
+ * @properties={typeid:24,uuid:"13EC9BF7-D1FE-4D8A-A83A-6A67B1F6AFD7"}
  * @AllowToRunInFind
  */
 function onActionSearch(event) {
 	search(searchText);
 	elements.searchText.requestFocus();
-}
-
-/**
- * Handle hide window.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @return {Boolean}
- *
- * @protected
- *
- * @properties={typeid:24,uuid:"17C40F4E-2CDF-4A55-B79B-1DCEEFC8F54F"}
- */
-function onHide(event) {
-	plugins.keyListener.removeKeyListener("data-svylookup-search");
-	return true
 }
 
 /**
@@ -151,8 +98,34 @@ function onHide(event) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"C3F56684-5F49-4DB3-8D39-71833F2BDDB5"}
+ * @properties={typeid:24,uuid:"B484C148-1C11-4DD4-A3B3-8EF5813BC87D"}
  */
 function onCellDoubleClick(foundsetindex, columnindex, record, event) {
 	onSelect();
+}
+
+/**
+ * @param {scopes.svyLookup.LookupField} field
+ *
+ * @return {CustomType<aggrid-groupingtable.column>}
+ * 
+ * @protected 
+ * 
+ * @override
+ *
+ * @properties={typeid:24,uuid:"19E8A78B-BB80-492F-878C-58F7D4665CF8"}
+ */
+function createFieldInstance(field) {
+	var column = elements.table.newColumn(field.getDataProvider());
+	column.headerTitle = field.getTitleText();
+	column.valuelist = field.getValueListName();
+	column.format = field.getFormat();
+	column.styleClass = field.getStyleClass();
+	column.styleClassDataprovider = field.getStyleClassDataprovider();
+	column.width = field.getWidthAsInteger();
+	column.minWidth = field.getWidthAsInteger()
+	column.columnDef = {
+		suppressMenu: true
+	}
+	return column;
 }

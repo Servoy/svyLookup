@@ -21,8 +21,8 @@ keylistener:\"data-svylookup-search\"\
 dataProviderID:"searchText",
 location:"10,10",
 name:"searchText",
-onActionMethodID:"264A65AC-9A97-4C5F-A24C-C664A59BED15",
-onFocusGainedMethodID:"82F2767D-02BC-44F6-881D-478D95FFFB27",
+onActionMethodID:"13EC9BF7-D1FE-4D8A-A83A-6A67B1F6AFD7",
+onFocusGainedMethodID:"3FB44475-778A-4341-BBAD-3DC8FF095DBC",
 placeholderText:"Search...",
 selectOnEnter:true,
 size:"180,30",
@@ -31,7 +31,7 @@ uuid:"7A53611C-3B62-4FC7-B951-DA5B8C8D42FC"
 },
 {
 anchors:15,
-cssPosition:"51,10,10,10,180,39",
+cssPosition:"50,10,10,10,180,40",
 json:{
 anchors:15,
 columns:[
@@ -42,10 +42,10 @@ width:70
 ],
 cssPosition:{
 bottom:"10",
-height:"39",
+height:"40",
 left:"10",
 right:"10",
-top:"51",
+top:"50",
 width:"180"
 },
 gridOptions:{
@@ -55,7 +55,7 @@ location:{
 x:10,
 y:51
 },
-onCellDoubleClick:"C3F56684-5F49-4DB3-8D39-71833F2BDDB5",
+onCellDoubleClick:"B484C148-1C11-4DD4-A3B3-8EF5813BC87D",
 size:{
 height:39,
 width:180
@@ -78,8 +78,8 @@ uuid:"FE9C8028-57CB-41D8-A08F-D7F3FB6863CB"
 }
 ],
 name:"svyLookupNGTable",
-onHideMethodID:"17C40F4E-2CDF-4A55-B79B-1DCEEFC8F54F",
-onShowMethodID:"27ACDC79-66C6-4E3B-856B-A66195C572B7",
+onHideMethodID:"72FC15EA-45FE-4AAD-A5D7-5917CB85F818",
+onShowMethodID:"882CB3AC-65EC-4A00-80F4-F3A20621E4B6",
 size:"200,200",
 styleClass:"svy-lookup lookup-table-form",
 typeid:3,

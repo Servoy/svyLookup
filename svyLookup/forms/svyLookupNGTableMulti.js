@@ -1,33 +1,16 @@
 /**
- * Flag if keylistener has been added
- *
- * @protected
- * @type {Boolean}
- * @properties={typeid:35,uuid:"72249731-3541-4842-B0FF-918E87583956",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
- * @type {Array<JSRecord>}
- * @private 
- *
- * @properties={typeid:35,uuid:"49115B9D-29DA-4617-AA44-57A6DEB151A4",variableType:-4}
- */
-var checkedRecords = [];
-
-/**
  * Overrides creation hook and adds columns
  * @protected
  * @param {JSForm} jsForm
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @override
- * @properties={typeid:24,uuid:"C938A9BA-6C99-4BA2-A537-3D671867DB9C"}
+ * @properties={typeid:24,uuid:"A2690E86-C7BB-4BB3-89B7-4D4882CF93C5"}
  */
 function onCreateInstance(jsForm, lookupObj) {
 	var jsDataSourceNode = solutionModel.getDataSourceNode(lookupObj.getDataSource());
 
 	if (!jsDataSourceNode.getCalculation("svy_lookup_selected")) {
-		jsDataSourceNode.newCalculation("function svy_lookup_selected() { return 'icon-selection' }", JSColumn.TEXT);
+		jsDataSourceNode.newCalculation("function svy_lookup_selected() { return ' ' }", JSColumn.TEXT);
 	}
 }
 
@@ -36,7 +19,7 @@ function onCreateInstance(jsForm, lookupObj) {
  * @protected
  * @param {JSEvent} event the event that triggered the action
  *
- * @properties={typeid:24,uuid:"3734A7DD-A586-4AED-A644-CA3FBF0FBF18"}
+ * @properties={typeid:24,uuid:"F50BBF9A-FF73-4D70-AB93-D3B2868FB94E"}
  * @AllowToRunInFind
  */
 function onFocusGainedSearch(event) {
@@ -49,50 +32,31 @@ function onFocusGainedSearch(event) {
 /**
  * Callback method for when form is shown.
  * Focuses first field and adds shortcuts
+ * 
  * @param {Boolean} firstShow form is shown first time after load
  * @param {JSEvent} event the event that triggered the action
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"703F7901-3070-4EE4-9EF5-B93C946FDC6B"}
+ * @properties={typeid:24,uuid:"75139F3B-225D-4D7F-92B8-AC9F80CB3BEF"}
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
+	_super.onShow(firstShow, event);
+	
 	if (firstShow) {
+		elements.table.myFoundset.foundset.multiSelect = true;
 		var checkColumn = elements.table.getColumn(0);
 		checkColumn.styleClassDataprovider = 'svy_lookup_selected';
 		
 		for (var i = 0; i < lookup.getFieldCount(); i++) {
 			var field = lookup.getField(i);
 			if (!field.isVisible()) continue;
-
-			var column = elements.table.newColumn(field.getDataProvider());
-			column.headerTitle = field.getTitleText();
-			column.valuelist = field.getValueListName();
-			column.format = field.getFormat();
-			column.styleClass = field.getStyleClass();
-			column.styleClassDataprovider = field.getStyleClassDataprovider();
-			column.width = field.getWidthAsInteger();
-			column.minWidth = field.getWidthAsInteger()
-			column.columnDef = {
-				suppressMenu: true
-			}
+			createFieldInstance(field);
 		}
 	}
 	
-	keyListenerReady = false;
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER', onEnter, controller.getName());
-	plugins.window.createShortcut('ESC', cancel, controller.getName());
-}
-
-/**
- * @private
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"720A6AF2-5042-4768-B6AD-983242E834ED"}
- */
-function onEnter() {
-	onSelect();
 }
 
 /**
@@ -100,7 +64,7 @@ function onEnter() {
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"913FA200-38ED-48CA-B7F0-47CAFE05AA34"}
+ * @properties={typeid:24,uuid:"E4BECB7D-1A26-4B39-9740-B974C11134D2"}
  */
 function onClose(event) {
 	dismiss();
@@ -118,7 +82,7 @@ function onClose(event) {
  * @param {Number} shiftKey
  * @param {Number} capsLock
  *
- * @properties={typeid:24,uuid:"82DF142B-2D25-4B7B-94A7-5B22A2EAA34B"}
+ * @properties={typeid:24,uuid:"9FC19609-A628-4DB9-BCF5-D56F602D3DFF"}
  */
 function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
@@ -127,8 +91,7 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 		return;
 	}
 
-	// run search
-	search(value);
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
 
 /**
@@ -138,7 +101,7 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"69A2457A-6B5C-41E5-AA57-56D1A7B32222"}
+ * @properties={typeid:24,uuid:"78D8037A-49C1-4FA1-BC16-1773F0570982"}
  * @AllowToRunInFind
  */
 function onActionSearch(event) {
@@ -155,12 +118,11 @@ function onActionSearch(event) {
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"95C33A3B-B820-4E68-A6EA-640FBD4BC7E0"}
+ * @properties={typeid:24,uuid:"9F9E9FD4-A3A9-4FDB-9342-93CAB7CF729F"}
  */
 function onHide(event) {
 	onSelect();
-	plugins.keyListener.removeKeyListener("data-svylookup-search");
-	return true
+	return _super.onHide(event);
 }
 
 /**
@@ -175,9 +137,11 @@ function onHide(event) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"8FB3198A-9AB8-462D-90AD-DCB39AC52181"}
+ * @properties={typeid:24,uuid:"077D4A6D-A383-47CF-9542-BCA0C097E3B1"}
  */
 function onCellDoubleClick(foundsetindex, columnindex, record, event) {
+	var actualRecord = elements.table.myFoundset.foundset.getRecord(foundsetindex);
+	selectRecord(actualRecord);
 	onSelect();
 }
 
@@ -193,7 +157,7 @@ function onCellDoubleClick(foundsetindex, columnindex, record, event) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"3D5BFDAD-BD9B-4B10-BB43-61814B49C2F9"}
+ * @properties={typeid:24,uuid:"6F9D9117-156C-411A-8D5F-0E200A378829"}
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
 	// confirm selection at change. Dismissed only by explicit cancel
@@ -201,30 +165,29 @@ function onCellClick(foundsetindex, columnindex, record, event) {
 	
 	if (columnindex === 0) {
 		var actualRecord = foundset.getRecord(foundsetindex);
-		if (actualRecord['svy_lookup_selected'] === "icon-selection true") {
-			actualRecord['svy_lookup_selected'] = 'icon-selection';
-			checkedRecords.splice(checkedRecords.indexOf(actualRecord), 1);
-		} else {
-			actualRecord['svy_lookup_selected'] = 'icon-selection true';
-			checkedRecords.push(actualRecord);
-		}
+		toggleRecordSelection(actualRecord);
 	}
 }
 
 /**
- * @return {Array<JSRecord>}
- * @override
- * @protected
+ * @param {scopes.svyLookup.LookupField} field
  *
- * @properties={typeid:24,uuid:"5D510CEF-69DB-40F4-8C7D-CBD71730FAE9"}
+ * @return {CustomType<aggrid-groupingtable.column>}
+ * @override
+ *
+ * @properties={typeid:24,uuid:"1F64E2CF-3E86-4DF8-8A0C-28E5166F0635"}
  */
-function getSvyLookupSelectedRecords() {
-	if (checkedRecords && checkedRecords.length > 0) {
-		for (var c = 0; c < checkedRecords.length; c++) {
-			var checkedRecord = checkedRecords[c];
-			checkedRecord['svy_lookup_selected'] = 'icon-selection';
-		}
+function createFieldInstance(field) {
+	var column = elements.table.newColumn(field.getDataProvider());
+	column.headerTitle = field.getTitleText();
+	column.valuelist = field.getValueListName();
+	column.format = field.getFormat();
+	column.styleClass = field.getStyleClass();
+	column.styleClassDataprovider = field.getStyleClassDataprovider();
+	column.width = field.getWidthAsInteger();
+	column.minWidth = field.getWidthAsInteger()
+	column.columnDef = {
+		suppressMenu: true
 	}
-	return checkedRecords;
+	return column;
 }
-
