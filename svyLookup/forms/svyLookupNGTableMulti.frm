@@ -25,7 +25,7 @@ specname:\"div\"\
 items:[
 {
 customProperties:"attributes:{\
-class:\"svy-lookup-table-select-labels\"\
+class:\"row svy-lookup-table-select-labels\"\
 },\
 properties:{\
 packagename:\"12grid\",\
@@ -75,7 +75,8 @@ height:100,
 width:100
 },
 styleClass:"svy-lookup-action-label",
-text:"Select All"
+text:"Select All",
+visible:false
 },
 location:"1,1",
 name:"labelSelectAll",
@@ -83,7 +84,8 @@ size:"100,100",
 styleClass:"svy-lookup-action-label",
 typeName:"bootstrapcomponents-label",
 typeid:47,
-uuid:"EDAD982C-C215-4D9C-AD3F-C75E311A1427"
+uuid:"EDAD982C-C215-4D9C-AD3F-C75E311A1427",
+visible:false
 }
 ],
 location:"1,1",
@@ -179,9 +181,7 @@ specname:\"div\"\
 }",
 items:[
 {
-anchors:15,
 json:{
-anchors:15,
 columns:[
 {
 styleClass:"table-cell-icon svy-lookup-icon-selection",
@@ -192,22 +192,12 @@ width:40
 gridOptions:{
 sideBar:"false"
 },
-location:{
-x:2,
-y:2
-},
 onCellClick:"6F9D9117-156C-411A-8D5F-0E200A378829",
 onCellDoubleClick:"B484C148-1C11-4DD4-A3B3-8EF5813BC87D",
 rowHeight:35,
-size:{
-height:100,
-width:100
-},
 styleClass:"ag-theme-servoy"
 },
-location:"2,2",
 name:"table",
-size:"100,100",
 styleClass:"ag-theme-servoy",
 typeName:"aggrid-groupingtable",
 typeid:47,
