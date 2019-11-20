@@ -3,10 +3,6 @@ methods:{\
 onHideMethodID:{\
 arguments:null,\
 parameters:null\
-},\
-onShowMethodID:{\
-arguments:null,\
-parameters:null\
 }\
 },\
 useCssPosition:true",
@@ -21,8 +17,8 @@ keylistener:\"data-svylookup-search\"\
 dataProviderID:"searchText",
 location:"10,10",
 name:"searchText",
-onActionMethodID:"13EC9BF7-D1FE-4D8A-A83A-6A67B1F6AFD7",
-onFocusGainedMethodID:"3FB44475-778A-4341-BBAD-3DC8FF095DBC",
+onActionMethodID:"641363E9-2510-4BE3-A46F-EB88116E40F3",
+onFocusGainedMethodID:"99D05750-C075-497A-8ABA-F7AA2BFF3C23",
 placeholderText:"Search...",
 selectOnEnter:true,
 size:"180,30",
@@ -79,7 +75,6 @@ uuid:"FE9C8028-57CB-41D8-A08F-D7F3FB6863CB"
 ],
 name:"svyLookupNGTable",
 onHideMethodID:"B6070ACF-1805-4690-820D-F216DD156B31",
-onShowMethodID:"882CB3AC-65EC-4A00-80F4-F3A20621E4B6",
 size:"200,200",
 styleClass:"svy-lookup lookup-table-form",
 typeid:3,

@@ -115,7 +115,7 @@ x:2,
 y:2
 },
 onActionMethodID:"78D8037A-49C1-4FA1-BC16-1773F0570982",
-onFocusGainedMethodID:"F50BBF9A-FF73-4D70-AB93-D3B2868FB94E",
+onFocusGainedMethodID:"99D05750-C075-497A-8ABA-F7AA2BFF3C23",
 placeholderText:"Search...",
 size:{
 height:100,

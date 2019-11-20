@@ -1,19 +1,4 @@
 /**
- * Handle focus gained event of the search element. Adds the listener if not added
- * @protected
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"3FB44475-778A-4341-BBAD-3DC8FF095DBC"}
- * @AllowToRunInFind
- */
-function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener("data-svylookup-search", onKey, true);
-		keyListenerReady = true;
-	}
-}
-
-/**
  * Callback method for when form is shown.
  * 
  * Focuses first field and adds shortcuts
@@ -25,8 +10,9 @@ function onFocusGainedSearch(event) {
  * 
  * @override 
  *
- * @properties={typeid:24,uuid:"882CB3AC-65EC-4A00-80F4-F3A20621E4B6"}
  * @AllowToRunInFind
+ *
+ * @properties={typeid:24,uuid:"EE1C7C3D-79F5-4DD0-A5E8-B620B4D5B032"}
  */
 function onShow(firstShow, event) {
 	_super.onShow(firstShow, event);
@@ -58,6 +44,8 @@ function onShow(firstShow, event) {
  * @param {Number} ctrlKey
  * @param {Number} shiftKey
  * @param {Number} capsLock
+ * 
+ * @override 
  *
  * @properties={typeid:24,uuid:"D9952CAE-2591-4E80-9F01-2F652434CFBE"}
  */
@@ -78,8 +66,9 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
  *
  * @protected
  *
- * @properties={typeid:24,uuid:"13EC9BF7-D1FE-4D8A-A83A-6A67B1F6AFD7"}
  * @AllowToRunInFind
+ *
+ * @properties={typeid:24,uuid:"641363E9-2510-4BE3-A46F-EB88116E40F3"}
  */
 function onActionSearch(event) {
 	search(searchText);
