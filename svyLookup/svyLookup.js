@@ -469,10 +469,11 @@ function init_Lookup() {
 			/** @type {String} */
 			var ds = this.getDataSource();
 			var fs = databaseManager.getFoundSet(ds);
-			var pks = databaseManager.createEmptyDataSet(this.selectedPks.length, this.selectedPks[0].length);
+			var pks = databaseManager.createEmptyDataSet(0, this.selectedPks[0].length);
 			for (var i = 0; i < this.selectedPks.length; i++) {
 				pks.addRow(this.selectedPks[i]);
 			}
+			// FIXME: for valuelist based lookup i need to store the realValue
 			fs.loadRecords(pks);
 			if (utils.hasRecords(fs)) {
 				for (var f = 1; f <= fs.getSize(); f++) {

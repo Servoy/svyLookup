@@ -32,6 +32,20 @@ var selectedLooupValue$valuelist;
 var selectedLooupValues$valuelist;
 
 /**
+ * @type {scopes.svyLookup.Lookup}
+ *
+ * @properties={typeid:35,uuid:"0AA55231-F474-4838-B4A5-679C1B4BAF6D",variableType:-4}
+ */
+var lookupObjMulti;
+
+/**
+ * @type {scopes.svyLookup.Lookup}
+ *
+ * @properties={typeid:35,uuid:"B615A89E-288E-4FF8-81BE-BE0A3411976A",variableType:-4}
+ */
+var lookupObjMulti$valuelist;
+
+/**
  * @public
  * @return {String}
  *
@@ -193,36 +207,42 @@ function clearLookup(event) {
  * @properties={typeid:24,uuid:"39F2FED4-B8C6-4809-919C-FE97282533CC"}
  */
 function onShowLookupMultiSelection(event, expand) {
-	// create lookup object
-	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
 
-	lookupObj.setLookupDataprovider("productname");
 
-	// add fields
+	if (!lookupObjMulti) {
+		// create lookup object
+		var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	
+		lookupObj.setLookupDataprovider("productname");
+	
+		// add fields
+	
+		// related data is supported
+		lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
+		lookupObj.addField('productname').setTitleText('Product');
+		lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+	
+		// Valuelists and non-searchable fields supported
+		lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
+	
+		// formatted, non-searchable field example
+		lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
+	
+		// change lookup provider
+		lookupObj.setLookupFormProvider(forms.svyLookupNGTableMulti);
+	
+		lookupObjMulti = lookupObj
+	}
 
-	// related data is supported
-	lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
-	lookupObj.addField('productname').setTitleText('Product');
-	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
-
-	// Valuelists and non-searchable fields supported
-	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
-
-	// formatted, non-searchable field example
-	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
-
-	// change lookup provider
-	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
-
+	
 	// show pop-up
 	var component = elements[event.getElementName()];
 	var initialValue = selectedLookupValues ? selectedLookupValues.split(",")[selectedLookupValues.split(",").length - 1] : null;
-
 	if (expand) {
-		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
+		var values = lookupObjMulti.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
 		selectedLookupValues = values.join(",");
 	} else {
-		lookupObj.showPopUp(onSelectMulti, component, null, null, initialValue);
+		lookupObjMulti.showPopUp(onSelectMulti, component, null, null, initialValue);
 	}
 }
 
@@ -316,6 +336,10 @@ function onShowValuelistLookupMulti(event, expand) {
 	// create lookup object
 	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable");
 	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
+	
+	// set selected pks
+	if (selectedLooupValues$valuelist) 
+		lookupObj.setSelectedPks(selectedLooupValues$valuelist.split(","))
 
 	// show pop-up
 	var component = elements[event.getElementName()];

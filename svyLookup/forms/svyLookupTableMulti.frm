@@ -1,16 +1,6 @@
 customProperties:"formComponent:false,\
 layout:{\
 responsive:true\
-},\
-methods:{\
-onHideMethodID:{\
-arguments:null,\
-parameters:null\
-},\
-onShowMethodID:{\
-arguments:null,\
-parameters:null\
-}\
 }",
 extendsID:"9DB384C5-C20C-4295-BB5E-21E8052968A4",
 items:[
@@ -53,7 +43,8 @@ height:100,
 width:100
 },
 styleClass:"svy-lookup-action-label",
-text:"Select All"
+text:"Select All",
+visible:false
 },
 location:"1,1",
 name:"labelSelectAll",
@@ -61,7 +52,8 @@ size:"100,100",
 styleClass:"svy-lookup-action-label",
 typeName:"bootstrapcomponents-label",
 typeid:47,
-uuid:"6A1107B1-4D99-4719-ACA6-B9781ED26E0A"
+uuid:"6A1107B1-4D99-4719-ACA6-B9781ED26E0A",
+visible:false
 },
 {
 json:{
@@ -221,8 +213,6 @@ uuid:"24BFB484-18EA-4CD1-AF40-1AC598E00BE5"
 }
 ],
 name:"svyLookupTableMulti",
-onHideMethodID:"2C64734A-241C-4289-A33A-7C1F19BBB548",
-onShowMethodID:"91F6E73C-C166-4DB1-A5E6-5CCFA98584F1",
 styleClass:"svy-lookup svy-lookup-multi",
 typeid:3,
 uuid:"A4F31626-43DC-4159-AD5E-75EB04AF3BEB"

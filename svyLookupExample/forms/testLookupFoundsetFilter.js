@@ -362,5 +362,6 @@ function getProductFoundSet() {
 	var fs = datasources.db.example_data.products.getFoundSet();
 	fs.addFoundSetFilterParam("unitprice",">","30","unitprice");
 	fs.sort("unitprice desc", true);
+	fs.loadAllRecords();
 	return fs;
 }
