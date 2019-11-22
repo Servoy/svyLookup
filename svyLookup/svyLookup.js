@@ -62,6 +62,39 @@ function createValuelistLookup(valuelistName, titleText) {
 }
 
 /**
+ * Creates a read only, in-memory datasource from the given query and creates a Lookup for that
+ * 
+ * @param {QBSelect} qbSelect the query
+ * @param {String} [dsName] the name of the datasource in case it should be reused
+ * @param {Boolean} [overrideData] when true, the datasource with the given name is filled again from the given query, when false, an existing datasource with the same datasource name would be reused; default is false
+ * 
+ * @return {Lookup}
+ * 
+ * @public 
+ *
+ * @properties={typeid:24,uuid:"A3D0175E-FD07-426C-B0EC-B951337075D0"}
+ */
+function createQueryLookup(qbSelect, dsName, overrideData) {
+	var dataSource = null;
+	if (!dsName) {
+		dsName = application.getUUID().toString().replace(/-/g, '_');
+	}
+	var dataSourceName = "svy_lookup_" + dsName;
+	if (!databaseManager.dataSourceExists(dataSourceName) || overrideData === true) {
+		dataSource = databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1);
+	}
+	
+	var columnNames = datasources.mem[dataSourceName].getColumnNames();
+	
+	var dsLookup = createLookup(dataSource);
+	for (var c = 0; c < columnNames.length; c++) {
+		if (columnNames[c] === '_sv_rowid') continue;
+		dsLookup.addField(columnNames[c]);
+	}
+	return dsLookup;
+}
+
+/**
  * Creates a set of lookup objects which can be used to show a pop-up form
  * @public
  * @param {Array<String|JSFoundSet|JSRecord>} dataSources The data source to lookup
