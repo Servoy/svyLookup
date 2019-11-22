@@ -185,8 +185,10 @@ function Lookup(datasource){
 	// TODO datasource could be an existing foundset, used to filter lookup data ?
 	
 	/**
+<<<<<<< HEAD
 	 * Sets the lookup form. The lookup form must be an instance of the AbstractLookup form.
 	 * 
+=======
 	 * @private
 	 * @type {String}
 	 */
@@ -248,6 +250,7 @@ function Lookup(datasource){
 	}
 
 	/**
+>>>>>>> master
 	 * @public 
 	 * @param {RuntimeForm<AbstractLookup>} formProvider
 	 *  */
