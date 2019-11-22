@@ -93,118 +93,6 @@ function createValuelistLookup(valuelistName, titleText) {
 }
 
 /**
- * Creates a set of lookup objects which can be used to show a pop-up form
- * @public
- * @param {Array<String|JSFoundSet|JSRecord>} dataSources The data source to lookup
- * @return {MultiLookup}
- *
- * @properties={typeid:24,uuid:"A80BE700-B4A6-4168-AC6E-9289E8BF0E44"}
- */
-function createMultiDSLookup(dataSources) {
-	var ml = new MultiLookup();
-	for (var i = 0; i < dataSources.length; i++) {
-		/** @type {String} */
-		var ds = dataSources[i];
-		if (dataSources[i] instanceof JSRecord) {
-			ds = dataSources[i].getDataSource();
-		}
-		ml.addLookup(ds)
-	}
-	return ml;
-}
-
-/**
- * @private 
- * @constructor
- * @properties={typeid:24,uuid:"0C81E4B2-4943-40B4-BCF4-334C054D1DAA"}
- */
-function MultiLookup() {
-
-	/**
-	 * @protected 
-	 * @type {Object<Lookup>}
-	 */
-	this.lookups = { };
-	
-}
-
-/**
- * @constructor 
- * @private 
- * @properties={typeid:24,uuid:"7A86E969-CAFE-483D-9141-52E2CD4BFDFE"}
- */
-function init_MultiLookup() {
-	
-	/**
-	 * Adds a dataSource to list of Lookups
-	 *
-	 * @public
-	 * @param {String} dataSource
-	 * @return {Lookup}
-	 * @this {MultiLookup}
-	 */
-	 MultiLookup.prototype.addLookup = function(dataSource) {
-		var lu = new Lookup(dataSource);
-		lu.setHeader(dataSource);
-		this.lookups[dataSource] = lu;
-		return lu;
-	}
-
-	/**
-	 * Get a dataSource from list of Lookups
-	 *
-	 * @public
-	 * @param {String} dataSource
-	 * @return {Lookup}
-	 * @this {MultiLookup}
-	 */
-	MultiLookup.prototype.getLookup = function(dataSource) {
-		return this.lookups[dataSource]
-	}
-
-	/**
-	 * Get all lookup objects
-	 *
-	 * @public
-	 * @return {Object<Lookup>}
-	 * @this {MultiLookup}
-	 */
-	MultiLookup.prototype.getAllLookups = function() {
-		return this.lookups;
-	}
-
-	/**
-	 * Shows the lookup
-	 *
-	 * @public
-	 * @param {Function} callback The function that will be called when a selection is made
-	 * @param {RuntimeComponent} target The component to show relative to
-	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
-	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
-	 * @param {String} [initialValue] And initial value to show in the search
-	 * @this {MultiLookup}
-	 */
-	MultiLookup.prototype.showPopUpMultiDS = function(callback, target, width, height, initialValue) {
-		var runtimeForm = forms.svyLookupTableMultiDS.newInstance(this);
-		runtimeForm.showPopUp(callback, target, width, height, initialValue);
-	}
-	
-	/**
-	 * Creates and returns the lookup
-	 * 
-	 * @public 
-	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
-	 * @param {String} [initialValue] And initial value to show in the search
-	 * @return {plugins.window.FormPopup}
-	 * @this {MultiLookup}
-	 */
-	MultiLookup.prototype.createPopUp = function(callback, initialValue) {
-		var runtimeForm = forms.svyLookupTableMultiDS.newInstance(this);
-		return runtimeForm.createPopUp(callback, initialValue);
-	}	
-}
-
-/**
  * @private 
  * @param {String|JSFoundSet} datasource
  * @constructor
@@ -1035,6 +923,5 @@ function init_LookupField() {
  */
 var initSvyLookup = (function() {
 	init_Lookup();
-	init_MultiLookup();
 	init_LookupField();
 })();
