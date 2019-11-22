@@ -54,7 +54,6 @@ function onEnter() {
  * Handles the key listener callback event
  *
  * @private
- * @param {JSEvent} event
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
@@ -62,7 +61,7 @@ function onEnter() {
  * @properties={typeid:24,uuid:"DF0B5C6F-03A1-4251-BABD-8367C0CB2976"}
  * @AllowToRunInFind
  */
-function onKey(event, value, keyCode, altKeyCode) {
+function onKey(value, keyCode, altKeyCode) {
 	// handle up/down arrow
 	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.display.requestFocus();

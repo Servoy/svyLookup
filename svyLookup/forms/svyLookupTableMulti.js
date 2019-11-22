@@ -98,14 +98,13 @@ function onEnter() {
  * Handles the key listener callback event
  *
  * @protected
- * @param {JSEvent} event
  * @param {String} value
  * @param {Number} keyCode
  * @param {Number} altKeyCode
  *
  * @properties={typeid:24,uuid:"79382901-AE01-454F-A685-F2ECD7A9723A"}
  */
-function onKey(event, value, keyCode, altKeyCode) {
+function onKey(value, keyCode, altKeyCode) {
 
 //	application.output("onKey")
 	// handle down arrow
