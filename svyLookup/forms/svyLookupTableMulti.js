@@ -6,7 +6,9 @@
  * @properties={typeid:24,uuid:"379EC9E6-AB8B-4393-94DE-77C4CFCBF71D"}
  */
 function onSelectAll(event) {
-	selectAllRecords();	
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	selectAllRecords();
 }
 
 /**
@@ -16,17 +18,10 @@ function onSelectAll(event) {
  * @properties={typeid:24,uuid:"457DDE15-213F-4BA3-AFA4-B2EE5417CDE6"}
  */
 function onDeselectAll(event) {
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
 	deselectAllRecords();
 }
-
-/**
- * Flag if keylistener has been added
- *
- * @protected
- * @type {Boolean}
- * @properties={typeid:35,uuid:"030B4D62-EA69-486D-B065-CF20878966E3",variableType:-4}
- */
-var keyListenerReady = false;
 
 /**
  * Overrides creation hook and adds columns
@@ -44,7 +39,7 @@ function onCreateInstance(jsForm, lookupObj) {
 	var table = jsForm.findWebComponent(elements.table.getName());
 
 	// addd columns
-	/** @type {Array<servoyextra-table.column>} */
+	/** @type {Array<CustomType<servoyextra-table.column>>} */
 	var columns = table.getJSONProperty('columns');
 	
 	var columnSelection = columns[0];
@@ -53,33 +48,36 @@ function onCreateInstance(jsForm, lookupObj) {
 	for (var i = 0; i < lookupObj.getFieldCount(); i++) {
 		var field = lookupObj.getField(i);
 		if (!field.isVisible()) continue;
-
-		/** @type {servoyextra-table.column} */
-		var column = { };
-		column.dataprovider = field.getDataProvider();
-		column.headerText = field.getTitleText();
-		column.valuelist = field.getValueListName();
-		column.format = field.getFormat();
-		column.styleClass = field.getStyleClass();
-		column.styleClassDataprovider = field.getStyleClassDataprovider();
+		
+		/** @type {CustomType<servoyextra-table.column>} */
+		var column = createFieldInstance(field);
 		columns.push(column);
 	}
 	table.setJSONProperty('columns', columns);
 }
 
 /**
- * Handle focus gained event of the search element. Adds the listener if not added
+ * @param {scopes.svyLookup.LookupField} lookupFieldObj
+ * @return {CustomType<servoyextra-table.column>}
  * @protected
- * @param {JSEvent} event the event that triggered the action
+ * @override 
  *
- * @properties={typeid:24,uuid:"C4C58A66-748A-4406-8F4A-082C9AF13EB9"}
- * @AllowToRunInFind
+ * @properties={typeid:24,uuid:"D82A1AFC-E688-4DE3-BD02-CEF0D726574E"}
  */
-function onFocusGainedSearch(event) {
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchText, onKey);
-		keyListenerReady = true;
+function createFieldInstance(lookupFieldObj) {
+	/** @type {CustomType<servoyextra-table.column>} */
+	var column = {};
+	column.dataprovider = lookupFieldObj.getDataProvider();
+	column.headerText = lookupFieldObj.getTitleText();
+	column.valuelist = lookupFieldObj.getValueListName();
+	column.format = lookupFieldObj.getFormat();
+	column.styleClass = lookupFieldObj.getStyleClass();
+	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
+	column.width = lookupFieldObj.getWidth();
+	if (column.width != "auto") {
+		column.autoResize = false;
 	}
+	return column;
 }
 
 /**
@@ -89,56 +87,42 @@ function onFocusGainedSearch(event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @protected
+ * @override 
  *
  * @properties={typeid:24,uuid:"91F6E73C-C166-4DB1-A5E6-5CCFA98584F1"}
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
-	keyListenerReady = false;
+	_super.onShow(firstShow, event);
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER', onEnter, elements.searchText.getName());
-	plugins.window.createShortcut('ESC', dismiss, controller.getName());
-	
-	// TODO set the inital values ?
-	if (searchText) {
-		// TODO make sure values are selected
-	} else {
-		// remove the inital values
-	}
-	
-}
-
-/**
- * @private
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"790DFE4C-EDCD-4744-8C72-544D4B0BBE29"}
- */
-function onEnter() {
-	onSelect();
 }
 
 /**
  * Handles the key listener callback event
- *
- * @protected
+ * 
+ * @protected 
+ * @override 
+ * 
  * @param {String} value
+ * @param {JSEvent} event
  * @param {Number} keyCode
- * @param {Number} altKeyCode
+ * @param {Number} altKey
+ * @param {Number} ctrlKey
+ * @param {Number} shiftKey
+ * @param {Number} capsLock
  *
- * @properties={typeid:24,uuid:"79382901-AE01-454F-A685-F2ECD7A9723A"}
+ * @properties={typeid:24,uuid:"D1AC782C-E0AF-4625-BBBA-2AF96C646B22"}
  */
-function onKey(value, keyCode, altKeyCode) {
-
-//	application.output("onKey")
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
 	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();
 		return;
 	}
 
-	// run search
-	search(value);
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
+
 
 /**
  * Handles the action event of the search field
@@ -170,11 +154,11 @@ function onActionSearch(event) {
  * @properties={typeid:24,uuid:"59B4ABE9-09E5-4B6E-97E3-61E51657FF31"}
  */
 function onCellClick(foundsetindex, columnindex, record, event) {
-	if (foundset['svy_lookup_selected']) {
-		foundset['svy_lookup_selected'] = null;
-	} else {
-		foundset['svy_lookup_selected'] = "true";
-	}	
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	
+	var actualRecord = foundset.getRecord(foundsetindex);
+	toggleRecordSelection(actualRecord);
 }
 
 /**
@@ -188,39 +172,6 @@ function onClose(event) {
 	dismiss();
 }
 
-
-/**
- * Always called at the onHide
- * @protected 
- * 
- * @properties={typeid:24,uuid:"6EF609DB-150A-4C1E-A0C2-BDBD8AB7A3AB"}
- */
-function onSelect() {
-
-	// get records by lookup values
-	var lookupDataprovider = lookup.getLookupDataprovider();
-	var records = getSvyLookupSelectedRecords();
-	var lookupValues = [];
-	if (records && lookupDataprovider) {
-		for (var i = 0; i < records.length; i++) {
-			lookupValues.push(records[i][lookupDataprovider]);
-		}
-	}
-	
-	// invoke callback
-	if (selectHandler) {
-		selectHandler.call(this, records, lookup.getParams(), lookupValues, lookupDataprovider);
-	}
-	
-	// return the value. May be used by a modal dialog
-	if (lookupValues && lookupValues.length) {
-		return lookupValues;
-	} else {
-		return records;
-	}
-	
-}
-
 /**
  * @param {String} dataSourceName
  * @private 
@@ -228,83 +179,13 @@ function onSelect() {
  * @properties={typeid:24,uuid:"EC0D94E7-9628-4A8D-B217-3B3809B53C4E"}
  */
 function setupDataSource(dataSourceName) {
-//	// TODO this should not be here
-//	if (dataSourceName && dataSourceName.indexOf("mem:") != 0 && dataSourceName.indexOf("db:") != 0 ) {
-//		dataSourceName = "mem:" + dataSourceName;
-//	}
+	var jsDataSourceNode = solutionModel.getDataSourceNode(dataSourceName);
 
-	var jDS = solutionModel.getDataSourceNode(dataSourceName);
-
-	if (!jDS.getCalculation("svy_lookup_selected")) {
-		jDS.newCalculation("function svy_lookup_selected() {}", JSColumn.TEXT);
-	}
-
-	// TODO better be a form method since is used only in svyLooup
-	if (!jDS.getMethod("getSvyLookupSelectedRecords")) {
-		var methodCode = "function getSvyLookupSelectedRecords() {\
-				var result = [];\
-				for (var index = 1; index <= getSize(); index++) {\
-					var record = getRecord(index);\
-					if (record.svy_lookup_selected) result.push(record);\
-				}\
-				return result;\
-			}"
-
-		jDS.newMethod(methodCode);
+	if (!jsDataSourceNode.getCalculation("svy_lookup_selected")) {
+		jsDataSourceNode.newCalculation("function svy_lookup_selected() {}", JSColumn.TEXT);
 	}
 }
 
-
-/**
- * WARNING: loops over all the foundset can be very expensive
- * @protected 
- * 
- * @return {Array<JSRecord>}
- * @properties={typeid:24,uuid:"FCF69282-8B96-4DFB-9C5D-04F32A246CA1"}
- */
-function getSvyLookupSelectedRecords() {
-	var fs = foundset.duplicateFoundSet();
-	fs.loadAllRecords();
-	var result = [];
-	for (var index = 1; index <= fs.getSize(); index++) {
-		var record = fs.getRecord(index);
-		if (record['svy_lookup_selected']) result.push(record);
-	}
-	return result;
-}
-
-/**
- * WARNING: loops over all the foundset, can be very expensive
- * @protected 
- * @properties={typeid:24,uuid:"6BF83414-0287-4156-A45A-480E41FA2AC7"}
- */
-function selectAllRecords() {
-	var fs = foundset.duplicateFoundSet();
-	fs.loadAllRecords();
-	var result = [];
-	for (var index = 1; index <= fs.getSize(); index++) {
-		var record = fs.getRecord(index);
-		record.svy_lookup_selected = "true";
-	}
-	return result;
-}
-
-/**
- * WARNING: loop over all the foundset, can be very expensive
- * @protected 
- * @properties={typeid:24,uuid:"C431A15B-170E-468B-89D4-29FA04BA5EC5"}
- */
-function deselectAllRecords() {
-	var fs = foundset.duplicateFoundSet();
-	fs.loadAllRecords();
-	var result = [];
-	
-	for (var index = 1; index <= fs.getSize(); index++) {
-		var record = fs.getRecord(index);
-		record.svy_lookup_selected = null;
-	}
-	return result;
-}
 /**
  * Handle hide window.
  *
@@ -319,5 +200,5 @@ function deselectAllRecords() {
 function onHide(event) {
 	// return selected items
 	onSelect();
-	return true
+	return _super.onHide(event);
 }

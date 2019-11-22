@@ -1,10 +1,24 @@
+.svy-lookup {
+	background-color: white;
+}
+
 .svy-lookup,
 .lookup-table-form {
-	top: -34px !important;
 	border: 1px solid #e0e0e0;
 	border-top-width: 0px;
 	box-shadow: 0px 5px 5px #bbb;
 	overflow: hidden;
+}
+
+/** For decorated windows */
+.svy-dialog.window .svy-lookup, 
+.svy-dialog.window .lookup-table-form {
+	border-bottom-width: 0px;
+}
+
+#formpopup .svy-lookup,
+#formpopup .lookup-table-form {
+	top: -34px !important;
 }
 
 .lookup-search-box {
@@ -18,13 +32,11 @@
 	color: white;
 }
 
-.svy-lookup {
-	background-color: white;
-}
-
 .svy-lookup .table-servoyextra-selected {
+	/* TODO why to use a default color different than table default and why to use important ?
 	background-color: #CCCCFF !important;
-	color: black !important;
+	color: black !important; 
+	*/
 }
 
 .svy-lookup td div {
@@ -35,9 +47,8 @@
 	padding-left: 5px;
 }
 
-.label-block .bts-label, .label-block.bts-block,
-.label-block .svy-label, .label-block.svy-block {
-	display: block;
+.svy-lookup .svy-lookup-table-table .ag-root-wrapper {
+	width: 100%;
 }
 
 /** svyLookupTableMulti style */
@@ -53,27 +64,27 @@
     cursor: pointer;
 }
 
-.svy-lookup-multi .btn-label {
+.svy-lookup-multi .svy-lookup-action-label {
 	display: block;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	cursor: pointer;
 }
 
-.svy-lookup  .ag-table .table-cell-icon, 
-.svy-lookup  td.table-cell-icon > div {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div, 
+.svy-lookup  td.svy-lookup-icon-selection > div {
     font-family: 'Glyphicons Halflings';
     text-align: center;
 }
 
-.svy-lookup .ag-table .icon-selection:before, 
-.svy-lookup  td.icon-selection > div:before {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div:before, 
+.svy-lookup td.svy-lookup-icon-selection > div:before {
 	content: "\e157";
 	cursor: pointer;
 }
 
-.svy-lookup .ag-table .icon-selection.true:before,
-.svy-lookup td.icon-selection.true > div:before {
+.svy-lookup .ag-table .svy-lookup-icon-selection > div.true:before,
+.svy-lookup td.svy-lookup-icon-selection.true > div:before {
 	content: "\e067";
 	cursor: pointer;
 }

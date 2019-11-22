@@ -1,13 +1,4 @@
 /**
- * Flag if keylistener has been added
- * 
- * @protected  
- * @type {Boolean}
- * @properties={typeid:35,uuid:"93EFAD65-2890-4398-9396-BA06E9C6B530",variableType:-4}
- */
-var keyListenerReady = false;
-
-/**
  * Overrides creation hook and adds columns 
  * @protected 
  * @param {JSForm} jsForm
@@ -21,36 +12,38 @@ function onCreateInstance(jsForm, lookupObj){
 	var table = jsForm.getWebComponent(elements.table.getName());
 
 	// addd columns
-	/** @type {Array<servoyextra-table.column>} */
+	/** @type {Array<CustomType<servoyextra-table.column>>} */
 	var columns = table.getJSONProperty('columns');
 	for (var i = 0; i < lookupObj.getFieldCount(); i++) {
 		var field = lookupObj.getField(i);
 		if(!field.isVisible()) continue;
 		
-		/** @type {servoyextra-table.column} */
-		var column = {};
-		column.dataprovider = field.getDataProvider();
-		column.headerText = field.getTitleText();
-		column.valuelist = field.getValueListName();
-		column.format = field.getFormat();
+		/** @type {CustomType<servoyextra-table.column>} */
+		var column = createFieldInstance(field)
 		columns.push(column);
 	}
 	table.setJSONProperty('columns',columns);
 }
 
 /**
- * Handle focus gained event of the search element. Adds the listener if not added
- * @protected 
- * @param {JSEvent} event the event that triggered the action
+ * @return {CustomType<servoyextra-table.column>}
+ * @param {scopes.svyLookup.LookupField} lookupFieldObj
+ * @protected
+ * @override 
  *
- * @properties={typeid:24,uuid:"13A82384-3F37-4342-A489-1A4E7D1F719E"}
- * @AllowToRunInFind
+ * @properties={typeid:24,uuid:"4F635DCD-4F3F-4B6E-96DB-5AFD60E5F235"}
  */
-function onFocusGainedSearch(event) {
-	if(!keyListenerReady){
-		plugins.keyListener.addKeyListener(elements.searchText,onKey);
-		keyListenerReady = true;
-	}
+function createFieldInstance(lookupFieldObj) {
+	/** @type {CustomType<servoyextra-table.column>} */
+	var column = {};
+	column.dataprovider = lookupFieldObj.getDataProvider();
+	column.headerText = lookupFieldObj.getTitleText();
+	column.valuelist = lookupFieldObj.getValueListName();
+	column.format = lookupFieldObj.getFormat();
+	column.styleClass = lookupFieldObj.getStyleClass();
+	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
+	column.width = lookupFieldObj.getWidth();
+	return column;
 }
 
 /**
@@ -65,41 +58,32 @@ function onFocusGainedSearch(event) {
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
-	keyListenerReady = false;
+	_super.onShow(firstShow, event);
 	elements.searchText.requestFocus(true);
-	plugins.window.createShortcut('ENTER',onEnter,controller.getName());
-	plugins.window.createShortcut('ESC',dismiss,controller.getName());
-}
-
-/**
- * @private 
- * handles the keyboard shortcut ENTER and calls select event
- * @properties={typeid:24,uuid:"9AEF797A-8906-4A0B-B6AB-CAC5BB93C161"}
- */
-function onEnter(){
-	onSelect();
 }
 
 /**
  * Handles the key listener callback event
  * 
- * @protected  
+ * @protected 
  * @param {String} value
+ * @param {JSEvent} event
  * @param {Number} keyCode
- * @param {Number} altKeyCode
+ * @param {Number} altKey
+ * @param {Number} ctrlKey
+ * @param {Number} shiftKey
+ * @param {Number} capsLock
  *
  * @properties={typeid:24,uuid:"3FE98DB9-C152-41AF-8B4B-15A7AE6FA121"}
  */
-function onKey(value, keyCode, altKeyCode){
-	
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// handle down arrow
-	if(keyCode == java.awt.event.KeyEvent.VK_DOWN){
+	if (keyCode == java.awt.event.KeyEvent.VK_DOWN) {
 		elements.table.requestFocus();
 		return;
 	}
-	
-	// run search
-	search(value);
+
+	_super.onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock);
 }
 
 /**

@@ -2,54 +2,40 @@
  * @type {String}
  * @private
  *
- * @properties={typeid:35,uuid:"935269F2-0554-481F-9958-EB100C69970A"}
+ * @properties={typeid:35,uuid:"A565A597-0091-4BB9-9511-4A553987CFB1"}
  */
-var selectedLookupValue;
+var selectedLookupValue = '';
 
 /**
  * @type {String}
  * @private
  *
- * @properties={typeid:35,uuid:"FB08B0B5-71A1-4D8E-AC5D-B1AFF038A0BB"}
+ * @properties={typeid:35,uuid:"51651793-6C7A-4639-8DE5-88F16D2BA24E"}
  */
-var selectedLookupValues;
+var selectedLookupValues = '';
 
 /**
  * @type {String}
  * @private
  *
- * @properties={typeid:35,uuid:"6143C649-1EE0-4B95-826C-602E36457326"}
+ * @properties={typeid:35,uuid:"0BB99536-0CA7-4331-9D8D-A26E3810C063"}
  */
-var selectedLooupValue$valuelist;
+var selectedLooupValue$valuelist = '';
 
 /**
  * @type {String}
  * @private
  *
  *
- * @properties={typeid:35,uuid:"A1627088-42F6-4E9B-A4D8-A643980D4B6D"}
+ * @properties={typeid:35,uuid:"286C24A4-1104-4CCB-A90D-8733B4BC92F6"}
  */
-var selectedLooupValues$valuelist;
-
-/**
- * @type {scopes.svyLookup.Lookup}
- *
- * @properties={typeid:35,uuid:"0AA55231-F474-4838-B4A5-679C1B4BAF6D",variableType:-4}
- */
-var lookupObjMulti;
-
-/**
- * @type {scopes.svyLookup.Lookup}
- *
- * @properties={typeid:35,uuid:"B615A89E-288E-4FF8-81BE-BE0A3411976A",variableType:-4}
- */
-var lookupObjMulti$valuelist;
+var selectedLooupValues$valuelist = '';
 
 /**
  * @public
  * @return {String}
  *
- * @properties={typeid:24,uuid:"616CF05E-AFA8-4D38-88E6-CE15B3D1822C"}
+ * @properties={typeid:24,uuid:"CC27E93C-CFF2-4BE3-8308-E18C0147FAEC"}
  */
 function getDescription() {
 	return 'All-purpose look-up UX pattern for servoy applications';
@@ -59,7 +45,7 @@ function getDescription() {
  * @public
  * @return {String} Download URL
  *
- * @properties={typeid:24,uuid:"A162F89B-B37D-4D3E-824E-67A193B09CA4"}
+ * @properties={typeid:24,uuid:"37B0E698-E8AD-4D0C-958E-CAA2C4E3517F"}
  */
 function getDownloadURL() {
 	return 'https://github.com/Servoy/svyLookup/releases/download/v1.0.0/svyLookupExample.servoy';
@@ -69,7 +55,7 @@ function getDownloadURL() {
  * @public
  * @return {String}
  *
- * @properties={typeid:24,uuid:"04469D49-603F-45F8-8A10-147906BF1B36"}
+ * @properties={typeid:24,uuid:"F176AB16-59DD-4304-87AD-AC0D067B07BC"}
  */
 function getIconStyleClass() {
 	return 'fa-search';
@@ -79,7 +65,7 @@ function getIconStyleClass() {
  *
  * @return {String} Additioanl info (wiki markdown supported)
  *
- * @properties={typeid:24,uuid:"017832D1-060A-4081-9E9A-D45EC53C5214"}
+ * @properties={typeid:24,uuid:"BD21E513-F9A4-4996-AEA8-AC93A3EFE61F"}
  */
 function getMoreInfo() {
 	return plugins.http.getPageData('https://github.com/Servoy/svyLookup/blob/master/README.md')
@@ -89,7 +75,7 @@ function getMoreInfo() {
  * @public
  * @return {String}
  *
- * @properties={typeid:24,uuid:"C349882A-8F61-49DF-9680-80CF8340EA31"}
+ * @properties={typeid:24,uuid:"9B2D6139-BE67-4206-A168-8D8509A3B5B8"}
  */
 function getName() {
 	return 'Lookup Search';
@@ -99,7 +85,7 @@ function getName() {
  *
  * @return {RuntimeForm<AbstractMicroSample>}
  *
- * @properties={typeid:24,uuid:"4103039A-3293-46F6-8E0B-EABEC03B2E58"}
+ * @properties={typeid:24,uuid:"89EF3ABD-8869-42D5-B4F6-8514EB31E354"}
  */
 function getParent() {
 	return forms.dataSamples;
@@ -109,7 +95,7 @@ function getParent() {
  * @public
  * @return {Array<String>} code lines
  *
- * @properties={typeid:24,uuid:"4DD90762-AB83-4898-8578-FB25C06EED9D"}
+ * @properties={typeid:24,uuid:"0F4EEB30-BCBA-4DAD-B483-6AB55F0EBD0D"}
  */
 function getSampleCode() {
 	return printMethodCode(onShowLookup).concat(printMethodCode(onSelectLookup));
@@ -119,7 +105,7 @@ function getSampleCode() {
  *
  * @return {String} Website URL
  *
- * @properties={typeid:24,uuid:"26D7E413-7F9A-4BBE-8F1C-4E93F12127A3"}
+ * @properties={typeid:24,uuid:"FC381142-8B90-4606-9974-A9BC6D16E34B"}
  */
 function getWebSiteURL() {
 	return 'https://github.com/Servoy/svyLookup/wiki';
@@ -133,13 +119,13 @@ function getWebSiteURL() {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"7BE387D8-06C7-4E13-8E4F-7624666A3D07"}
+ * @properties={typeid:24,uuid:"39F33EDD-57C5-485E-80DD-05BDAD828D2A"}
  * @AllowToRunInFind
  */
 function onShowLookup(event, expand) {
 
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	var lookupObj = scopes.svyLookup.createLookup(getProductFoundSet());
 
 	lookupObj.setLookupDataprovider("productname");
 
@@ -175,7 +161,7 @@ function onShowLookup(event, expand) {
  * @param {Array<JSRecord<db:/example_data/products>>} records
  * @param {Array<String|Date|Number>} values
  * @param {scopes.svyLookup.Lookup} lookup
- *  @properties={typeid:24,uuid:"2DA1542B-A67D-46B2-92AD-FAAAF2A4DFA0"}
+ *  @properties={typeid:24,uuid:"93BD38E2-E4E7-4764-9C7B-8D09815F4027"}
  */
 function onSelectLookup(records, values, lookup) {
 	if (values && values.length) {
@@ -190,7 +176,7 @@ function onSelectLookup(records, values, lookup) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"5FC69327-EBF4-4F22-83EC-59C4F5198E51"}
+ * @properties={typeid:24,uuid:"9665AF9D-C4BE-43E2-9541-B40E3438A726"}
  */
 function clearLookup(event) {
 	selectedLookupValue = null;
@@ -204,45 +190,39 @@ function clearLookup(event) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"39F2FED4-B8C6-4809-919C-FE97282533CC"}
+ * @properties={typeid:24,uuid:"936D43AE-0336-4E4B-9648-B15574776F14"}
  */
 function onShowLookupMultiSelection(event, expand) {
+	// create lookup object
+	var lookupObj = scopes.svyLookup.createLookup(getProductFoundSet());
 
+	lookupObj.setLookupDataprovider("productname");
 
-	if (!lookupObjMulti) {
-		// create lookup object
-		var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
-	
-		lookupObj.setLookupDataprovider("productname");
-	
-		// add fields
-	
-		// related data is supported
-		lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
-		lookupObj.addField('productname').setTitleText('Product');
-		lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
-	
-		// Valuelists and non-searchable fields supported
-		lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
-	
-		// formatted, non-searchable field example
-		lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
-	
-		// change lookup provider
-		lookupObj.setLookupFormProvider(forms.svyLookupNGTableMulti);
-	
-		lookupObjMulti = lookupObj
-	}
+	// add fields
 
-	
+	// related data is supported
+	lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
+	lookupObj.addField('productname').setTitleText('Product');
+	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+
+	// Valuelists and non-searchable fields supported
+	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
+
+	// formatted, non-searchable field example
+	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
+
+	// change lookup provider
+	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
+
 	// show pop-up
 	var component = elements[event.getElementName()];
 	var initialValue = selectedLookupValues ? selectedLookupValues.split(",")[selectedLookupValues.split(",").length - 1] : null;
+
 	if (expand) {
-		var values = lookupObjMulti.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
+		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
 		selectedLookupValues = values.join(",");
 	} else {
-		lookupObjMulti.showPopUp(onSelectMulti, component, null, null, initialValue);
+		lookupObj.showPopUp(onSelectMulti, component, null, null, initialValue);
 	}
 }
 
@@ -252,7 +232,7 @@ function onShowLookupMultiSelection(event, expand) {
  * @param {scopes.svyLookup.Lookup} lookup
  * @private
  *
- * @properties={typeid:24,uuid:"D41BB50A-A49B-46F2-AEAC-9D5214908236"}
+ * @properties={typeid:24,uuid:"2DB37F8C-C37E-480D-9606-80CEA669E04B"}
  */
 function onSelectMulti(records, values, lookup) {
 	if (values) {
@@ -269,7 +249,7 @@ function onSelectMulti(records, values, lookup) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"30B3D178-9C86-462E-9265-B770C082F331"}
+ * @properties={typeid:24,uuid:"60286927-59C4-4C14-A461-3202140D7B4E"}
  */
 function clearLookupValues(event) {
 	selectedLookupValues = null;
@@ -282,23 +262,20 @@ function clearLookupValues(event) {
  * @param {Boolean} expand
  * @private
  *
- * @properties={typeid:24,uuid:"3CE950BC-B6DF-4BE1-AFE1-C934683CCCCD"}
+ * @properties={typeid:24,uuid:"D00AF327-6B4C-4D58-A374-25C1664D4AD6"}
  */
 function onShowValuelistLookup(event, expand) {
 	// create lookup object
-	
-	if (!lookupObjMulti$valuelist) {
-		var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
-		lookupObjMulti$valuelist = lookupObj;
-	}
+	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
+
 	// show pop-up
 	var component = elements[event.getElementName()];
 
 	if (expand) {
-		var values = lookupObjMulti$valuelist.showModalWindow(null, event.getX(), event.getY(), 400, 400, null);
+		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, null);
 		selectedLooupValue$valuelist = values[0];
 	} else {
-		lookupObjMulti$valuelist.showPopUp(onSelectValuelist, component, null, null, null);
+		lookupObj.showPopUp(onSelectValuelist, component, null, null, null);
 	}
 }
 
@@ -307,7 +284,7 @@ function onShowValuelistLookup(event, expand) {
  * @param {Array<JSRecord<db:/example_data/products>>} records
  * @param {Array<String|Date|Number>} values
  * @param {scopes.svyLookup.Lookup} lookup
- *  @properties={typeid:24,uuid:"F99C70C5-28F1-4628-ACD0-77068383E6FD"}
+ *  @properties={typeid:24,uuid:"D49339BC-3D49-4DB7-8157-40477987C85F"}
  */
 function onSelectValuelist(records, values, lookup) {
 	selectedLooupValue$valuelist = values[0];
@@ -320,7 +297,7 @@ function onSelectValuelist(records, values, lookup) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"D92B0E5A-C1B9-47B7-9526-F1DBC008B614"}
+ * @properties={typeid:24,uuid:"96C00078-5D21-42DD-ACD0-9E5E50FA56BA"}
  */
 function clearLookupValuelist(event) {
 	selectedLooupValue$valuelist = null;
@@ -333,16 +310,12 @@ function clearLookupValuelist(event) {
  * @param {Boolean} expand
  * @private
  *
- * @properties={typeid:24,uuid:"E1C42E9C-221C-4736-B161-76BA92DAFDEE"}
+ * @properties={typeid:24,uuid:"1D3E09ED-B170-43F0-8C54-EBF09721B3C8"}
  */
 function onShowValuelistLookupMulti(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createValuelistLookup("orders");
+	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable");
 	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
-	
-	// set selected pks
-	if (selectedLooupValues$valuelist) 
-		lookupObj.setSelectedPks(selectedLooupValues$valuelist.split(","))
 
 	// show pop-up
 	var component = elements[event.getElementName()];
@@ -361,7 +334,7 @@ function onShowValuelistLookupMulti(event, expand) {
  * @param {Array<JSRecord<db:/example_data/products>>} records
  * @param {Array<String|Date|Number>} values
  * @param {scopes.svyLookup.Lookup} lookup
- *  @properties={typeid:24,uuid:"41E91869-0D41-47E5-9500-4F268EAA3946"}
+ *  @properties={typeid:24,uuid:"F5A3C064-18F4-4784-9538-8143FBD1ADAA"}
  */
 function onSelectValuelistMulti(records, values, lookup) {
 	selectedLooupValues$valuelist = values ? values.join(",") : null;
@@ -374,8 +347,21 @@ function onSelectValuelistMulti(records, values, lookup) {
  *
  * @private
  *
- * @properties={typeid:24,uuid:"86A81DD0-4356-46B8-B2BA-4F966053C6CE"}
+ * @properties={typeid:24,uuid:"61664A4C-3021-493B-A197-7BF32186C573"}
  */
 function clearLookupValuelistMulti(event) {
 	selectedLooupValues$valuelist = null;
+}
+
+
+/**
+ * @protected 
+ * @properties={typeid:24,uuid:"F1CC7301-3CC7-4159-B603-33D93610C480"}
+ */
+function getProductFoundSet() {
+	var fs = datasources.db.example_data.products.getFoundSet();
+	fs.addFoundSetFilterParam("unitprice",">","30","unitprice");
+	fs.sort("unitprice desc", true);
+	fs.loadAllRecords();
+	return fs;
 }

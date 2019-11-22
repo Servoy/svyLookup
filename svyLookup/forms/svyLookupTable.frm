@@ -1,5 +1,9 @@
 customProperties:"formComponent:false,\
 methods:{\
+onHideMethodID:{\
+arguments:null,\
+parameters:null\
+},\
 onShowMethodID:{\
 arguments:null,\
 parameters:null\
@@ -36,18 +40,20 @@ styleClass:"table-hover"
 location:"0,40",
 name:"table",
 size:"100,260",
-styleClass:"table-hover",
 typeName:"servoyextra-table",
 typeid:47,
 uuid:"677C24E8-3312-478F-941B-361D722A4C59"
 },
 {
 anchors:11,
+customProperties:"attributes:{\
+keylistener:\"data-svylookup-search\"\
+}",
 dataProviderID:"searchText",
 location:"0,0",
 name:"searchText",
 onActionMethodID:"DAE25971-6B04-4212-AE61-AC2759604286",
-onFocusGainedMethodID:"13A82384-3F37-4342-A489-1A4E7D1F719E",
+onFocusGainedMethodID:"99D05750-C075-497A-8ABA-F7AA2BFF3C23",
 placeholderText:"Enter Search Criteria",
 selectOnEnter:true,
 size:"100,40",
@@ -56,7 +62,7 @@ uuid:"ACD5CC3A-8EBB-464C-85BF-48BC24C10C5B"
 }
 ],
 name:"svyLookupTable",
-navigatorID:"0",
+onHideMethodID:"B6070ACF-1805-4690-820D-F216DD156B31",
 onShowMethodID:"0EB82C64-97A9-4B59-909D-629CA8A9305D",
 size:"100,100",
 styleClass:"svy-lookup lookup-table-form",
