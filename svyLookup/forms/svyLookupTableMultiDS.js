@@ -34,7 +34,6 @@ function onFocusGainedSearch(event) {
 		plugins.keyListener.addKeyListener(elements.searchBox, onKey);
 		keyListenerReady = true;
 	}
-	search(searchText,2);
 }
 
 /**
