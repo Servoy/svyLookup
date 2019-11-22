@@ -62,7 +62,7 @@ function search(txt) {
 		for (var j = 0; j < lu.getFieldCount(); j++) {
 			s.addSearchProvider(lu.getField(j).getDataProvider()).setAlias(lu.getField(j).getTitleText());
 		}
-		searchText = txt;
+
 		s.loadRecords(fs);
 
 		//add data to in-memory datasource
@@ -70,7 +70,7 @@ function search(txt) {
 			foundset.newRecord();
 			var nr = foundset.getSelectedRecord();
 			nr['rec_type'] = 'svy-multids-header'
-			nr['display'] = '<b classname="svy-multids-header">' + lu.getHeader() + '</b>'
+			nr['display'] = lu.getHeader()
 			nr['rec_order'] = order;
 			order++;
 		}
@@ -84,7 +84,7 @@ function search(txt) {
 			nr['rec_pk'] = sr.getPKs().join(','); //get combo PKS
 			nr['rec_ds'] = sr.getDataSource();
 			nr['rec_type'] = 'svy-multids-detail'
-			nr['display'] = '<span classname="svy-multids-detail">' + sr[lu.getDisplayField()] + '</span>';
+			nr['display'] = sr[lu.getDisplayField()]
 			nr['rec_order'] = order;
 			size++;
 		}
@@ -95,14 +95,15 @@ function search(txt) {
 
 		//update header text with search results
 		if (size) {
-			//			elements['table'].getColumn(0).headerText = 'Found ' + size + ' record' + (size > 1 ? 's' : '') + '.';
+			elements['table'].getColumn(0).headerText = 'Found ' + size + ' record' + (size > 1 ? 's' : '') + '.';
 			//			application.output('Found ' + size + ' record' + (size > 1 ? 's' : '') + '.')
 		} else {
-			//			elements['table'].getColumn(0).headerText = 'No results found.';
+			elements['table'].getColumn(0).headerText = 'No results found.';
 			//			application.output('No results found.')
 		}
 
 	}
+
 }
 
 /**
@@ -114,18 +115,16 @@ function search(txt) {
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- * @param {Number} [index] The initial index of previous search if any.
  *
  * @properties={typeid:24,uuid:"3882A299-CE63-4F09-A85D-E597D90358CA"}
  */
-function showPopUp(callback, target, width, height, initialValue, index) {
+function showPopUp(callback, target, width, height, initialValue) {
 	selectHandler = callback;
 	var w = !width ? target.getWidth() : width;
 	if (initialValue) {
 		searchText = initialValue;
 		search(searchText);
 		foundset.loadAllRecords();
-		foundset.setSelectedIndex(index);
 	}
 	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
 }
@@ -205,8 +204,8 @@ function dismiss() {
 		fs.search()
 		// invoke callback
 		if (selectHandler) {
-			selectHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord(), index: foundset.getSelectedIndex() });
+			selectHandler.call(this, { searchtext: searchText, record: fs.getSelectedRecord() });
 		}
-		plugins.window.closeFormPopup(null);
 	}
+	plugins.window.closeFormPopup(null);
 }

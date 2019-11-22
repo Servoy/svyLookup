@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>resources</project>
-		<project>keylistener</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
