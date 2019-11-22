@@ -286,16 +286,19 @@ function clearLookupValues(event) {
  */
 function onShowValuelistLookup(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
-
+	
+	if (!lookupObjMulti$valuelist) {
+		var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
+		lookupObjMulti$valuelist = lookupObj;
+	}
 	// show pop-up
 	var component = elements[event.getElementName()];
 
 	if (expand) {
-		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, null);
+		var values = lookupObjMulti$valuelist.showModalWindow(null, event.getX(), event.getY(), 400, 400, null);
 		selectedLooupValue$valuelist = values[0];
 	} else {
-		lookupObj.showPopUp(onSelectValuelist, component, null, null, null);
+		lookupObjMulti$valuelist.showPopUp(onSelectValuelist, component, null, null, null);
 	}
 }
 
@@ -334,7 +337,7 @@ function clearLookupValuelist(event) {
  */
 function onShowValuelistLookupMulti(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable");
+	var lookupObj = scopes.svyLookup.createValuelistLookup("orders");
 	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
 	
 	// set selected pks
