@@ -9,13 +9,6 @@
 var searchText = '';
 
 /**
- * @type {Number}
- *
- * @properties={typeid:35,uuid:"7B000911-926B-4115-843E-BC9390210FC8",variableType:4}
- */
-var index = 0;
-
-/**
  * @properties={typeid:35,uuid:"C05745D9-28AE-4AAF-87C1-1E52DF7FCB3D",variableType:-4}
  */
 var selected = false;
@@ -131,7 +124,6 @@ function search(txt, minlen) {
 	//save and sort foundset
 	databaseManager.saveData(foundset);
 	foundset.sort('rec_order asc')
-	foundset.setSelectedIndex(index)
 }
 
 /**
@@ -143,17 +135,18 @@ function search(txt, minlen) {
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- * @param {Number} [ind] The initial index of previous search if any.
+ * @param {Number} [index] The initial index of previous search if any.
  *
  * @properties={typeid:24,uuid:"3882A299-CE63-4F09-A85D-E597D90358CA"}
  */
-function showPopUp(callback, target, width, height, initialValue, ind) {
+function showPopUp(callback, target, width, height, initialValue, index) {
 	selectHandler = callback;
 	var w = !width ? target.getWidth() : width;
 	if (initialValue) {
 		searchText = initialValue;
 		search(searchText, 2);
-		index = ind;
+		foundset.loadAllRecords();
+		foundset.setSelectedIndex(index);
 	}
 	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
 }
@@ -210,10 +203,6 @@ function newInstance(multiLookupObj) {
  */
 function onSelect() {
 	selected = true;
-	if (foundset.getSelectedRecord()['rec_type'] == 'svy-multids-header') {
-		selected = false;
-		return;
-	}
 	plugins.window.closeFormPopup(null);
 }
 
