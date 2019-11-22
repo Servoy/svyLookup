@@ -34,7 +34,7 @@ var selectHandler = null;
  * @AllowToRunInFind
  */
 function search(txt) {
-	var order = 1;
+	var order = 0;
 	var size = 0;
 
 	//clear in-memory ds
@@ -89,24 +89,20 @@ function search(txt) {
 			size++;
 		}
 
+		//save and sort foundset
+		databaseManager.saveData(foundset);
+		foundset.sort('rec_order asc')
+
+		//update header text with search results
+		if (size) {
+			//			elements['table'].getColumn(0).headerText = 'Found ' + size + ' record' + (size > 1 ? 's' : '') + '.';
+			//			application.output('Found ' + size + ' record' + (size > 1 ? 's' : '') + '.')
+		} else {
+			//			elements['table'].getColumn(0).headerText = 'No results found.';
+			//			application.output('No results found.')
+		}
+
 	}
-	//update header text with search results
-	if (size) {
-		foundset.newRecord();
-		nr = foundset.getSelectedRecord();
-		nr['rec_type'] = 'svy-multids-detail';
-		nr['display'] = '<i>Found ' + size + ' record' + (size > 1 ? 's' : '') + '.</i>';
-		nr['rec_order'] = 0;
-	} else {
-		foundset.newRecord();
-		nr = foundset.getSelectedRecord();
-		nr['rec_type'] = 'svy-multids-detail';
-		nr['display'] = '<i>No results found.</i>';
-		nr['rec_order'] = 0;
-	}
-	//save and sort foundset
-	databaseManager.saveData(foundset);
-	foundset.sort('rec_order asc')
 }
 
 /**
