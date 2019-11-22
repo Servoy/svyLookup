@@ -40,12 +40,43 @@ function createValuelistLookup(valuelistName, titleText) {
 	if (jsList.valueListType != JSValueList.CUSTOM_VALUES && jsList.valueListType != JSValueList.DATABASE_VALUES) {
 		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE ");
 	}
-
-	var items = application.getValueListItems(valuelistName);
+	
 	var dataSource = "mem:valuelist_" + valuelistName;
-	if (!databaseManager.dataSourceExists(dataSource)) {
-		dataSource = items.createDataSource("valuelist_" + valuelistName, [JSColumn.TEXT, JSColumn.TEXT]);
-		// TODO should allow to reset the selected values !?!?
+	var dataSourceName = "valuelist_" + valuelistName;
+	if (jsList.valueListType == JSValueList.CUSTOM_VALUES) {
+
+		var items = application.getValueListItems(valuelistName);
+		if (!databaseManager.dataSourceExists(dataSource)) {
+			dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, JSColumn.TEXT]);
+		}
+		
+	} else if (jsList.valueListType == JSValueList.DATABASE_VALUES) {
+	    var qbSelect = databaseManager.createSelect(jsList.dataSource);
+		
+	    // create displayValue column
+		var displayValueColumn = qbSelect.getColumn(jsList.getDisplayDataProviderIds()[0]);
+		var i = 1;
+		do {
+			displayValueColumn.concat(jsList.separator).concat(jsList.getDisplayDataProviderIds()[i]);
+			i++;
+		} while (i < jsList.getDisplayDataProviderIds().length);
+		
+		// create realValue column
+		var realValueColumn = qbSelect.getColumn(jsList.getReturnDataProviderIds()[0]);
+		i = 1;
+		do {
+			realValueColumn.concat(jsList.separator).concat(jsList.getReturnDataProviderIds()[i]);
+			i++;
+		} while (i < jsList.getReturnDataProviderIds().length);
+
+	    qbSelect.result.add(displayValueColumn, 'displayvalue');
+	    qbSelect.result.add(realValueColumn, 'realvalue');
+	    qbSelect.result.distinct = true;
+	    qbSelect.sort.add(displayValueColumn.asc);
+	    
+	    // create the dataSource
+		// TODO how can i refresh the list !?
+	    databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT]);
 	}
 
 	// autoconfigure the valuelist lookup
