@@ -70,6 +70,7 @@ function search() {
 	/** @type {RuntimeComponent} */
 	var component = elements.search;
 	mlobj.showPopUpMultiDS(onSelect, component, null, null, searchText, index);
+	result = '';
 }
 
 /**
@@ -78,7 +79,6 @@ function search() {
  * @AllowToRunInFind
  */
 function onSelect(data) {
-	result = '';
 	searchText = data.searchtext;
 	index = data.index;
 	var cols = databaseManager.getTable(data.record.getDataSource()).getColumnNames()

@@ -49,10 +49,6 @@ function onFocusGainedSearch(event) {
  */
 function onShow(firstShow, event) {
 	keyListenerReady = false;
-	if (!keyListenerReady) {
-		plugins.keyListener.addKeyListener(elements.searchBox, onKey);
-		keyListenerReady = true;
-	}
 	elements.searchBox.requestFocus();
 	plugins.window.createShortcut('ESC', dismiss, controller.getName());
 	plugins.window.createShortcut('ENTER', onSelect, controller.getName());
@@ -91,7 +87,7 @@ function onKey(value, keyCode, altKeyCode) {
 	}
 
 	// run search
-	search(value,2);
+	search(value);
 }
 
 /**
@@ -105,6 +101,6 @@ function onKey(value, keyCode, altKeyCode) {
  * @AllowToRunInFind
  */
 function onActionSearch(event) {
-	search(searchText,2);
+	search(searchText);
 	elements.searchBox.requestFocus();
 }
