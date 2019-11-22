@@ -19,6 +19,14 @@ function onDeselectAll(event) {
 	deselectAllRecords();
 }
 
+/**
+ * Flag if keylistener has been added
+ *
+ * @protected
+ * @type {Boolean}
+ * @properties={typeid:35,uuid:"030B4D62-EA69-486D-B065-CF20878966E3",variableType:-4}
+ */
+var keyListenerReady = false;
 
 /**
  * Overrides creation hook and adds columns
@@ -59,6 +67,20 @@ function onCreateInstance(jsForm, lookupObj) {
 	table.setJSONProperty('columns', columns);
 }
 
+/**
+ * Handle focus gained event of the search element. Adds the listener if not added
+ * @protected
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"C4C58A66-748A-4406-8F4A-082C9AF13EB9"}
+ * @AllowToRunInFind
+ */
+function onFocusGainedSearch(event) {
+	if (!keyListenerReady) {
+		plugins.keyListener.addKeyListenerInterval(elements.searchText, onKey,250);
+		keyListenerReady = true;
+	}
+}
 
 /**
  * Callback method for when form is shown.
@@ -72,6 +94,7 @@ function onCreateInstance(jsForm, lookupObj) {
  * @AllowToRunInFind
  */
 function onShow(firstShow, event) {
+	keyListenerReady = false;
 	elements.searchText.requestFocus(true);
 	plugins.window.createShortcut('ENTER', onEnter, elements.searchText.getName());
 	plugins.window.createShortcut('ESC', dismiss, controller.getName());
@@ -297,17 +320,4 @@ function onHide(event) {
 	// return selected items
 	onSelect();
 	return true
-}
-
-/**
- * Callback method when form is (re)loaded.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @private
- *
- * @properties={typeid:24,uuid:"5C0F1871-40AC-46CF-A61A-A2947E58EED7"}
- */
-function onLoad(event) {
-	plugins.keyListener.addKeyListener('keylistener', onKey, true);	
 }

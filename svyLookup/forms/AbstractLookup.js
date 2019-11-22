@@ -1,7 +1,7 @@
 /**
  * User input for text searching
- *
- * @protected
+ * 
+ * @protected 
  * @type {String}
  *
  * @properties={typeid:35,uuid:"B0AD3B94-A4F9-4B2B-BC9C-1E37DBB37ED1"}
@@ -10,8 +10,8 @@ var searchText = '';
 
 /**
  * The lookup object used by this lokup form
- *
- * @protected
+ * 
+ * @protected  
  * @type {scopes.svyLookup.Lookup}
  * @properties={typeid:35,uuid:"9D520951-639E-419E-BDA0-3083A8DC4D09",variableType:-4}
  */
@@ -19,8 +19,8 @@ var lookup = null;
 
 /**
  * Handler for the selection callback
- *
- * @protected
+ * 
+ * @protected 
  * @type {Function}
  * @properties={typeid:35,uuid:"A27AA3DA-D68C-4529-88C0-851F94635F0F",variableType:-4}
  */
@@ -35,66 +35,67 @@ var window;
 
 /**
  * Runs the search. Loads records in the foundset.
- *
- * @protected
+ * 
+ * @protected 
  * @properties={typeid:24,uuid:"8FD91534-39A2-428C-9910-49B19E1FF3E5"}
  */
-function search(txt) {
+function search(txt){
+	
+	// fix search disappear while typing
+	searchText = txt;
 
 	// load all records if no input
-	if (!txt) {
+	if(!txt){
 		foundset.loadAllRecords();
 	}
-
+	
 	// create search object
 	var simpleSearch = scopes.svySearch.createSimpleSearch(foundset);
 	simpleSearch.setSearchText(txt);
-
+	
 	// Add search providers
 	for (var i = 0; i < lookup.getFieldCount(); i++) {
 		var field = lookup.getField(i);
 		// TODO check if dataprovider actually exists
-		if (field.isSearchable() && field.getDataProvider()) {
-			simpleSearch.addSearchProvider(field.getDataProvider()).setAlias(field.getTitleText());
+		if(field.isSearchable() && field.getDataProvider()){
+			simpleSearch.addSearchProvider(field.getDataProvider())
+				.setAlias(field.getTitleText());
 		}
 	}
-
+	
 	// apply search
 	simpleSearch.loadRecords(foundset);
-
-	// fix search disappear while typing
-	searchText = txt;
 }
 
 /**
  * Shows this form as pop-up, returns selection in callback
- *
- * @public
+ * 
+ * @public  
  * @param {Function} callback The function that is called when selection happens
  * @param {RuntimeComponent} target The component which will be shown
- * @param {Number} [width] The width of the pop-up. Optional. Default is component width
+ * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- *
+ * 
  * @properties={typeid:24,uuid:"9952E85A-95AE-454D-8861-5A0AC99B4D89"}
  */
-function showPopUp(callback, target, width, height, initialValue) {
+function showPopUp(callback, target, width, height, initialValue){
 	selectHandler = callback;
 	var w = !width ? target.getWidth() : width;
-	if (initialValue) {
+	if(initialValue){
 		searchText = initialValue;
 		search(searchText);
 		foundset.loadAllRecords();
 	}
-	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
+	plugins.window.showFormPopup(target,this,this,'foobar',w,height);
 }
 
 /**
- * @public
+ * @public  
  * @param {Function} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
  * @param {Number} [x]
  * @param {Number} [y]
- * @param {Number} [width] The width of the pop-up. Optional. Default is component width
+ * @param {Number} [width] The width of the pop-up. Optional. Default is component width 
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
  *
@@ -102,23 +103,23 @@ function showPopUp(callback, target, width, height, initialValue) {
  */
 function showModalWindow(callback, x, y, width, height, initialValue) {
 	selectHandler = callback;
-	if (initialValue) {
+	if(initialValue){
 		searchText = initialValue;
 		search(searchText);
 		foundset.loadAllRecords();
 	}
-
+	
 	window = application.createWindow(controller.getName(), JSWindow.MODAL_DIALOG);
-
+	
 	// TODO allow to setup window as wished; object/function provider
 	window.undecorated = true;
 	if (width && height) {
 		window.setSize(width, height);
 	}
-	if ( (x == 0 || x > 0) && (y == 0 || y >= 0)) {
-		window.setLocation(x, y);
+	if ((x == 0 || x > 0) && (y == 0 || y >=0)) {
+		window.setLocation(x,y);
 	}
-
+	
 	// TODO it doesn't work
 	return window.show(controller.getName());
 	// TODO return selected value
@@ -126,32 +127,32 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 
 /**
  * Hook for sub form(s) to implement specific sol model additions
- *
- * @protected
+ * 
+ * @protected 
  * @param {JSForm} jsForm
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @properties={typeid:24,uuid:"56B3D22A-78BB-4AA6-9B1C-78D6FBA40230"}
  */
-function onCreateInstance(jsForm, lookupObj) {
+function onCreateInstance(jsForm, lookupObj){
 	// to be overridden
 }
 
 /**
- * @public
+ * @public 
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @return {RuntimeForm<AbstractLookup>}
  * @properties={typeid:24,uuid:"8147DBC9-8AE2-47EC-B6B6-A3C10971DCF3"}
  */
-function newInstance(lookupObj) {
-
+function newInstance(lookupObj){
+	
 	// create JSForm clone
 	var formName = application.getUUID().toString();
-	var jsForm = solutionModel.cloneForm(formName, solutionModel.getForm(controller.getName()));
+	var jsForm = solutionModel.cloneForm(formName,solutionModel.getForm(controller.getName()));
 	jsForm.dataSource = lookupObj.getDataSource();
-
+	
 	// pass control to sub form(s)
-	onCreateInstance(jsForm, lookupObj);
-
+	onCreateInstance(jsForm,lookupObj);
+	
 	/** @type {RuntimeForm<AbstractLookup>} */
 	var form = forms[jsForm.name];
 	form['lookup'] = lookupObj;
@@ -161,27 +162,27 @@ function newInstance(lookupObj) {
 /**
  * Callback when item is selected
  * @return {JSRecord|String|Date|Number}
- * @protected
+ * @protected 
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
-function onSelect() {
-
+function onSelect(){
+	
 	// dismiss popup
 	dismiss();
-
+	
 	var lookupDataprovider = lookup.getLookupDataprovider();
 	var record = foundset.getSelectedRecord();
 	var lookupValue;
 	if (record && lookupDataprovider) {
 		lookupValue = record[lookupDataprovider];
 	}
-
+	
 	// invoke callback
 	if (selectHandler) {
 		// TODO can we just return the selected values and the lookupObject itself instead of so many arguments ?
 		selectHandler.call(this, foundset.getSelectedRecord(), lookup.getParams(), lookupValue, lookupDataprovider);
 	}
-
+	
 	// return the value. May be used by a modal dialog
 	if (record && lookupDataprovider) {
 		return lookupValue;
@@ -192,8 +193,8 @@ function onSelect() {
 
 /**
  * Dismisses the popup
- *
- * @protected
+ * 
+ * @protected 
  * @properties={typeid:24,uuid:"D119BC9F-1137-445E-9E30-FDB3F4929484"}
  */
 function dismiss() {

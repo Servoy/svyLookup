@@ -7,10 +7,6 @@ onHideMethodID:{\
 arguments:null,\
 parameters:null\
 },\
-onLoadMethodID:{\
-arguments:null,\
-parameters:null\
-},\
 onShowMethodID:{\
 arguments:null,\
 parameters:null\
@@ -186,9 +182,6 @@ typeid:47,
 uuid:"1F48624E-2692-4AB4-8C1E-1C458CED8440"
 },
 {
-customProperties:"attributes:{\
-keylistener:\"keylistener\"\
-}",
 json:{
 dataProviderID:"searchText",
 location:{
@@ -196,6 +189,7 @@ x:1,
 y:1
 },
 onActionMethodID:"18991F70-7B68-4758-8537-4826B373C9EC",
+onFocusGainedMethodID:"C4C58A66-748A-4406-8F4A-082C9AF13EB9",
 placeholderText:"Search...",
 size:{
 height:100,
@@ -223,7 +217,6 @@ uuid:"E3C7272D-1E1A-450A-8B26-D349EA086D75"
 ],
 name:"svyLookupTableMulti",
 onHideMethodID:"2C64734A-241C-4289-A33A-7C1F19BBB548",
-onLoadMethodID:"5C0F1871-40AC-46CF-A61A-A2947E58EED7",
 onShowMethodID:"91F6E73C-C166-4DB1-A5E6-5CCFA98584F1",
 styleClass:"svy-lookup svy-lookup-multi",
 typeid:3,
