@@ -86,6 +86,7 @@ function search(txt) {
 			nr['rec_type'] = 'svy-multids-detail'
 			nr['display'] = sr[lu.getDisplayField()]
 			nr['rec_order'] = order;
+			order++;
 			size++;
 		}
 
