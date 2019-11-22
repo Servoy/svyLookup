@@ -46,9 +46,9 @@ function createValuelistLookup(valuelistName, titleText) {
 	if (jsList.valueListType == JSValueList.CUSTOM_VALUES) {
 
 		var items = application.getValueListItems(valuelistName);
-		if (!databaseManager.dataSourceExists(dataSource)) {
-			dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, JSColumn.TEXT]);
-		}
+//		if (!databaseManager.dataSourceExists(dataSource)) {
+		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, JSColumn.TEXT]);
+//		}
 		
 	} else if (jsList.valueListType == JSValueList.DATABASE_VALUES) {
 	    var qbSelect = databaseManager.createSelect(jsList.dataSource);
