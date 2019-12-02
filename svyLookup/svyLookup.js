@@ -1,4 +1,16 @@
 /**
+ * @private 
+ * @properties={typeid:35,uuid:"A7394F97-5893-4AE6-B599-1B757C587F2A",variableType:-4}
+ */
+var DEFAULT_FORM_INSTANCES = {
+	ABSTRACT: 'AbstractLookup',
+	ABSTRACT_MULTI: 'AbstractLookupMulti',
+	LOOKUP: 'svyLookupTable',
+	MULTI_LOOKUP: 'svyLookupTableMulti',
+	MULTI_DS: 'svyLookupTableMultiDS'
+}
+
+/**
  * Creates a lookup object which can be used to show a pop-up form
  *
  * @public
@@ -93,6 +105,39 @@ function createValuelistLookup(valuelistName, titleText) {
 }
 
 /**
+ * Creates a read only, in-memory datasource from the given query and creates a Lookup for that
+ * 
+ * @param {QBSelect} qbSelect the query
+ * @param {String} [dsName] the name of the datasource in case it should be reused
+ * @param {Boolean} [overrideData] when true, the datasource with the given name is filled again from the given query, when false, an existing datasource with the same datasource name would be reused; default is false
+ * 
+ * @return {Lookup}
+ * 
+ * @public 
+ *
+ * @properties={typeid:24,uuid:"A3D0175E-FD07-426C-B0EC-B951337075D0"}
+ */
+function createQueryLookup(qbSelect, dsName, overrideData) {
+	var dataSource = null;
+	if (!dsName) {
+		dsName = application.getUUID().toString().replace(/-/g, '_');
+	}
+	var dataSourceName = "svy_lookup_" + dsName;
+	if (!databaseManager.dataSourceExists(dataSourceName) || overrideData === true) {
+		dataSource = databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1);
+	}
+	
+	var columnNames = datasources.mem[dataSourceName].getColumnNames();
+	
+	var dsLookup = createLookup(dataSource);
+	for (var c = 0; c < columnNames.length; c++) {
+		if (columnNames[c] === '_sv_rowid') continue;
+		dsLookup.addField(columnNames[c]);
+	}
+	return dsLookup;
+}
+
+/**
  * @private 
  * @param {String|JSFoundSet} datasource
  * @constructor
@@ -127,6 +172,12 @@ function Lookup(datasource) {
 	 * @protected 
 	 */
 	this.dataSource = datasource;
+	
+	/**
+	 * @type {Boolean}
+	 * @protected 
+	 */
+	this.multiSelect = false;
 
 	// TODO var sort
 
@@ -216,6 +267,7 @@ function init_Lookup() {
 	/**
 	 * @public
 	 * @param {RuntimeForm<AbstractLookup>} lookupForm
+	 * @deprecated use setLookupForm instead
 	 * @this {Lookup}
 	 *  */
 	Lookup.prototype.setLookupFormProvider = function(lookupForm) {
@@ -226,6 +278,50 @@ function init_Lookup() {
 			throw new scopes.svyExceptions.IllegalArgumentException("The given formProvider must be an instance of AbstractLookup form.");
 		}
 		this.lookupFormProvider = lookupForm['controller'].getName();
+	}
+	
+	/**
+	 * @public
+	 * @param {RuntimeForm<AbstractLookup>} lookupForm
+	 * @this {Lookup}
+	 *  */
+	Lookup.prototype.setLookupForm = function(lookupForm) {
+		if (!lookupForm) {
+			throw new scopes.svyExceptions.IllegalArgumentException("Illegal argument lookupForm. lookupForm must be an instance of AbstractLookup form")
+		}
+		if (!scopes.svyUI.isJSFormInstanceOf(lookupForm, DEFAULT_FORM_INSTANCES.ABSTRACT)) {
+			throw new scopes.svyExceptions.IllegalArgumentException("The given lookupForm must be an instance of " + DEFAULT_FORM_INSTANCES.ABSTRACT + " form.");
+		}
+		if (this.multiSelect === true && !scopes.svyUI.isJSFormInstanceOf(lookupForm, DEFAULT_FORM_INSTANCES.ABSTRACT_MULTI)) {
+			throw new scopes.svyExceptions.IllegalArgumentException("The given lookupForm must be an instance of " + DEFAULT_FORM_INSTANCES.ABSTRACT_MULTI + " form for multi selection.");			
+		}
+		if (scopes.svyUI.isJSFormInstanceOf(lookupForm, DEFAULT_FORM_INSTANCES.ABSTRACT_MULTI) && this.multiSelect === false) {
+			this.multiSelect = true;
+		}
+		this.lookupFormProvider = lookupForm['controller'].getName();
+	}
+
+	/**
+	 * Allows this Lookup to multi select records
+	 * The lookup form used will be changed when the instance set does not match the multi select setting
+	 * @public
+	 * @param {Boolean} multiSelect
+	 * @return {Lookup}
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.setMultiSelect = function(multiSelect) {
+		this.multiSelect = multiSelect;
+		var lookupForm = this.getLookupForm();
+		if (multiSelect === true && !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.MULTI_LOOKUP)) {
+			//current form is not a multi lookup form
+			lookupForm = forms[DEFAULT_FORM_INSTANCES.MULTI_LOOKUP];
+			this.setLookupForm(lookupForm);
+		} else if (multiSelect !== true && (scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.MULTI_LOOKUP) || !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.LOOKUP))) {
+			//current form is a multi lookup form or not a lookup form at all
+			lookupForm = forms[DEFAULT_FORM_INSTANCES.LOOKUP];
+			this.setLookupForm(lookupForm);			
+		}
+		return this;
 	}
 	
 	/**
@@ -311,6 +407,27 @@ function init_Lookup() {
 	 */
 	Lookup.prototype.getLookupDataProvider = function() {
 		return this.lookupDataprovider;
+	}	
+
+	/**
+	 * Returns the Lookup form instance used
+	 * @public
+	 * @return {RuntimeForm<AbstractLookup>}
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.getLookupForm = function() {
+		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm;
+		if (this.lookupFormProvider) {
+			lookupForm = forms[this.lookupFormProvider];
+		} else if (this.multiSelect === true) {
+			this.lookupFormProvider = DEFAULT_FORM_INSTANCES.MULTI_LOOKUP;
+			lookupForm = forms[DEFAULT_FORM_INSTANCES.MULTI_LOOKUP];
+		} else {
+			this.lookupFormProvider = DEFAULT_FORM_INSTANCES.LOOKUP;
+			lookupForm = forms[DEFAULT_FORM_INSTANCES.LOOKUP];			
+		}
+		return lookupForm;
 	}
 
 	/**
@@ -433,15 +550,7 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showPopUp = function(callback, target, width, height, initialValue) {
-		/** @type {RuntimeForm<AbstractLookup>} */
-		var lookupForm;
-		if (this.lookupFormProvider) {
-			lookupForm = forms[this.lookupFormProvider];
-		} else {
-			lookupForm = forms.svyLookupTable;
-		}
-
-		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm = this.getLookupForm();
 		var runtimeForm = lookupForm.newInstance(this);
 		runtimeForm.showPopUp(callback, target, width, height, initialValue);
 	}
@@ -456,15 +565,7 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.createPopUp = function(callback, initialValue) {
-		/** @type {RuntimeForm<AbstractLookup>} */
-		var lookupForm;
-		if (this.lookupFormProvider) {
-			lookupForm = forms[this.lookupFormProvider];
-		} else {
-			lookupForm = forms.svyLookupTable;
-		}
-		
-		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm = this.getLookupForm();
 		var runtimeForm = lookupForm.newInstance(this);
 		return runtimeForm.createPopUp(callback, initialValue);
 	}
@@ -484,18 +585,8 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showModalWindow = function(callback, x, y, width, height, initialValue) {
-
-		/** @type {RuntimeForm<AbstractLookup>} */
-		var lookupForm;
-		if (this.lookupFormProvider) {
-			lookupForm = forms[this.lookupFormProvider];
-		} else {
-			lookupForm = forms.svyLookupTable;
-		}
-
-		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm = this.getLookupForm();
 		var runtimeForm = lookupForm.newInstance(this);
-
 		// TODO return the actual values, no need of params
 		return runtimeForm.showModalWindow(callback, x, y, width, height, initialValue);
 	}	
@@ -513,18 +604,8 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showWindow = function(win, callback, initialValue) {
-
-		/** @type {RuntimeForm<AbstractLookup>} */
-		var lookupForm;
-		if (this.lookupFormProvider) {
-			lookupForm = forms[this.lookupFormProvider];
-		} else {
-			lookupForm = forms.svyLookupTable;
-		}
-
-		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm = this.getLookupForm();
 		var runtimeForm = lookupForm.newInstance(this);
-
 		// TODO return the actual values, no need of params
 		return runtimeForm.showWindow(win, callback, initialValue);
 	}
@@ -543,18 +624,8 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.createWindow = function(x, y, width, height, jsWindowType) {
-
-		/** @type {RuntimeForm<AbstractLookup>} */
-		var lookupForm;
-		if (this.lookupFormProvider) {
-			lookupForm = forms[this.lookupFormProvider];
-		} else {
-			lookupForm = forms.svyLookupTable;
-		}
-
-		/** @type {RuntimeForm<AbstractLookup>} */
+		var lookupForm = this.getLookupForm();
 		var runtimeForm = lookupForm.newInstance(this);
-
 		// TODO return the actual values, no need of params
 		return runtimeForm.createWindow(x, y, width, height, jsWindowType);
 	}
@@ -623,7 +694,7 @@ function init_Lookup() {
  * @param {Lookup} lookup
  * @param {String} dataProvider
  * @constructor
- * @properties={typeid:24,uuid:"298B728E-ED51-4ECD-BB3B-0878B766BCBB"}
+ * @properties={typeid:24,uuid:"99124DEA-4AE1-45B2-8747-002F83924A53"}
  * @AllowToRunInFind
  */
 function LookupField(lookup, dataProvider) {
@@ -694,7 +765,7 @@ function LookupField(lookup, dataProvider) {
  * @constructor 
  * @private 
  *
- * @properties={typeid:24,uuid:"2130130E-2BEE-4480-8E82-AD0B2AC051F2"}
+ * @properties={typeid:24,uuid:"299D7B9B-CE53-42F6-9AE8-95D7B8CF5960"}
  * @AllowToRunInFind
  */
 function init_LookupField() {
@@ -919,7 +990,7 @@ function init_LookupField() {
 /**
  * @private 
  * @SuppressWarnings(unused)
- * @properties={typeid:35,uuid:"640AC4FA-EAE2-46B5-BE9A-28FC94F7FF35",variableType:-4}
+ * @properties={typeid:35,uuid:"824F31B0-59E7-48A3-8721-232D1A0CAA8C",variableType:-4}
  */
 var initSvyLookup = (function() {
 	init_Lookup();
