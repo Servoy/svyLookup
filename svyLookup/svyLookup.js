@@ -6,8 +6,7 @@ var DEFAULT_FORM_INSTANCES = {
 	ABSTRACT: 'AbstractLookup',
 	ABSTRACT_MULTI: 'AbstractLookupMulti',
 	LOOKUP: 'svyLookupTable',
-	MULTI_LOOKUP: 'svyLookupTableMulti',
-	MULTI_DS: 'svyLookupTableMultiDS'
+	MULTI_LOOKUP: 'svyLookupTableMulti'
 }
 
 /**
