@@ -29,11 +29,12 @@ function createLookup(dataSource) {
 
 /**
  * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
- * NOTE: Valuelist cannot be depends on a database relation or is a global method valuelist.
+ * 
+ * NOTE: Valuelist cannot be based on a database relation or a global method.
  *
  * @public
  * @param {String} valuelistName
- * @param {String} [titleText] Sets the display text for the valuelist field. Default is 'Value';
+ * @param {String|Array<String>} [titleText] Sets the display text for the valuelist field(s). Default is 'Value' or the column names;
  * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
  *
  * @return {Lookup}
@@ -43,62 +44,139 @@ function createLookup(dataSource) {
 function createValuelistLookup(valuelistName, titleText) {
 
 	// TODO it can be improved, checking the type of values, checking the type of dataprovider.
-	// If is based on a dataset query, can look for more than > 500 values. It could actually run the query on the ds itself. Would the class clush in that case ?
 
 	var jsList = solutionModel.getValueList(valuelistName);
 	if (!jsList) {
 		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
 	}
 	if (jsList.valueListType != JSValueList.CUSTOM_VALUES && jsList.valueListType != JSValueList.DATABASE_VALUES) {
-		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE ");
+		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE");
 	}
 	
-	var dataSource = "mem:valuelist_" + valuelistName;
 	var dataSourceName = "valuelist_" + valuelistName;
-	if (jsList.valueListType == JSValueList.CUSTOM_VALUES) {
-
+	var dataSource = "mem:" + dataSourceName;
+	
+	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
 		var items = application.getValueListItems(valuelistName);
-//		if (!databaseManager.dataSourceExists(dataSource)) {
 		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, JSColumn.TEXT]);
-//		}
+	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
+		var jsTable = databaseManager.getTable(jsList.dataSource);
+		var pkColumns = jsTable.getRowIdentifierColumnNames();
 		
-	} else if (jsList.valueListType == JSValueList.DATABASE_VALUES) {
-	    var qbSelect = databaseManager.createSelect(jsList.dataSource);
-		
-	    // create displayValue column
-		var displayValueColumn = qbSelect.getColumn(jsList.getDisplayDataProviderIds()[0]);
-		var i = 1;
-		do {
-			displayValueColumn.concat(jsList.separator).concat(jsList.getDisplayDataProviderIds()[i]);
-			i++;
-		} while (i < jsList.getDisplayDataProviderIds().length);
-		
-		// create realValue column
-		var realValueColumn = qbSelect.getColumn(jsList.getReturnDataProviderIds()[0]);
-		i = 1;
-		do {
-			realValueColumn.concat(jsList.separator).concat(jsList.getReturnDataProviderIds()[i]);
-			i++;
-		} while (i < jsList.getReturnDataProviderIds().length);
-
-	    qbSelect.result.add(displayValueColumn, 'displayvalue');
-	    qbSelect.result.add(realValueColumn, 'realvalue');
-	    qbSelect.result.distinct = true;
-	    qbSelect.sort.add(displayValueColumn.asc);
+	    var displayDataProviders = jsList.getDisplayDataProviderIds();
+	    var realDataProviders = jsList.getReturnDataProviderIds();
 	    
-	    // create the dataSource
-		// TODO how can i refresh the list !?
-	    databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT]);
+	    var isPkValueList = scopes.svyJSUtils.areObjectsEqual(pkColumns, realDataProviders);
+	    
+	    if (!isPkValueList) {
+		    var qbSelect = databaseManager.createSelect(jsList.dataSource);
+		    
+		    // create displayValue column
+		    if (displayDataProviders.length === 3) {
+		    	qbSelect.result.add(
+		    		qbSelect.getColumn(displayDataProviders[0])
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(displayDataProviders[1]))
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(displayDataProviders[2])), 'displayvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[0]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[1]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[2]));
+		    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[0]).asc);	    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[1]).asc);	    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[2]).asc);	  
+		    } else if (displayDataProviders.length === 2) {
+		    	qbSelect.result.add(
+		    		qbSelect.getColumn(displayDataProviders[0])
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(displayDataProviders[1])), 'displayvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[0]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[1]));
+		    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[0]).asc);	    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[1]).asc);
+		    } else if (displayDataProviders.length === 2) {
+		    	qbSelect.result.add(qbSelect.getColumn(displayDataProviders[0]), 'displayvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[0]));
+		    	
+		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[0]).asc);
+		    }
+		    
+			// create realValue column
+			var realValueColumn = qbSelect.getColumn(realDataProviders[0]);
+			qbSelect.groupBy.add(realValueColumn);
+	
+			if (realDataProviders.length === 3) {
+		    	qbSelect.result.add(
+		    		qbSelect.getColumn(realDataProviders[0])
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(realDataProviders[1]))
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(realDataProviders[2])), 'realvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[1]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[2]));	    	
+		    } else if (realDataProviders.length === 2) {
+		    	qbSelect.result.add(
+		    		qbSelect.getColumn(realDataProviders[0])
+					.concat(jsList.separator)
+					.concat(qbSelect.getColumn(realDataProviders[1])), 'realvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[1]));  	
+		    } else if (displayDataProviders.length === 2) {
+		    	qbSelect.result.add(qbSelect.getColumn(realDataProviders[0]), 'realvalue');
+		    	
+		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));    	
+		    }
+	    }
+		
+	    if (!isPkValueList) {
+	    	// create in-memory datasource
+	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT]);
+	    } else {
+	    	dataSource = jsList.dataSource;
+	    }
 	}
 
 	// autoconfigure the valuelist lookup
 	var valuelistLookup = createLookup(dataSource);
-	valuelistLookup.setLookupDataProvider("realvalue");
-	var field = valuelistLookup.addField("displayvalue");
-	if (titleText) {
-		field.setTitleText(titleText);
+	var field;
+	
+	/** @type {Array<String>} */
+	var titleTextArray = titleText instanceof Array ? titleText : [titleText];
+
+	if (!isPkValueList) {
+		valuelistLookup.setLookupDataProvider("realvalue");
+		field = valuelistLookup.addField("displayvalue");
+		if (titleText) {
+			field.setTitleText(titleTextArray[0]);
+		} else {
+			field.setTitleText("Value");
+		}
 	} else {
-		field.setTitleText("Value");
+		if (pkColumns.length === 1) {
+			valuelistLookup.setLookupDataProvider(pkColumns[0]);
+		} else {
+			//create a calculation that returns the multi column PK as a comma separated list
+			var jsDsNode = solutionModel.getDataSourceNode(dataSource);
+			if (!jsDsNode.getCalculation('svy_lookup_data_provider')) {
+				jsDsNode.newCalculation('function svy_lookup_data_provider() { return [' + pkColumns.join(', ') + '].join(", "); }', JSVariable.TEXT);
+			}
+			valuelistLookup.setLookupDataProvider('svy_lookup_data_provider');
+		}
+		//add display fields
+		for (var f = 0; f < displayDataProviders.length; f++) {
+			field = valuelistLookup.addField(displayDataProviders[f]);
+			if (titleTextArray.length === displayDataProviders.length) {
+				field.setTitleText(titleTextArray[f]);
+			}
+		}
 	}
 
 	return valuelistLookup;
