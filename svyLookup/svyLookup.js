@@ -52,7 +52,7 @@ function createValuelistLookup(valuelistName, titleText) {
 		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE");
 	}
 	
-	var dataSourceName = "valuelist_" + valuelistName;
+	var dataSourceName = "svylookup_valuelist_" + valuelistName;
 	var dataSource = "mem:" + dataSourceName;
 	
 	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
@@ -164,10 +164,10 @@ function createValuelistLookup(valuelistName, titleText) {
 		} else {
 			//create a calculation that returns the multi column PK as a comma separated list
 			var jsDsNode = solutionModel.getDataSourceNode(dataSource);
-			if (!jsDsNode.getCalculation('svy_lookup_data_provider')) {
-				jsDsNode.newCalculation('function svy_lookup_data_provider() { return [' + pkColumns.join(', ') + '].join(", "); }', JSVariable.TEXT);
+			if (!jsDsNode.getCalculation('svylookup_dataprovider')) {
+				jsDsNode.newCalculation('function svylookup_dataprovider() { return [' + pkColumns.join(', ') + '].join(", "); }', JSVariable.TEXT);
 			}
-			valuelistLookup.setLookupDataProvider('svy_lookup_data_provider');
+			valuelistLookup.setLookupDataProvider('svylookup_dataprovider');
 		}
 		//add display fields
 		for (var f = 0; f < displayDataProviders.length; f++) {
