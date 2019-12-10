@@ -185,7 +185,7 @@ json:{
 columns:[
 {
 styleClass:"table-cell-icon svy-lookup-icon-selection",
-svyUUID:"0B12E2E9-53F9-45E1-8C39-3596BDB72AD1",
+svyUUID:"62CEFAFF-0B61-453E-AD44-7A4C47B61F44",
 width:40
 }
 ],

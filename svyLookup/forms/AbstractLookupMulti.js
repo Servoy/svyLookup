@@ -156,13 +156,14 @@ function onHide(event) {
 }
 
 /**
+ * @protected
  * @param {Boolean} firstShow
  * @param {JSEvent} event
  * @override
  *
  * @properties={typeid:24,uuid:"6521DD2A-7497-49B6-921D-36F30E11D163"}
  */
-function onShow(firstShow, event) {
+function onShow(firstShow, event) {	
 	_super.onShow(firstShow, event);
 	
 	var selectedRecords = lookup.getSelectedRecords();
