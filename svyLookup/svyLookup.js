@@ -215,7 +215,7 @@ function createQueryLookup(qbSelect, dsName, overrideData) {
 }
 
 /**
- * @private 
+ * @protected  
  * @param {String|JSFoundSet} datasource
  * @constructor
  * @properties={typeid:24,uuid:"DC5A7A69-5B84-4438-9BFD-06558632E4E8"}
