@@ -586,7 +586,7 @@ function init_Lookup() {
 			for (var i = 0; i < this.selectedPks.length; i++) {
 				pks.addRow(this.selectedPks[i]);
 			}
-			// FIXME: for valuelist based lookup i need to store the realValue
+			// NOTE: for valuelist based lookup i need to store the realValue, there is no much use of the PKs
 			fs.loadRecords(pks);
 			if (utils.hasRecords(fs)) {
 				for (var f = 1; f <= fs.getSize(); f++) {
@@ -595,6 +595,34 @@ function init_Lookup() {
 			}
 		}
 		return result;
+	}	
+	
+	/**
+	 * Returns the selected values 
+	 * 
+	 * @public
+	 * @return {Array<JSRecord>}
+	 * @this {Lookup}
+	 * */
+	Lookup.prototype.getSelectedValues = function() {
+
+		// TODO what if no lookupDataProvider is set !?
+		
+		var lookupValues;
+		var lookupDataprovider = this.getLookupDataProvider();
+		if (lookupDataprovider) {
+			var records = this.getSelectedRecords();
+			lookupValues = [];
+			if (records && lookupDataprovider) {
+				for (var i = 0; i < records.length; i++) {
+					lookupValues.push(records[i][lookupDataprovider]);
+				}
+			}
+		} else {
+			throw new scopes.svyExceptions.IllegalStateException("Calling getSelectedValues on Lookup with unknown lookupDataProvider");
+		}
+		return lookupValues;
+		
 	}	
 
 	/**
@@ -763,7 +791,61 @@ function init_Lookup() {
 				this.selectedPks.push([pks[s]]);				
 			}
 		}
-	}	
+	}
+	
+	/**
+	 * @public 
+	 * Sets the selected values of this Lookup
+	 * The lookup must have a known dataSource and a known lookupFormProvider
+	 * 
+	 * @param {Array<*>} values
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.setSelectedValues = function(values) {
+
+		if (!values) {
+			throw new scopes.svyExceptions.IllegalArgumentException("Values null or undefined for setSelectedValues");
+		}
+	
+		if (!this.getDataSource()) {
+			throw new scopes.svyExceptions.IllegalStateException("Calling setSelectedValues on Lookup with unknown dataSource");
+		}
+		
+		var lookupProvider = this.getLookupDataProvider();
+		if (!lookupProvider) {
+			throw new scopes.svyExceptions.IllegalStateException("Calling setSelectedValues on Lookup with unknown lookupDataProvider");
+		}
+		
+		var pks = [];
+		if (values.length) {
+		
+			
+			/** @type {String} */
+			var dataSource = this.getDataSource();
+			var query = databaseManager.createSelect(dataSource);
+			query.result.addPk();
+			
+			// TODO check if lookup provider exists ?
+			query.where.add(query.getColumn(lookupProvider).isin(values));
+			
+			var ds = databaseManager.getDataSetByQuery(query,-1);
+			
+			if (ds.getMaxColumnIndex() > 1) {
+				for (var i = 1; i <= ds.getMaxRowIndex(); i++) {
+					var row = ds.getRowAsArray(i);
+					pks.push(row);
+				}
+			} else {
+				pks = ds.getColumnAsArray(1);
+			}
+		}
+		
+		// TODO in case of in-memory datasource, selection can still be lost if the datasource is re-created after this call.
+		// an idea can be to store the selectedValues in the lookup object; but then the lookup will have selectedValues and selectedPks which is confusing
+		// set selected pks
+		this.setSelectedPks(pks);
+	}
+	
 }
 
 /**
