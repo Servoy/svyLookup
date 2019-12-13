@@ -57,7 +57,7 @@ function createValuelistLookup(valuelistName, titleText) {
 	
 	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
 		var items = application.getValueListItems(valuelistName);		
-		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, jsList.realValueType]);
+		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, jsList.realValueType], ['realvalue']);
 	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
 		var jsTable = databaseManager.getTable(jsList.dataSource);
 		var pkColumns = jsTable.getRowIdentifierColumnNames();
@@ -137,7 +137,7 @@ function createValuelistLookup(valuelistName, titleText) {
 		
 	    if (!isPkValueList) {
 	    	// create in-memory datasource
-	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT]);
+	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT], ['realvalue']);
 	    } else {
 	    	dataSource = jsList.dataSource;
 	    }
