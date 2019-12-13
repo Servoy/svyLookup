@@ -342,7 +342,7 @@ function init_Lookup() {
 	}	
 	
 	/**
-	 * @public
+	 * @protected
 	 * @param {RuntimeForm<AbstractLookup>} lookupForm
 	 * @deprecated use setLookupForm instead
 	 * @this {Lookup}
@@ -445,7 +445,7 @@ function init_Lookup() {
 	/**
 	 * Sets the lookup dataprovider
 	 *
-	 * @public
+	 * @protected 
 	 * @param {String} dataProvider
 	 * @this {Lookup}
 	 * @deprecated use setLookupDataProvider instead
@@ -467,7 +467,7 @@ function init_Lookup() {
 
 	/**
 	 * Gets the lookup dataprovider
-	 * @public
+	 * @protected
 	 * @return {String}
 	 * @this {Lookup}
 	 * @deprecated use getLookupDataProvider instead
@@ -985,7 +985,7 @@ function init_LookupField() {
 
 	/**
 	 * Sets the valuelist to use to display this field
-	 * @public
+	 * @protected
 	 * @param {String} vl
 	 * @return {LookupField}
 	 * @this {LookupField}
