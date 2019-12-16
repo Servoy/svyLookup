@@ -389,11 +389,11 @@ function init_Lookup() {
 	Lookup.prototype.setMultiSelect = function(multiSelect) {
 		this.multiSelect = multiSelect;
 		var lookupForm = this.getLookupForm();
-		if (multiSelect === true && !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.MULTI_LOOKUP)) {
+		if (multiSelect === true && !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.ABSTRACT_MULTI)) {
 			//current form is not a multi lookup form
 			lookupForm = forms[DEFAULT_FORM_INSTANCES.MULTI_LOOKUP];
 			this.setLookupForm(lookupForm);
-		} else if (multiSelect !== true && (scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.MULTI_LOOKUP) || !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.LOOKUP))) {
+		} else if (multiSelect !== true && (scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.ABSTRACT_MULTI) || !scopes.svyUI.isJSFormInstanceOf(this.lookupFormProvider, DEFAULT_FORM_INSTANCES.ABSTRACT))) {
 			//current form is a multi lookup form or not a lookup form at all
 			lookupForm = forms[DEFAULT_FORM_INSTANCES.LOOKUP];
 			this.setLookupForm(lookupForm);			
