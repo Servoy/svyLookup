@@ -77,8 +77,10 @@ function onShow(firstShow, event) {
 	
 	keyListenerReady = false;
 	
-	plugins.window.createShortcut('ENTER', onSelect, controller.getName());
-	plugins.window.createShortcut('ESC', cancel, controller.getName());
+	if (firstShow) {
+		plugins.window.createShortcut('ENTER', onEnterShortcut, controller.getName());
+		plugins.window.createShortcut('ESC', cancel, controller.getName());
+	}
 }
 
 /**
@@ -375,6 +377,20 @@ function newInstance(lookupObj) {
 	form['lookup'] = lookupObj;
 
 	return form;
+}
+
+/**
+ * @param {JSEvent} event
+ *
+ * @properties={typeid:24,uuid:"5148147D-152F-4743-AB00-1A576879487C"}
+ */
+function onEnterShortcut(event) {
+	var source = event.getSource();
+	if (source.getDataProviderID && source.getDataProviderID() === "searchText") {
+		// do nothing when pressing enter in search field. Execute the default onAction of the searchField instead
+	} else {
+		onSelect();
+	}
 }
 
 /**
