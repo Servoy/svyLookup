@@ -29,6 +29,7 @@ function selectAllRecords() {
 }
 
 /**
+ * @protected 
  * Removes the given record from the selected records
  * 
  * @param {JSRecord} record
@@ -42,6 +43,7 @@ function deselectRecord(record) {
 }
 
 /**
+ * @protected
  * Removes the record with the given PK(s) from the selected records
  * 
  * @param {Array<*>} pks
@@ -58,6 +60,7 @@ function deselectPks(pks) {
 }
 
 /**
+ * @protected
  * Toggles the selection state of the given record
  * 
  * @param {JSRecord} record
@@ -104,6 +107,7 @@ function onRecordDeselected(record) {
 }
 
 /**
+ * @protected
  * Returns the selected records
  *
  * @return {Array<JSRecord>}
@@ -117,7 +121,7 @@ function getSvyLookupSelectedRecords() {
 
 
 /**
-*
+* @protected
 * @return {Array<String|Date|Number>}
 * @override
 *
@@ -139,6 +143,7 @@ function getSvyLookupSelectedValues() {
 }
 
 /**
+ * @protected 
  * @param {JSEvent} event
  *
  * @return {Boolean}

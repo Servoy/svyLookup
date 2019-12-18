@@ -155,6 +155,7 @@ function onCellClick(foundsetindex, columnindex, record, event) {
 }
 
 /**
+ * @protected 
  * @param {scopes.svyLookup.LookupField} field
  *
  * @return {CustomType<aggrid-groupingtable.column>}
