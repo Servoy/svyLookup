@@ -609,6 +609,18 @@ function init_Lookup() {
 	 * @public
 	 * @param {String} dataProvider
 	 * @return {LookupField}
+	 * 
+	 * @example <pre>
+	 * var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * 
+	 * lookupObj.addField('productname').setTitleText('Product');
+	 * lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+	 * lookupObj.addField('unitprice')
+	 *	.setSearchable(false)
+	 *	.setTitleText('Price')
+	 *	.setFormat('#,###.00')
+	 *</pre>
+	 * 
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.addField = function(dataProvider) {
@@ -669,7 +681,7 @@ function init_Lookup() {
 
 	/**
 	 * Returns the selected records for the lookup object
-	 * Can be used to know which records have been previously selected by the user for the specific lookup
+	 * Can be used to know which records have been previously selected by the user for this lookup
 	 * 
 	 * @public
 	 * @return {Array<JSRecord>}
@@ -698,7 +710,7 @@ function init_Lookup() {
 	
 	/**
 	 * Returns the selected values based on the lookupDataProvider based on the lookupFormProvider.
-	 * Can be used to know which values have been previously selected by the user for the specific lookup.
+	 * Can be used to know which values have been previously selected by the user for this lookup.
 	 * 
 	 * @throws {scopes.svyExceptions.IllegalStateException} throws an exception if the lookupDataProvider has not been set
 	 * 
@@ -852,7 +864,7 @@ function init_Lookup() {
 	}
 	
 	/**
-	 * Clears the selected records of this Lookup
+	 * Clears the selection of this Lookup
 	 * 
 	 * @public 
 	 * @this {Lookup}
