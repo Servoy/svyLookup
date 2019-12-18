@@ -318,9 +318,11 @@ function init_Lookup() {
 	}
 
 	/**
+	 * What this is used for ?
 	 * Set display field to the lookup object
 	 *
-	 * @public
+	 * @deprecated  
+	 * @protected  
 	 * @param {String} displayField Display dataprovider to be used for Multi Lookup Popup
 	 * @return {String}
 	 * @this {Lookup}
@@ -331,9 +333,12 @@ function init_Lookup() {
 	}
 	
 	/**
+	 * 
+	 * What this is used for ?
 	 * get display field to the lookup object
-	 *
-	 * @public
+	 * 
+	 * @deprecated
+	 * @protected  
 	 * @return {String}
 	 * @this {Lookup}
 	 */
