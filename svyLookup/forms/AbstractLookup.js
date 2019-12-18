@@ -542,7 +542,11 @@ function setupControllerFoundset() {
 		var foundsetFilterParams = fs.getFoundSetFilterParams();
 		for (var i = 0; foundsetFilterParams && i < foundsetFilterParams.length; i++) {
 			var filterParam = foundsetFilterParams[i]
-			foundset.addFoundSetFilterParam(filterParam[1], filterParam[2], filterParam[3], filterParam[4])
+			if (filterParam.length > 2) {
+				foundset.addFoundSetFilterParam(filterParam[1], filterParam[2], filterParam[3], filterParam[4])
+			} else {
+				foundset.addFoundSetFilterParam(filterParam[0], filterParam[1])
+			}
 		}
 	}
 }
