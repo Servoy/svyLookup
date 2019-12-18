@@ -193,6 +193,7 @@ function showPopUp(callback, target, width, height, initialValue) {
 
 /** 
  * Creates a form popup for this form and returns it
+ * @public 
  * 
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
@@ -380,6 +381,7 @@ function newInstance(lookupObj) {
 }
 
 /**
+ * @protected 
  * @param {JSEvent} event
  *
  * @properties={typeid:24,uuid:"5148147D-152F-4743-AB00-1A576879487C"}
@@ -546,6 +548,7 @@ function setupControllerFoundset() {
 }
 
 /**
+ * @protected 
  * @return {scopes.svyLookup.Lookup}
  * @properties={typeid:24,uuid:"A7F98495-7DC8-47D3-9316-50093596D9E8"}
  */
