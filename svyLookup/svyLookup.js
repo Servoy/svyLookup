@@ -429,6 +429,17 @@ function init_Lookup() {
 	 * 
 	 * @public
 	 * @param {RuntimeForm<AbstractLookup>} lookupForm
+	 * @example <pre>
+	 * var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * // lookup template with NG Table
+	 * lookupObj.setLookupForm(forms.svyLookupNGTable);
+	 * 
+	 * var lookupObjMulti = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * lookupObjMulti.setMultiSelect(true);
+	 * // lookup template with NG Table
+	 * lookupObjMulti.setLookupForm(forms.svyLookupNGTableMulti);
+	 * </pre>
+	 * 
 	 * @this {Lookup}
 	 *  */
 	Lookup.prototype.setLookupForm = function(lookupForm) {
