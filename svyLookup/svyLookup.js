@@ -38,12 +38,9 @@ function createLookup(dataSource) {
  *
  * @return {Lookup}
  *
- * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
+ * @properties={typeid:24,uuid:"C33D8065-4A81-40CA-852A-07F58C004926"}
  */
-function createValuelistLookup(valuelistName, titleText) {
-
-	// TODO it can be improved, checking the type of values, checking the type of dataprovider.
-
+function createValueListLookup(valuelistName, titleText) {
 	var jsList = solutionModel.getValueList(valuelistName);
 	if (!jsList) {
 		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
@@ -179,6 +176,25 @@ function createValuelistLookup(valuelistName, titleText) {
 	}
 
 	return valuelistLookup;
+}
+
+/**
+ * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
+ * 
+ * NOTE: Valuelist cannot be based on a database relation or a global method.
+ *
+ * @protected 
+ * @deprecated use createValueListLookup instead
+ * @param {String} valuelistName
+ * @param {String|Array<String>} [titleText] Sets the display text for the valuelist field(s). Default is 'Value' or the column names;
+ * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
+ *
+ * @return {Lookup}
+ *
+ * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
+ */
+function createValuelistLookup(valuelistName, titleText) {
+	return createValueListLookup(valuelistName, titleText);
 }
 
 /**
@@ -655,8 +671,11 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showPopUp = function(callback, target, width, height, initialValue) {
+		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm = this.getLookupForm();
-		var runtimeForm = lookupForm.newInstance(this);
+		/** @type {scopes.svyLookup.Lookup} */
+		var thisInstance = this;
+		var runtimeForm = lookupForm.newInstance(thisInstance);
 		runtimeForm.showPopUp(callback, target, width, height, initialValue);
 	}
 	
@@ -670,8 +689,11 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.createPopUp = function(callback, initialValue) {
+		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm = this.getLookupForm();
-		var runtimeForm = lookupForm.newInstance(this);
+		/** @type {scopes.svyLookup.Lookup} */
+		var thisInstance = this;
+		var runtimeForm = lookupForm.newInstance(thisInstance);
 		return runtimeForm.createPopUp(callback, initialValue);
 	}
 
@@ -690,8 +712,11 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showModalWindow = function(callback, x, y, width, height, initialValue) {
+		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm = this.getLookupForm();
-		var runtimeForm = lookupForm.newInstance(this);
+		/** @type {scopes.svyLookup.Lookup} */
+		var thisInstance = this;
+		var runtimeForm = lookupForm.newInstance(thisInstance);
 		// TODO return the actual values, no need of params
 		return runtimeForm.showModalWindow(callback, x, y, width, height, initialValue);
 	}	
@@ -709,8 +734,11 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.showWindow = function(win, callback, initialValue) {
+		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm = this.getLookupForm();
-		var runtimeForm = lookupForm.newInstance(this);
+		/** @type {scopes.svyLookup.Lookup} */
+		var thisInstance = this;
+		var runtimeForm = lookupForm.newInstance(thisInstance);
 		// TODO return the actual values, no need of params
 		return runtimeForm.showWindow(win, callback, initialValue);
 	}
@@ -729,7 +757,9 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.createWindow = function(x, y, width, height, jsWindowType) {
+		/** @type {RuntimeForm<AbstractLookup>} */
 		var lookupForm = this.getLookupForm();
+		/** @type {scopes.svyLookup.Lookup} */
 		var runtimeForm = lookupForm.newInstance(this);
 		// TODO return the actual values, no need of params
 		return runtimeForm.createWindow(x, y, width, height, jsWindowType);
