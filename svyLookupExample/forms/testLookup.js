@@ -18,18 +18,10 @@ var selectedLookupValues;
  * @type {String}
  * @private
  *
- * @properties={typeid:35,uuid:"6143C649-1EE0-4B95-826C-602E36457326"}
- */
-var selectedLooupValue$valuelist;
-
-/**
- * @type {String}
- * @private
- *
  *
  * @properties={typeid:35,uuid:"A1627088-42F6-4E9B-A4D8-A643980D4B6D"}
  */
-var selectedLooupValues$valuelist;
+var selectedLookupValues$valuelist;
 
 /**
  * @type {scopes.svyLookup.Lookup}
@@ -141,7 +133,7 @@ function onShowLookup(event, expand) {
 	// create lookup object
 	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
 
-	lookupObj.setLookupDataprovider("productname");
+	lookupObj.setLookupDataProvider("productname");
 
 	// add fields
 
@@ -151,7 +143,7 @@ function onShowLookup(event, expand) {
 	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
 
 	// Valuelists and non-searchable fields supported
-	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
+	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability');
 
 	// formatted, non-searchable field example
 	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50');
@@ -207,13 +199,10 @@ function clearLookup(event) {
  * @properties={typeid:24,uuid:"39F2FED4-B8C6-4809-919C-FE97282533CC"}
  */
 function onShowLookupMultiSelection(event, expand) {
-
-
 	if (!lookupObjMulti) {
 		// create lookup object
 		var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
-	
-		lookupObj.setLookupDataprovider("productname");
+		lookupObj.setLookupDataProvider("productname");
 	
 		// add fields
 	
@@ -223,13 +212,14 @@ function onShowLookupMultiSelection(event, expand) {
 		lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
 	
 		// Valuelists and non-searchable fields supported
-		lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setvalueListName('product_availability');
+		lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability');
 	
 		// formatted, non-searchable field example
 		lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
 	
-		// change lookup provider
-		lookupObj.setLookupFormProvider(forms.svyLookupNGTableMulti);
+		// make multiselect
+		lookupObj.setMultiSelect(true);
+		lookupObj.setLookupForm(forms.svyLookupNGTableMulti)
 	
 		lookupObjMulti = lookupObj
 	}
@@ -239,7 +229,7 @@ function onShowLookupMultiSelection(event, expand) {
 	var component = elements[event.getElementName()];
 	var initialValue = selectedLookupValues ? selectedLookupValues.split(",")[selectedLookupValues.split(",").length - 1] : null;
 	if (expand) {
-		var values = lookupObjMulti.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
+		var values = lookupObjMulti.showModalWindow(null, event.getX(), event.getY(), 600, 400, initialValue);
 		selectedLookupValues = values.join(",");
 	} else {
 		lookupObjMulti.showPopUp(onSelectMulti, component, null, null, initialValue);
@@ -288,7 +278,7 @@ function onShowValuelistLookup(event, expand) {
 	// create lookup object
 	
 	if (!lookupObjMulti$valuelist) {
-		var lookupObj = scopes.svyLookup.createValuelistLookup("productsTable", "Product");
+		var lookupObj = scopes.svyLookup.createValueListLookup("productsTable", "Product");
 		lookupObjMulti$valuelist = lookupObj;
 	}
 	// show pop-up
@@ -296,7 +286,7 @@ function onShowValuelistLookup(event, expand) {
 
 	if (expand) {
 		var values = lookupObjMulti$valuelist.showModalWindow(null, event.getX(), event.getY(), 400, 400, null);
-		selectedLooupValue$valuelist = values[0];
+		selectedLookupValues$valuelist = values[0];
 	} else {
 		lookupObjMulti$valuelist.showPopUp(onSelectValuelist, component, null, null, null);
 	}
@@ -310,7 +300,7 @@ function onShowValuelistLookup(event, expand) {
  *  @properties={typeid:24,uuid:"F99C70C5-28F1-4628-ACD0-77068383E6FD"}
  */
 function onSelectValuelist(records, values, lookup) {
-	selectedLooupValue$valuelist = values[0];
+	selectedLookupValues$valuelist = values[0];
 }
 
 /**
@@ -323,7 +313,7 @@ function onSelectValuelist(records, values, lookup) {
  * @properties={typeid:24,uuid:"D92B0E5A-C1B9-47B7-9526-F1DBC008B614"}
  */
 function clearLookupValuelist(event) {
-	selectedLooupValue$valuelist = null;
+	selectedLookupValues$valuelist = null;
 }
 
 /**
@@ -337,22 +327,21 @@ function clearLookupValuelist(event) {
  */
 function onShowValuelistLookupMulti(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createValuelistLookup("orders");
-	lookupObj.setLookupFormProvider(forms.svyLookupTableMulti);
+	var lookupObj = scopes.svyLookup.createValueListLookup("productsTable", "Products");
+	lookupObj.setMultiSelect(true);
 	
 	// set selected pks
-	if (selectedLooupValues$valuelist) 
-		lookupObj.setSelectedPks(selectedLooupValues$valuelist.split(","))
+	if (selectedLookupValues$valuelist) 
+		lookupObj.setSelectedPks(selectedLookupValues$valuelist.split(","))
 
 	// show pop-up
 	var component = elements[event.getElementName()];
-	var initialValue = selectedLooupValues$valuelist ? selectedLooupValues$valuelist.split(",")[selectedLooupValues$valuelist.split(",").length - 1] : null;
 
 	if (expand) {
-		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
-		selectedLooupValues$valuelist = values ? values.join(",") : null;
+		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400);
+		selectedLookupValues$valuelist = values ? values.join(",") : null;
 	} else {
-		lookupObj.showPopUp(onSelectValuelistMulti, component, null, null, initialValue);
+		lookupObj.showPopUp(onSelectValuelistMulti, component, null, null);
 	}
 }
 
@@ -364,7 +353,7 @@ function onShowValuelistLookupMulti(event, expand) {
  *  @properties={typeid:24,uuid:"41E91869-0D41-47E5-9500-4F268EAA3946"}
  */
 function onSelectValuelistMulti(records, values, lookup) {
-	selectedLooupValues$valuelist = values ? values.join(",") : null;
+	selectedLookupValues$valuelist = values ? values.join(",") : null;
 }
 
 /**
@@ -377,5 +366,5 @@ function onSelectValuelistMulti(records, values, lookup) {
  * @properties={typeid:24,uuid:"86A81DD0-4356-46B8-B2BA-4F966053C6CE"}
  */
 function clearLookupValuelistMulti(event) {
-	selectedLooupValues$valuelist = null;
+	selectedLookupValues$valuelist = null;
 }

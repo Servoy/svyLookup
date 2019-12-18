@@ -22,8 +22,8 @@ function onShow(firstShow, event) {
 			elements.table.removeAllColumns();
 		}
 
-		for (var i = 0; i < lookup.getFieldCount(); i++) {
-			var field = lookup.getField(i);
+		for (var i = 0; i < getLookup().getFieldCount(); i++) {
+			var field = getLookup().getField(i);
 			if (!field.isVisible()) continue;
 			createFieldInstance(field);
 		}

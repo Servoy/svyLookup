@@ -34,8 +34,8 @@ function onShow(firstShow, event) {
 		var checkColumn = elements.table.getColumn(0);
 		checkColumn.styleClassDataprovider = 'svy_lookup_selected';
 		
-		for (var i = 0; i < lookup.getFieldCount(); i++) {
-			var field = lookup.getField(i);
+		for (var i = 0; i < getLookup().getFieldCount(); i++) {
+			var field = getLookup().getField(i);
 			if (!field.isVisible()) continue;
 			createFieldInstance(field);
 		}

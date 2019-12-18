@@ -16,7 +16,7 @@ typeid:7,
 uuid:"06A4B950-AF0D-4DEB-92B7-3A380FC0E547"
 },
 {
-dataProviderID:"selectedLooupValues$valuelist",
+dataProviderID:"selectedLookupValues$valuelist",
 location:"30,435",
 name:"fieldLookupValuelistc",
 onActionMethodID:"E1C42E9C-221C-4736-B161-76BA92DAFDEE",
@@ -104,7 +104,7 @@ typeid:4,
 uuid:"7C654DB8-5DBB-4DA0-9040-071D174E3974"
 },
 {
-dataProviderID:"selectedLooupValue$valuelist",
+dataProviderID:"selectedLookupValues$valuelist",
 location:"31,314",
 name:"fieldLookupValuelist",
 onActionMethodID:"3CE950BC-B6DF-4BE1-AFE1-C934683CCCCD",

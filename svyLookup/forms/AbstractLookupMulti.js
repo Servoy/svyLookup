@@ -147,7 +147,7 @@ function getSvyLookupSelectedValues() {
  * @properties={typeid:24,uuid:"193DD836-C0AD-495A-B298-518DB2EBC2CE"}
  */
 function onHide(event) {
-	var selectedRecords = lookup.getSelectedRecords();
+	var selectedRecords = getLookup().getSelectedRecords();
 	for (var s = 0; s < selectedRecords.length; s++) {
 		selectedRecords[s]['svy_lookup_selected'] = ' ';
 		onRecordDeselected(selectedRecords[s]);
@@ -166,7 +166,7 @@ function onHide(event) {
 function onShow(firstShow, event) {	
 	_super.onShow(firstShow, event);
 	
-	var selectedRecords = lookup.getSelectedRecords();
+	var selectedRecords = getLookup().getSelectedRecords();
 	if (selectedRecords.length > 0) {
 		for (var s = 0; s < selectedRecords.length; s++) {
 			selectedRecords[s]['svy_lookup_selected'] = 'true';

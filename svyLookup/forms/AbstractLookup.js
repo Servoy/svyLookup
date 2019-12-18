@@ -544,3 +544,11 @@ function setupControllerFoundset() {
 		}
 	}
 }
+
+/**
+ * @return {scopes.svyLookup.Lookup}
+ * @properties={typeid:24,uuid:"A7F98495-7DC8-47D3-9316-50093596D9E8"}
+ */
+function getLookup() {
+	return lookup;
+}
