@@ -15,6 +15,47 @@ var DEFAULT_FORM_INSTANCES = {
  * @public
  * @param {String|JSFoundSet|JSRecord} dataSource The data source to lookup
  * @return {Lookup}
+ * @example <pre>
+ * function onActionAddProducts(event) {
+ *	var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+ *
+ *  // allow multi-selection
+ *	lookupObj.setMultiSelect(true);
+ *	
+ *	// add searchable fields 
+ *	lookupObj.addField('productname').setTitleText('Product');
+ *	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+ *	lookupObj.addField('unitprice')
+ *		.setSearchable(false)
+ *		.setTitleText('Price')
+ *		.setFormat('#,###.00')
+ *	
+ *	// show pop-up
+ *	lookupObj.showPopUp(onSelect, elements.btnNewProduct, controller.getFormWidth()/2, 412);
+ * }
+ * 
+ * // lookup callback. Add products into current order 
+ * function onSelect(records, values, lookup){
+ *	if(records){
+ *		records.forEach(function(rec){
+ *			
+ *			if(foundset.selectRecord(foundset.orderid,rec.productid)) {
+ *				// increase quantity if product already in order
+ *				foundset.quantity = foundset.quantity + 1;
+ *			} else {
+ *				// create a new order line for each product selected in lookup
+ *				var newRec = foundset.getRecord(foundset.newRecord())
+ *				newRec.discount = 0;
+ *				newRec.quantity = 1;
+ *				newRec.unitprice = rec.unitprice;
+ *				newRec.productid = rec.productid;
+ *			}
+ *		})
+ *	 }
+ * }
+ * 
+ * </pre>
+ * 
  * @properties={typeid:24,uuid:"65E8E051-667D-4118-A873-8024C2648F09"}
  */
 function createLookup(dataSource) {
@@ -305,9 +346,11 @@ function Lookup(datasource) {
 function init_Lookup() {
 	
 	/**
+	 * what this is used for ?
 	 * Set display field to the lookup object
 	 *
-	 * @public
+	 * @protected 
+	 * @deprecated 
 	 * @param {String} headerText HeaderText on datasource for Multi Lookup Popup
 	 * @return {String}
 	 * @this {Lookup}
@@ -323,9 +366,11 @@ function init_Lookup() {
 	}
 	
 	/**
+	 * what this is used for ?
 	 * get header field
 	 *
-	 * @public
+	 * @protected 
+	 * @deprecated 
 	 * @return {String}
 	 * @this {Lookup}
 	 */
@@ -379,6 +424,9 @@ function init_Lookup() {
 	}
 	
 	/**
+	 * Sets the lookup form used as template for the lookup popup/dialog
+	 * The lookup form must extend the abstract form AbstractLookup
+	 * 
 	 * @public
 	 * @param {RuntimeForm<AbstractLookup>} lookupForm
 	 * @this {Lookup}
@@ -477,10 +525,37 @@ function init_Lookup() {
 	
 	/**
 	 * Sets the lookup dataprovider
+	 * Has to be a dataprovider or a related dataprovider of the lookup dataSource
+	 * Setting the lookup dataprovider will return the selected dataprovider values in the lookup callback
 	 *
 	 * @public
 	 * @param {String} dataProvider
 	 * @this {Lookup}
+	 * 
+	 * @example <pre> 
+	 * var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * // set the lookup dataprovider to productid
+	 * lookupObj.setLookupDataProvider("productid");
+	 * 
+	 * // add fields
+	 * lookupObj.addField('productname').setTitleText('Product');
+	 * lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+	 * lookupObj.addField('unitprice')
+	 *	.setSearchable(false)
+	 *	.setTitleText('Price')
+	 *	.setFormat('#,###.00')
+	 *		
+	 * // show pop-up
+	 * lookupObj.showPopUp(onSelect, elements.setProduct, controller.getFormWidth()/2, 412);
+	 * 
+	 * //because i have set the lookupDataProvider as productid values contains the selected productid (if any selected)
+     * function onSelect(record, values, lookup){
+	 *   if (values && values.length) {
+	 * 	  foundset.productid = values[0];
+	 *   }
+	 * }
+	 * </pre>
+	 * 
 	 */
 	Lookup.prototype.setLookupDataProvider = function(dataProvider) {
 		this.lookupDataprovider = dataProvider;
@@ -593,6 +668,9 @@ function init_Lookup() {
 	}
 
 	/**
+	 * Returns the selected records for the lookup object
+	 * Can be used to know which records have been previously selected by the user for the specific lookup
+	 * 
 	 * @public
 	 * @return {Array<JSRecord>}
 	 * @this {Lookup}
@@ -619,7 +697,10 @@ function init_Lookup() {
 	}	
 	
 	/**
-	 * Returns the selected values 
+	 * Returns the selected values based on the lookupDataProvider based on the lookupFormProvider.
+	 * Can be used to know which values have been previously selected by the user for the specific lookup.
+	 * 
+	 * @throws {scopes.svyExceptions.IllegalStateException} throws an exception if the lookupDataProvider has not been set
 	 * 
 	 * @public
 	 * @return {Array<JSRecord>}
@@ -665,7 +746,7 @@ function init_Lookup() {
 		this.params = [];
 	}
 	/**
-	 * Shows the lookup
+	 * Shows the lookup as a Popup Form
 	 *
 	 * @public
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
@@ -685,7 +766,7 @@ function init_Lookup() {
 	}
 	
 	/**
-	 * Creates and returns the lookup
+	 * Creates and returns a Popup Form to be used to show the lookup
 	 * 
 	 * @public 
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
@@ -772,6 +853,8 @@ function init_Lookup() {
 	
 	/**
 	 * Clears the selected records of this Lookup
+	 * 
+	 * @public 
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.clearSelectedRecords = function() {
@@ -780,6 +863,9 @@ function init_Lookup() {
 	
 	/**
 	 * Sets the selected records of this Lookup
+	 * Can be used to restore the user's selection from a previous user's session
+	 * 
+	 * @public 
 	 * @param {Array<JSRecord>} records
 	 * @this {Lookup}
 	 */
@@ -792,6 +878,8 @@ function init_Lookup() {
 	
 	/**
 	 * Adds the given record to the list of selected records
+	 * 
+	 * @public 
 	 * @param {JSRecord} record
 	 * @this {Lookup}
 	 */
@@ -801,6 +889,8 @@ function init_Lookup() {
 	
 	/**
 	 * Removes the given record from the list of selected records
+	 * 
+	 * @public 
 	 * @param {JSRecord} record
 	 * @this {Lookup}
 	 */
@@ -814,6 +904,9 @@ function init_Lookup() {
 	
 	/**
 	 * Sets the selected records of this Lookup from the given primary keys
+	 * Can be used to restore the user's selection from a previous user's session
+	 * 
+	 * @public 
 	 * @param {Array<*>} pks
 	 * @this {Lookup}
 	 */
@@ -830,8 +923,10 @@ function init_Lookup() {
 	
 	/**
 	 * @public 
-	 * Sets the selected values of this Lookup
-	 * The lookup must have a known dataSource and a known lookupFormProvider
+	 * Sets the selected values of this Lookup based on the lookupFormProvider
+	 * Can be used to restore the user's selection from a previous user's session
+	 * 
+	 * @throws {scopes.svyExceptions.IllegalStateException} throws an exception if the lookupDataProvider has not been set
 	 * 
 	 * @param {Array<*>} values
 	 * @this {Lookup}
