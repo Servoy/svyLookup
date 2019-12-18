@@ -7,6 +7,7 @@
     "wikiUrl": "https://github.com/Servoy/svyLookup/wiki",
     "sourceUrl" : "https://github.com/Servoy/svyLookup",
     "releases" : [
-        {"version":"1.0.0","url":"https://github.com/Servoy/svyLookup/releases/download/v1.0.0/svyLookupExample.servoy", "servoy-version":"8.2.0"}
+        {"version":"1.0.0","url":"https://github.com/Servoy/svyLookup/releases/download/v1.0.0/svyLookupExample.servoy", "servoy-version":"8.2.0"},
+		{"version":"2.0.0","url":"https://github.com/Servoy/svyLookup/releases/download/v1.0.0/svyLookupExample.servoy", "servoy-version":"2019.9", "dependency":"svyLookup#>=2.0.0"}
      ]
 }
