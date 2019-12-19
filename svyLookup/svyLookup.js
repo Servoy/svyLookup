@@ -171,6 +171,9 @@ function createValueListLookup(valuelistName, titleText) {
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));    	
 		    }
+			
+		    // realvalue should not be null
+		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull)
 	    }
 		
 	    if (!isPkValueList) {
