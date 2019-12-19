@@ -175,7 +175,7 @@ function createValueListLookup(valuelistName, titleText) {
 		
 	    if (!isPkValueList) {
 	    	// create in-memory datasource
-	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, [JSColumn.TEXT, JSColumn.TEXT], ['realvalue']);
+	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
 	    } else {
 	    	dataSource = jsList.dataSource;
 	    }
