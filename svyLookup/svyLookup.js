@@ -135,7 +135,7 @@ function createValueListLookup(valuelistName, titleText) {
 		    	
 		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[0]).asc);	    	
 		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[1]).asc);
-		    } else if (displayDataProviders.length === 2) {
+		    } else if (displayDataProviders.length === 1) {
 		    	qbSelect.result.add(qbSelect.getColumn(displayDataProviders[0]), 'displayvalue');
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(displayDataProviders[0]));
@@ -166,7 +166,7 @@ function createValueListLookup(valuelistName, titleText) {
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[1]));  	
-		    } else if (displayDataProviders.length === 2) {
+		    } else if (displayDataProviders.length === 1) {
 		    	qbSelect.result.add(qbSelect.getColumn(realDataProviders[0]), 'realvalue');
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));    	
