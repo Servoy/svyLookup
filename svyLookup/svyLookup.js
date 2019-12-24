@@ -678,6 +678,23 @@ function init_Lookup() {
 	 * Add a params to be added into the onSelect callback arguments
 	 * @param {Object} param
 	 * @public
+	 * @example <pre>
+	 * // create lookup object
+	 * var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * lookupObj.setLookupDataProvider("productname");
+	 *
+	 * // custom param, define to which dataprovider the lookup result should be assigned
+	 * lookupObj.addParam({resultDataProvider: "productfk"});
+	 * lookupObj.showPopUp(onSelect, elements.productfk);
+	 *
+	 * function onSelect(records, values, lookup) {
+	 * 	if (values && values.length) {
+	 * 		var resultDataProvider = lookup.getParams()[0].resultDataProvider;
+	 * 		foundset[resultDataProvider] = values[0];
+	 * 	}
+	 * }
+	 * </pre>
+	 * 
 	 * @this {Lookup}
 	 * */
 	Lookup.prototype.addParam = function(param) {
@@ -687,6 +704,24 @@ function init_Lookup() {
 	/**
 	 * @public
 	 * @return {Array}
+	 * 
+	 * @example <pre>
+	 * // create lookup object
+	 * var lookupObj = scopes.svyLookup.createLookup(datasources.db.example_data.products.getDataSource());
+	 * lookupObj.setLookupDataProvider("productname");
+	 *
+	 * // custom param, define to which dataprovider the lookup result should be assigned
+	 * lookupObj.addParam({resultDataProvider: "productfk"});
+	 * lookupObj.showPopUp(onSelect, elements.productfk);
+	 *
+	 * function onSelect(records, values, lookup) {
+	 * 	if (values && values.length) {
+	 * 		var resultDataProvider = lookup.getParams()[0].resultDataProvider;
+	 * 		foundset[resultDataProvider] = values[0];
+	 * 	}
+	 * }
+	 * </pre>
+	 * 
 	 * @this {Lookup}
 	 * */
 	Lookup.prototype.getParams = function() {
