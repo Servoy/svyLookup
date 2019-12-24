@@ -71,13 +71,27 @@ function createLookup(dataSource) {
  * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
  * 
  * NOTE: Valuelist cannot be based on a database relation or a global method.
+ * Custom Valuelists can show up to **500** items in lookup.
  *
  * @public
  * @param {String} valuelistName
  * @param {String|Array<String>} [titleText] Sets the display text for the valuelist field(s). Default is 'Value' or the column names;
  * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
- *
+ * 
  * @return {Lookup}
+ * 
+ * @example <pre>
+ * // create the lookup using the valuelist productsTable
+ * var lookupObj = scopes.svyLookup.createValueListLookup("productsTable", "Product");
+ * 
+ * // show the lookup
+ * lookupObj .showPopUp(onSelect, elements.productid);
+ * 
+ * // handle selection
+ * function onSelect(records, values, lookup) {
+ * 	 var selectedLookupValues = values.length ? values[0] : null;
+ * }
+ * </pre>
  *
  * @properties={typeid:24,uuid:"C33D8065-4A81-40CA-852A-07F58C004926"}
  */
@@ -233,6 +247,19 @@ function createValueListLookup(valuelistName, titleText) {
  * @param {String|Array<String>} [titleText] Sets the display text for the valuelist field(s). Default is 'Value' or the column names;
  * TODO should i allow to override the valuelist displayvalue, realvalue dataproviders. Could be handy because the lookup returns the record and the user has no clue about displayvalue/realvalue ?
  *
+ * @example <pre>
+ * // create the lookup using the valuelist productsTable
+ * var lookupObj = scopes.svyLookup.createValueListLookup("productsTable", "Product");
+ * 
+ * // show the lookup
+ * lookupObj .showPopUp(onSelect, elements.productid);
+ * 
+ * // handle selection
+ * function onSelect(records, values, lookup) {
+ * 	 var selectedLookupValues = values.length ? values[0] : null;
+ * }
+ * </pre>
+ *
  * @return {Lookup}
  *
  * @properties={typeid:24,uuid:"5FE26179-2276-4689-9101-C642C5C1EC68"}
@@ -249,6 +276,29 @@ function createValuelistLookup(valuelistName, titleText) {
  * @param {Boolean} [overrideData] when true, the datasource with the given name is filled again from the given query, when false, an existing datasource with the same datasource name would be reused; default is false
  * 
  * @return {Lookup}
+ * 
+ * @example <pre>
+ *   //distinct query for the value
+ *   var qbSelect = datasources.db.example_data.order_details.createSelect();
+ *   qbSelect.result.add(qbSelect.joins.order_details_to_products.columns.productname, "productname");
+ *   qbSelect.result.add(qbSelect.columns.productid, "productid");
+ *   qbSelect.result.distinct = true;
+ *   qbSelect.sort.add(qbSelect.joins.order_details_to_products.columns.productname);
+ *
+ *   //create lookup and set form provider
+ *   var lookupObj = scopes.svyLookup.createQueryLookup(qbSelect, 'ordered_products');
+ *   
+ *   //set proper header title for field
+ *   var lookupField = lookupObj .getField(0);
+ *   lookupField.setTitleText("Product");
+ *   
+ *   // show the lookup
+ *   lookupObj.showPopUp(onSelect, elements.productid);
+ *
+ *   // handle selection
+ *   function onSelect(records, values, lookup) {
+ *	    var selectedLookupValues = records.length ? records[0].productid : null;
+ *   }</pre>
  * 
  * @public 
  *
