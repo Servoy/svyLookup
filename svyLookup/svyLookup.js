@@ -1,5 +1,13 @@
 /**
  * @private 
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"FD215A21-B7F2-4C1E-860C-7E957F1A7C0C"}
+ */
+var SVY_LOOKUP_VERSION = '2.0.1';
+
+/**
+ * @private 
  * @properties={typeid:35,uuid:"A7394F97-5893-4AE6-B599-1B757C587F2A",variableType:-4}
  */
 var DEFAULT_FORM_INSTANCES = {
@@ -1385,6 +1393,16 @@ function init_LookupField() {
 		}
 		return null;
 	}	
+}
+
+/**
+ * Gets the version of this module
+ * @public 
+ * @return {String} the version of the module using the format Major.Minor.Revision
+ * @properties={typeid:24,uuid:"C2C1198D-B649-48C8-9453-D67FBB348D25"}
+ */
+function getVersion() {
+    return SVY_LOOKUP_VERSION;
 }
 
 /**
