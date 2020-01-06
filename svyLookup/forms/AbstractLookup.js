@@ -144,8 +144,8 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
  */
 function search(txt) {
 	// fix search disappear while typing
-	searchText = txt;
-
+	// searchText = txt;
+	
 	// load all records if no input
 	if (!txt) {
 		foundset.loadAllRecords();
