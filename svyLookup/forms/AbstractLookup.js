@@ -204,6 +204,10 @@ function showPopUp(callback, target, width, height, initialValue) {
  */
 function createPopUp(callback, initialValue) {
 	selectHandler = callback;
+	if (initialValue) {
+		searchText = initialValue;
+		search(searchText);
+	}
 	return plugins.window.createFormPopup(this); 
 }
 
