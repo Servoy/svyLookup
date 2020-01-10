@@ -27,7 +27,8 @@ styleClass:"font-icon",
 text:"<span class=\"fa fa-times\"/>",
 transparent:true,
 typeid:7,
-uuid:"28A96F69-F839-4761-8AB5-776AB1EA6610"
+uuid:"28A96F69-F839-4761-8AB5-776AB1EA6610",
+visible:false
 },
 {
 location:"585,314",
@@ -39,7 +40,8 @@ styleClass:"font-icon",
 text:"<span class=\"fa fa-times\"/>",
 transparent:true,
 typeid:7,
-uuid:"4335B97E-87B0-46F7-8EFC-62219269CD72"
+uuid:"4335B97E-87B0-46F7-8EFC-62219269CD72",
+visible:false
 },
 {
 customProperties:"methods:{\
@@ -64,7 +66,8 @@ styleClass:"font-icon",
 text:"<span class=\"fa fa-external-link\"/>",
 transparent:true,
 typeid:7,
-uuid:"477E2132-EBBF-4AAE-B27B-53E67EB666B8"
+uuid:"477E2132-EBBF-4AAE-B27B-53E67EB666B8",
+visible:false
 },
 {
 customProperties:"methods:{\
@@ -96,7 +99,8 @@ size:"590,20",
 styleClass:"label_header",
 text:"Valuelist Lookup With Multi Selection",
 typeid:7,
-uuid:"55BFF9A2-C667-46C6-99F3-A4A316293283"
+uuid:"55BFF9A2-C667-46C6-99F3-A4A316293283",
+visible:false
 },
 {
 location:"31,271",
@@ -104,7 +108,8 @@ size:"590,20",
 styleClass:"label_header",
 text:"Valuelist Lookup",
 typeid:7,
-uuid:"58755E0F-46CE-408A-8011-816B20441CEB"
+uuid:"58755E0F-46CE-408A-8011-816B20441CEB",
+visible:false
 },
 {
 dataProviderID:"selectedLooupValues$valuelist",
@@ -117,7 +122,8 @@ placeholderText:"Choose values",
 size:"590,40",
 styleClass:"lookup-field",
 typeid:4,
-uuid:"6B218CBD-9140-47CE-8779-45E000247CAC"
+uuid:"6B218CBD-9140-47CE-8779-45E000247CAC",
+visible:false
 },
 {
 dataProviderID:"selectedLookupValue",
@@ -148,7 +154,8 @@ placeholderText:"Choose a value",
 size:"590,40",
 styleClass:"lookup-field",
 typeid:4,
-uuid:"8FE51C1F-C9E7-4A08-B938-33CCD59D427D"
+uuid:"8FE51C1F-C9E7-4A08-B938-33CCD59D427D",
+visible:false
 },
 {
 location:"580,76",
@@ -217,7 +224,8 @@ styleClass:"font-icon",
 text:"<span class=\"fa fa-external-link\"/>",
 transparent:true,
 typeid:7,
-uuid:"CED7B996-704E-47B9-B002-207B1D24ABDC"
+uuid:"CED7B996-704E-47B9-B002-207B1D24ABDC",
+visible:false
 },
 {
 dataProviderID:"selectedLookupValues",
