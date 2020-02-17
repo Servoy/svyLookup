@@ -194,8 +194,19 @@ function createValueListLookup(valuelistName, titleText) {
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));    	
 		    }
 			
+		    // apply valuelist name as filter on column 'valuelist_name'
+		    if (jsList.useTableFilter) {
+		    	
+		    	if (isPkValueList) {
+		    		// TODO handle apply valuelist name as filter on column 'valuelist_name' when the return dataprovider are the PKs
+		    		application.output("The created Lookup does not apply the valuelist name as filter on column 'valuelist_name'.", LOGGINGLEVEL.WARNING);
+		    	} else {
+			    	qbSelect.where.add(qbSelect.getColumn("valuelist_name").eq(jsList.name));
+		    	}
+		    }
+			
 		    // realvalue should not be null
-		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull)
+		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull);
 	    }
 		
 	    if (!isPkValueList) {
