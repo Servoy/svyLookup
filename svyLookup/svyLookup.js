@@ -116,8 +116,12 @@ function createValueListLookup(valuelistName, titleText) {
 	var dataSource = "mem:" + dataSourceName;
 	
 	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
-		var items = application.getValueListItems(valuelistName);		
-		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, jsList.realValueType], ['realvalue']);
+		var items = application.getValueListItems(valuelistName);
+		var realValueType = jsList.realValueType
+		if (realValueType === 0) {
+			realValueType = JSColumn.TEXT
+		}
+		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType], ['realvalue']);
 	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
 		var jsTable = databaseManager.getTable(jsList.dataSource);
 		var pkColumns = jsTable.getRowIdentifierColumnNames();
