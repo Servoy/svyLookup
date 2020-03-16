@@ -117,10 +117,15 @@ function createValueListLookup(valuelistName, titleText) {
 	
 	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
 		var items = application.getValueListItems(valuelistName);
-		var realValueType = jsList.realValueType
+		// check if valuelist is of old type, default realValue to text
+		var realValueType = jsList.realValueType;
 		if (realValueType === 0) {
 			realValueType = JSColumn.TEXT
 		}
+		// skip null value if valuelist allow null values
+		if (jsList.addEmptyValue == JSValueList.EMPTY_VALUE_ALWAYS && items.getValue(1,1) === "") {
+			items.removeRow(1);
+		}	
 		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType], ['realvalue']);
 	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
 		var jsTable = databaseManager.getTable(jsList.dataSource);
