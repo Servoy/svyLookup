@@ -109,6 +109,10 @@ function createValueListLookup(valuelistName, titleText) {
 		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
 	}	
 	
+	if (jsList.valueListType != JSValueList.CUSTOM_VALUES && jsList.valueListType != JSValueList.DATABASE_VALUES && !jsList.globalMethod) {
+		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES, DATABASE_VALUE, or Global Method Type");
+	}
+	
 	var dataSourceName = "svylookup_valuelist_" + valuelistName;
 	var dataSource = "mem:" + dataSourceName;
 	
