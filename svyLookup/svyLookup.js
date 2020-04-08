@@ -107,10 +107,7 @@ function createValueListLookup(valuelistName, titleText) {
 	var jsList = solutionModel.getValueList(valuelistName);
 	if (!jsList) {
 		throw new scopes.svyExceptions.IllegalArgumentException("Cannot use undefined valuelist " + valuelistName);
-	}
-	if (jsList.valueListType != JSValueList.CUSTOM_VALUES && jsList.valueListType != JSValueList.DATABASE_VALUES) {
-		throw new scopes.svyExceptions.IllegalArgumentException("The valuelist " + valuelistName + " must be a valuelist of type CUSTOM_VALUES or DATABASE_VALUE");
-	}
+	}	
 	
 	var dataSourceName = "svylookup_valuelist_" + valuelistName;
 	var dataSource = "mem:" + dataSourceName;
