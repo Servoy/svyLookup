@@ -230,6 +230,17 @@ function createValueListLookup(valuelistName, titleText) {
 	var valuelistLookup = createLookup(dataSource);
 	var field;
 	
+	if (jsList.globalMethod) {
+		/** @type {JSDataSet} */
+		var ds = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]();
+		ds.setColumnName(1, 'displayvalue');
+		ds.setColumnName(2, 'realvalue');
+		dataSource = ds.createDataSource(dataSourceName);
+		/** @type {Function} */
+		var gl = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]
+		valuelistLookup.setVLGlobalMethod(gl);
+	}
+
 	/** @type {Array<String>} */
 	var titleTextArray = titleText instanceof Array ? titleText : [titleText];
 
@@ -417,6 +428,12 @@ function Lookup(datasource) {
 	 * @type {Array<Array<Object>>}
 	 */
 	this.selectedPks = [];
+
+	/**
+	 * @protected
+	 * @type {function}
+	 */
+	this.globalValueListMethod = null;
 }
 
 /**
@@ -1113,6 +1130,27 @@ function init_Lookup() {
 		// an idea can be to store the selectedValues in the lookup object; but then the lookup will have selectedValues and selectedPks which is confusing
 		// set selected pks
 		this.setSelectedPks(pks);
+	}
+
+	/**
+	 * Set a Valuelist Global method to use
+	 *
+	 * @public
+	 * @param {Function} method
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.setVLGlobalMethod = function(method) {
+		this.globalValueListMethod = method;
+	}
+
+	/**
+	 * Get a Valuelist Global method
+	 *
+	 * @public
+	 * @this {Lookup}
+	 */
+	Lookup.prototype.getVLGlobalMethod = function() {
+		return this.globalValueListMethod;
 	}
 	
 }

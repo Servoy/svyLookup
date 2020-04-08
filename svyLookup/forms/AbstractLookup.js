@@ -143,6 +143,20 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
  * @properties={typeid:24,uuid:"8FD91534-39A2-428C-9910-49B19E1FF3E5"}
  */
 function search(txt) {
+	//if we are using a global method valuelist:
+	//we need to refresh the foundset using global method
+	/** @type {Lookup} */
+	var lookupObj = getLookup();
+	/** @type {Function} */
+	var lookupGLMethod = lookupObj.getVLGlobalMethod();
+	if (lookupGLMethod) {
+		/** @type {JSDataSet} */
+		var ds = lookupGLMethod(txt);
+		ds.setColumnName(1, 'displayvalue');
+		ds.setColumnName(2, 'realvalue');
+		ds.createDataSource(foundset.getDataSource().split(':')[1]);
+	}
+	
 	// fix search disappear while typing
 	// searchText = txt;
 	
