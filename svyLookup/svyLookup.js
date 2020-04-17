@@ -233,9 +233,9 @@ function createValueListLookup(valuelistName, titleText) {
 	
 	if (jsList.globalMethod) {
 		/** @type {JSDataSet} */
-		var ds = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]();
-		ds.setColumnName(1, 'displayvalue');
-		ds.setColumnName(2, 'realvalue');
+		var ds = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()](null,null,null,jsList.name,false);
+		if (ds.getColumnName(1)!='displayvalue') ds.setColumnName(1, 'displayvalue');
+		if (ds.getColumnName(2)!='realvalue') ds.setColumnName(2, 'realvalue');		
 		dataSource = ds.createDataSource(dataSourceName);
 		/** @type {Function} */
 		var gl = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]

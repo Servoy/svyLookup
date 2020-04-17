@@ -152,8 +152,8 @@ function search(txt) {
 	if (lookupGLMethod) {
 		/** @type {JSDataSet} */
 		var ds = lookupGLMethod(txt);
-		ds.setColumnName(1, 'displayvalue');
-		ds.setColumnName(2, 'realvalue');
+		if (ds.getColumnName(1)!='displayvalue') ds.setColumnName(1, 'displayvalue');
+		if (ds.getColumnName(2)!='realvalue') ds.setColumnName(2, 'realvalue');		
 		ds.createDataSource(foundset.getDataSource().split(':')[1]);
 	}
 	
