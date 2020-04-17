@@ -239,7 +239,7 @@ function createValueListLookup(valuelistName, titleText) {
 		dataSource = ds.createDataSource(dataSourceName);
 		/** @type {Function} */
 		var gl = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]
-		valuelistLookup.setVLGlobalMethod(gl);
+		valuelistLookup.setVLGlobalMethod({method:gl,valuelistName:jsList.name});
 	}
 
 	/** @type {Array<String>} */
@@ -432,7 +432,7 @@ function Lookup(datasource) {
 
 	/**
 	 * @protected
-	 * @type {function}
+	 * @type {{method:Function,valuelistName:String}}
 	 */
 	this.globalValueListMethod = null;
 }
@@ -1137,11 +1137,11 @@ function init_Lookup() {
 	 * Set a Valuelist Global method to use
 	 *
 	 * @public
-	 * @param {Function} method
+	 * @param {{method:Function,valuelistName:String}} data
 	 * @this {Lookup}
 	 */
-	Lookup.prototype.setVLGlobalMethod = function(method) {
-		this.globalValueListMethod = method;
+	Lookup.prototype.setVLGlobalMethod = function(data) {
+		this.globalValueListMethod = data;
 	}
 
 	/**
@@ -1149,6 +1149,7 @@ function init_Lookup() {
 	 *
 	 * @public
 	 * @this {Lookup}
+	 * @return {{method:Function,valuelistName:String}}
 	 */
 	Lookup.prototype.getVLGlobalMethod = function() {
 		return this.globalValueListMethod;

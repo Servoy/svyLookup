@@ -148,10 +148,11 @@ function search(txt) {
 	/** @type {Lookup} */
 	var lookupObj = getLookup();
 	/** @type {Function} */
-	var lookupGLMethod = lookupObj.getVLGlobalMethod();
+	var lookupGLMethod = lookupObj.getVLGlobalMethod().method;
+	var lookupGLValuelistName = lookupObj.getVLGlobalMethod().valuelistName;
 	if (lookupGLMethod) {
 		/** @type {JSDataSet} */
-		var ds = lookupGLMethod(txt);
+		var ds = lookupGLMethod(txt,null,null,lookupGLValuelistName,false);
 		if (ds.getColumnName(1)!='displayvalue') ds.setColumnName(1, 'displayvalue');
 		if (ds.getColumnName(2)!='realvalue') ds.setColumnName(2, 'realvalue');		
 		ds.createDataSource(foundset.getDataSource().split(':')[1]);
