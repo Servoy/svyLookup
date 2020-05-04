@@ -36,15 +36,15 @@ var window;
 /**
  * Set to true when the selection is confirmed. Return a value only when the selection is confirmed.
  * Force an explicit selection to return the selected values
- * 
- * @protected 
+ *
+ * @protected
  * @properties={typeid:35,uuid:"BF6DB2F6-6167-457A-8D40-21E808ABB61F",variableType:-4}
  */
 var confirmSelection = false;
 
 /**
  * If true will select an empty value
- * @private  
+ * @private
  * @properties={typeid:35,uuid:"B2FFC5BF-711D-4C8C-8A5B-C498FCC349D2",variableType:-4}
  */
 var confirmSelectEmptyValue = false;
@@ -70,13 +70,13 @@ var keyListenerReady = false;
  */
 function onShow(firstShow, event) {
 	setupControllerFoundset();
-	
+
 	// reset confirmSelection to init state false
 	confirmSelection = false;
 	confirmSelectEmptyValue = false;
-	
+
 	keyListenerReady = false;
-	
+
 	if (firstShow) {
 		plugins.window.createShortcut('ENTER', onEnterShortcut, controller.getName());
 		plugins.window.createShortcut('ESC', cancel, controller.getName());
@@ -103,7 +103,7 @@ function onHide(event) {
 
 /**
  * When attached to a search field, will add a keylistener to any element having an attribute keylistener='data-svylookup-search'
- * 
+ *
  * @protected
  * @param {JSEvent} event the event that triggered the action
  *
@@ -119,8 +119,8 @@ function onFocusGainedSearch(event) {
 
 /**
  * Handles the key listener callback event
- * 
- * @protected 
+ *
+ * @protected
  * @param {String} value
  * @param {JSEvent} event
  * @param {Number} keyCode
@@ -131,7 +131,7 @@ function onFocusGainedSearch(event) {
  *
  * @properties={typeid:24,uuid:"5F784C8C-896E-4CD9-9215-53D6A6576FD8"}
  */
-function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock){
+function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 	// run search
 	search(value);
 }
@@ -147,20 +147,21 @@ function search(txt) {
 	//we need to refresh the foundset using global method
 	/** @type {Lookup} */
 	var lookupObj = getLookup();
-	/** @type {Function} */
-	var lookupGLMethod = lookupObj.getVLGlobalMethod().method;
-	var lookupGLValuelistName = lookupObj.getVLGlobalMethod().valuelistName;
-	if (lookupGLMethod) {
-		/** @type {JSDataSet} */
-		var ds = lookupGLMethod(txt,null,null,lookupGLValuelistName,false);
-		if (ds.getColumnName(1)!='displayvalue') ds.setColumnName(1, 'displayvalue');
-		if (ds.getColumnName(2)!='realvalue') ds.setColumnName(2, 'realvalue');		
-		ds.createDataSource(foundset.getDataSource().split(':')[1]);
+	if (lookupObj.getVLGlobalMethod()) {
+		/** @type {Function} */
+		var lookupGLMethod = lookupObj.getVLGlobalMethod().method;
+		var lookupGLValuelistName = lookupObj.getVLGlobalMethod().valuelistName;
+		if (lookupGLMethod) {
+			/** @type {JSDataSet} */
+			var ds = lookupGLMethod(txt, null, null, lookupGLValuelistName, false);
+			if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
+			if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
+			ds.createDataSource(foundset.getDataSource().split(':')[1]);
+		}
 	}
-	
 	// fix search disappear while typing
 	// searchText = txt;
-	
+
 	// load all records if no input
 	if (!txt) {
 		foundset.loadAllRecords();
@@ -206,13 +207,13 @@ function showPopUp(callback, target, width, height, initialValue) {
 	plugins.window.showFormPopup(target, this, this, 'foobar', w, height);
 }
 
-/** 
+/**
  * Creates a form popup for this form and returns it
- * @public 
- * 
+ * @public
+ *
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- * 
+ *
  * @return {plugins.window.FormPopup}
  *
  * @properties={typeid:24,uuid:"5C984EAD-5E26-406F-8624-F04ED865A7FF"}
@@ -223,7 +224,7 @@ function createPopUp(callback, initialValue) {
 		searchText = initialValue;
 		search(searchText);
 	}
-	return plugins.window.createFormPopup(this); 
+	return plugins.window.createFormPopup(this);
 }
 
 /**
@@ -234,7 +235,7 @@ function createPopUp(callback, initialValue) {
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- * 
+ *
  * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
  *
  * @properties={typeid:24,uuid:"ED6B2A5C-5453-453D-B9AE-0824E9B495EF"}
@@ -249,24 +250,23 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
 
 	window = createWindow(x, y, width, height);
 	window.show(controller.getName());
-	
+
 	// return null if selection is not confirmed
 	if (confirmSelection !== true) {
 		confirmSelection = false;
 		return null;
 	}
-	
+
 	// return empty selection
 	if (confirmSelectEmptyValue === true) {
 		confirmSelectEmptyValue = false;
 		return [];
 	}
-		
-		
+
 	// return the selected values
 	var records = getSvyLookupSelectedRecords();
 	var lookupValues = getSvyLookupSelectedValues();
-	
+
 	if (lookupValues) {
 		return lookupValues
 	} else {
@@ -279,7 +279,7 @@ function showModalWindow(callback, x, y, width, height, initialValue) {
  * @param {JSWindow} win the JSWindow object to show
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} [callback] The function that is called when selection happens. The callback function is optional for lookups in modal dialog
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
- * 
+ *
  * @return {Array<JSRecord>|Array<String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
  *
  * @properties={typeid:24,uuid:"951F2497-B395-4B7E-9055-82ED8876C997"}
@@ -294,23 +294,23 @@ function showWindow(win, callback, initialValue) {
 
 	window = win;
 	window.show(controller.getName());
-	
+
 	// return null if selection is not confirmed
 	if (confirmSelection !== true) {
 		confirmSelection = false;
 		return null;
 	}
-	
+
 	// return empty selection
 	if (confirmSelectEmptyValue === true) {
 		confirmSelectEmptyValue = false;
 		return [];
 	}
-		
+
 	// return the selected values
 	var records = getSvyLookupSelectedRecords();
 	var lookupValues = getSvyLookupSelectedValues();
-	
+
 	if (lookupValues) {
 		return lookupValues
 	} else {
@@ -319,19 +319,19 @@ function showWindow(win, callback, initialValue) {
 }
 
 /**
- * @public 
+ * @public
  * @param {Number} [x]
  * @param {Number} [y]
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {Number} [jsWindowType] Type of window; should be an option of JSWindow, Default JSWindow.MODAL_DIALOG
- * 
+ *
  * @return {JSWindow}
  * @properties={typeid:24,uuid:"1A05B913-0859-41AA-8B57-F65FF1E29750"}
  */
 function createWindow(x, y, width, height, jsWindowType) {
 	if (!jsWindowType) jsWindowType = JSWindow.MODAL_DIALOG;
-	
+
 	var win = application.createWindow(controller.getName(), jsWindowType);
 
 	// TODO allow to setup window as wished; object/function provider
@@ -342,7 +342,7 @@ function createWindow(x, y, width, height, jsWindowType) {
 	if ( (x == 0 || x > 0) && (y == 0 || y >= 0)) {
 		win.setLocation(x, y);
 	}
-	
+
 	return win;
 }
 
@@ -350,10 +350,10 @@ function createWindow(x, y, width, height, jsWindowType) {
  * Hook for sub form(s) to implement specific solution model additions
  *
  * @protected
- * 
+ *
  * @param {JSForm} jsForm
  * @param {scopes.svyLookup.Lookup} lookupObj
- * 
+ *
  * @properties={typeid:24,uuid:"56B3D22A-78BB-4AA6-9B1C-78D6FBA40230"}
  */
 function onCreateInstance(jsForm, lookupObj) {
@@ -361,9 +361,9 @@ function onCreateInstance(jsForm, lookupObj) {
 }
 
 /**
- * 
+ *
  * @param {scopes.svyLookup.LookupField} lookupFieldObj
- * @protected 
+ * @protected
  * @return {Object}
  *
  * @properties={typeid:24,uuid:"3ED4AF93-157E-4A51-B208-304FBC1F6758"}
@@ -375,12 +375,12 @@ function createFieldInstance(lookupFieldObj) {
 
 /**
  * Creates a new instance of the lookup form
- * 
+ *
  * @public
- * 
+ *
  * @param {scopes.svyLookup.Lookup} lookupObj
  * @return {RuntimeForm<AbstractLookup>}
- * 
+ *
  * @properties={typeid:24,uuid:"8147DBC9-8AE2-47EC-B6B6-A3C10971DCF3"}
  */
 function newInstance(lookupObj) {
@@ -400,7 +400,7 @@ function newInstance(lookupObj) {
 }
 
 /**
- * @protected 
+ * @protected
  * @param {JSEvent} event
  *
  * @properties={typeid:24,uuid:"5148147D-152F-4743-AB00-1A576879487C"}
@@ -416,26 +416,26 @@ function onEnterShortcut(event) {
 
 /**
  * Callback when item is selected
- * 
+ *
  * @return {Array<JSRecord|String|Date|Number>} returns the selected records; if the lookupDataprovider has been set instead it returns the lookupDataprovider values on the selected records
- * 
+ *
  * @protected
- * 
+ *
  * @properties={typeid:24,uuid:"FB1EE4B2-02C6-4B5C-8346-7D1988326895"}
  */
 function onSelect() {
-	
+
 	// confirmSelection
 	confirmSelection = true;
 
 	// dismiss popup
 	dismiss();
-	
+
 	if (confirmSelectEmptyValue === true) {
 		// invoke callback
 		if (selectHandler) {
 			selectHandler.call(this, [], [], lookup);
-		}		
+		}
 		return [];
 	}
 
@@ -458,35 +458,35 @@ function onSelect() {
 
 /**
  * Dismiss the lookup returning an empty selection; returns an empty array [] as result.
- * 
+ *
  * @return {Array}
- * 
- * @protected 
- * 
+ *
+ * @protected
+ *
  * @properties={typeid:24,uuid:"C2172FB4-650C-4643-81F0-7EBEED31A6C5"}
  */
 function selectEmptyValue() {
 	confirmSelection = true;
 	confirmSelectEmptyValue = true;
-	
+
 	dismiss();
-	
+
 	// invoke callback
 	if (selectHandler) {
 		// TODO can we just return the selected values and the lookupObject itself instead of so many arguments ?
 		selectHandler.call(this, [], [], lookup);
 	}
-	
+
 	return [];
 }
 
 /**
  * Returns the selected record(s)
- * 
+ *
  * @protected
  *
  * @return {Array<JSRecord>}
- * 
+ *
  * @properties={typeid:24,uuid:"BE8C41AF-D193-467E-BA8D-8E2BAB5096C6"}
  */
 function getSvyLookupSelectedRecords() {
@@ -496,11 +496,11 @@ function getSvyLookupSelectedRecords() {
 
 /**
  * Returns the lookupDataProvider values for the selected record
- * 
+ *
  * @return {Array<String|Date|Number>}
- * 
- * @protected 
- * 
+ *
+ * @protected
+ *
  * @properties={typeid:24,uuid:"23E4DF81-EBD7-4B5B-A292-85DA622FD743"}
  */
 function getSvyLookupSelectedValues() {
@@ -514,15 +514,15 @@ function getSvyLookupSelectedValues() {
 				lookupValues.push(records[i][lookupDataprovider]);
 			}
 		}
-	} 
+	}
 	return lookupValues;
 }
 
 /**
  * Cancel the selection and dismiss the popup
- * 
- * @protected 
- * 
+ *
+ * @protected
+ *
  * @properties={typeid:24,uuid:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2"}
  */
 function cancel() {
@@ -535,7 +535,7 @@ function cancel() {
  * Dismisses the popup
  *
  * @protected
- * 
+ *
  * @properties={typeid:24,uuid:"D119BC9F-1137-445E-9E30-FDB3F4929484"}
  */
 function dismiss() {
@@ -548,16 +548,16 @@ function dismiss() {
 }
 
 /**
- * @private 
- * 
+ * @private
+ *
  * @properties={typeid:24,uuid:"B7F0631F-DA16-4FD9-B722-DAE714D8E714"}
  */
 function setupControllerFoundset() {
 	var fs = lookup.getFoundSet()
 	if (fs) {
 		controller.loadRecords(fs);
-		
-		// FIXME SVY-12494 copy over the foundset filter params because are not copied via controller.loadRecords(fs) on a separate foundset  
+
+		// FIXME SVY-12494 copy over the foundset filter params because are not copied via controller.loadRecords(fs) on a separate foundset
 		var foundsetFilterParams = fs.getFoundSetFilterParams();
 		for (var i = 0; foundsetFilterParams && i < foundsetFilterParams.length; i++) {
 			var filterParam = foundsetFilterParams[i]
@@ -571,7 +571,7 @@ function setupControllerFoundset() {
 }
 
 /**
- * @protected 
+ * @protected
  * @return {scopes.svyLookup.Lookup}
  * @properties={typeid:24,uuid:"A7F98495-7DC8-47D3-9316-50093596D9E8"}
  */
