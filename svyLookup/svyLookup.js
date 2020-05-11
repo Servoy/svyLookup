@@ -78,7 +78,7 @@ function createLookup(dataSource) {
 /**
  * Creates a lookup object from a valuelist which can be used to show a pop-up form or a modal window
  * 
- * NOTE: Valuelist cannot be based on a database relation or a global method.
+ * NOTE: Valuelist cannot be based on a database relation.
  * Custom Valuelists can show up to **500** items in lookup.
  *
  * @public
