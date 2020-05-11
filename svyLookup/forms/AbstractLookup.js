@@ -137,6 +137,35 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 }
 
 /**
+ * Update the datasource if necessary. e.g. ValueList has been created from a global valuelist
+ * 
+ * @private
+ * @properties={typeid:24,uuid:"D13232CA-6183-4DD6-B935-A8EDC305AB7F"}
+ */
+function updateDataSource(txt) {
+	//if we are using a global method valuelist:
+	//we need to refresh the foundset using global method
+	
+	/** @type {scopes.svyLookup.Lookup} */
+	var lookupObj = getLookup();
+	var valueListName = lookupObj.getValueListName()
+	if (valueListName) {
+		var jsList = solutionModel.getValueList(valueListName);
+		if (jsList && jsList.globalMethod) {
+			/** @type {Function} */
+			var lookupGLMethod = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()];
+			if (lookupGLMethod) {
+				/** @type {JSDataSet} */
+				var ds = lookupGLMethod(txt, null, null, valueListName, false);
+				if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
+				if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
+				ds.createDataSource(foundset.getDataSource().split(':')[1]);
+			}
+		}
+	}
+}
+
+/**
  * Runs the search. Loads records in the foundset.
  *
  * @protected
@@ -145,20 +174,8 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 function search(txt) {
 	//if we are using a global method valuelist:
 	//we need to refresh the foundset using global method
-	/** @type {Lookup} */
-	var lookupObj = getLookup();
-	if (lookupObj.getVLGlobalMethod()) {
-		/** @type {Function} */
-		var lookupGLMethod = lookupObj.getVLGlobalMethod().method;
-		var lookupGLValuelistName = lookupObj.getVLGlobalMethod().valuelistName;
-		if (lookupGLMethod) {
-			/** @type {JSDataSet} */
-			var ds = lookupGLMethod(txt, null, null, lookupGLValuelistName, false);
-			if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
-			if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
-			ds.createDataSource(foundset.getDataSource().split(':')[1]);
-		}
-	}
+	updateDataSource(txt);
+
 	// fix search disappear while typing
 	// searchText = txt;
 

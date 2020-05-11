@@ -229,23 +229,27 @@ function createValueListLookup(valuelistName, titleText) {
 
 	// autoconfigure the valuelist lookup
 	var valuelistLookup = createLookup(dataSource);
+	
+	// store the valuelistName in the lookup obj
+	valuelistLookup['valueListName'] = valuelistName;
 	var field;
 	
+	// check if the valuelist has a global method
 	if (jsList.globalMethod) {
-		/** @type {JSDataSet} */
-		var ds = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()](null,null,null,jsList.name,false);
-		if (ds.getColumnName(1)!='displayvalue') ds.setColumnName(1, 'displayvalue');
-		if (ds.getColumnName(2)!='realvalue') ds.setColumnName(2, 'realvalue');		
-		dataSource = ds.createDataSource(dataSourceName);
+		
 		/** @type {Function} */
-		var gl = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()]
-		valuelistLookup.setVLGlobalMethod({method:gl,valuelistName:jsList.name});
+		var vlGlobalMethod = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()];
+		/** @type {JSDataSet} */
+		var ds = vlGlobalMethod(null, null, null, jsList.name, false);
+		if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
+		if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
+		dataSource = ds.createDataSource(dataSourceName);
 	}
 
 	/** @type {Array<String>} */
 	var titleTextArray = titleText instanceof Array ? titleText : [titleText];
 
-	if (!isPkValueList) {
+	if (!isPkValueList) {	// custom realValue for valuelist
 		valuelistLookup.setLookupDataProvider("realvalue");
 		field = valuelistLookup.addField("displayvalue");
 		if (titleText) {
@@ -253,7 +257,7 @@ function createValueListLookup(valuelistName, titleText) {
 		} else {
 			field.setTitleText("Value");
 		}
-	} else {
+	} else { // valuelist realValue are PKs
 		if (pkColumns.length === 1) {
 			valuelistLookup.setLookupDataProvider(pkColumns[0]);
 		} else {
@@ -429,12 +433,12 @@ function Lookup(datasource) {
 	 * @type {Array<Array<Object>>}
 	 */
 	this.selectedPks = [];
-
+	
 	/**
 	 * @protected
-	 * @type {{method:Function,valuelistName:String}}
+	 * @type {String}
 	 */
-	this.globalValueListMethod = null;
+	this.valueListName = null;
 }
 
 /**
@@ -1132,29 +1136,17 @@ function init_Lookup() {
 		// set selected pks
 		this.setSelectedPks(pks);
 	}
-
-	/**
-	 * Set a Valuelist Global method to use
-	 *
-	 * @public
-	 * @param {{method:Function,valuelistName:String}} data
-	 * @this {Lookup}
-	 */
-	Lookup.prototype.setVLGlobalMethod = function(data) {
-		this.globalValueListMethod = data;
-	}
-
-	/**
-	 * Get a Valuelist Global method
-	 *
-	 * @public
-	 * @this {Lookup}
-	 * @return {{method:Function,valuelistName:String}}
-	 */
-	Lookup.prototype.getVLGlobalMethod = function() {
-		return this.globalValueListMethod;
-	}
 	
+	/**
+	 * Returns the valuelist name if the Lookup has been created from a valuelist (@see createValueListLookup(valuelistName, titleText))
+	 *
+	 * @public
+	 * @this {Lookup}
+	 * @return {String}
+	 */
+	Lookup.prototype.getValueListName = function() {
+		return this.valueListName;
+	}
 }
 
 /**
