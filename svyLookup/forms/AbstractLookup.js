@@ -573,7 +573,15 @@ function setupControllerFoundset() {
 	var fs = lookup.getFoundSet()
 	if (fs) {
 		controller.loadRecords(fs);
-
+		
+		/** @type {scopes.svyLookup.Lookup} */
+		var lookupObj = getLookup();
+		var valueListName = lookupObj.getValueListName()
+		//check if we have a valuelist and need to sort.
+		if (valueListName) {
+			foundset.sort(solutionModel.getValueList(valueListName).sortOptions)
+		}
+		
 		// FIXME SVY-12494 copy over the foundset filter params because are not copied via controller.loadRecords(fs) on a separate foundset
 		var foundsetFilterParams = fs.getFoundSetFilterParams();
 		for (var i = 0; foundsetFilterParams && i < foundsetFilterParams.length; i++) {
