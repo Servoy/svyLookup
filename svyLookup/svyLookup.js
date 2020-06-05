@@ -136,6 +136,7 @@ function createValueListLookup(valuelistName, titleText) {
 	    var realDataProviders = jsList.getReturnDataProviderIds();
 	    
 	    var isPkValueList = scopes.svyJSUtils.areObjectsEqual(pkColumns, realDataProviders);
+	    var valuelistFoundSet;
 	    
 	    if (!isPkValueList) {
 		    var qbSelect = databaseManager.createSelect(jsList.dataSource);
@@ -224,11 +225,35 @@ function createValueListLookup(valuelistName, titleText) {
 	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
 	    } else {
 	    	dataSource = jsList.dataSource;
+	    	
+		    // get the valuelist sort string
+		    var sortString = jsList.sortOptions ? jsList.sortOptions : null;
+	    	
+	    	// Set default sort String if not defined yet
+	    	if (!sortString) {
+	    		sortString = displayDataProviders.join(" asc,");
+	    		sortString = sortString ? sortString + ' asc' : null;
+	    	}
+	    	
+	    	// get a sorted foundset to be used to create the valuelist
+	    	if (sortString) {
+	    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+	    		valuelistFoundSet.sort(sortString, true);
+	    		valuelistFoundSet.loadAllRecords();
+	    	}
 	    }
 	}
+	
+	/** @type {Lookup} */
+	var valuelistLookup;
 
-	// autoconfigure the valuelist lookup
-	var valuelistLookup = createLookup(dataSource);
+	// consider to set sort in valuelistObject as API
+	if (valuelistFoundSet) {
+		// autoconfigure the valuelist lookup from sorted foundset
+		valuelistLookup = createLookup(valuelistFoundSet);
+	} else {
+		valuelistLookup = createLookup(dataSource);
+	}
 	
 	// store the valuelistName in the lookup obj
 	valuelistLookup['valueListName'] = valuelistName;
