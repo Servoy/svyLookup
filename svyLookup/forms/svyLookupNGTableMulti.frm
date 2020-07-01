@@ -145,12 +145,13 @@ size:{
 height:25,
 width:25
 },
-styleclass:"pull-right btn-close"
+styleclass:"far fa-window-close fa-lg pull-right btn-close"
 },
 location:"3,3",
 name:"faClose",
 size:"25,25",
-typeName:"servoyextra-fontawesome",
+styleClass:"far fa-window-close fa-lg pull-right btn-close",
+typeName:"bootstrapcomponents-label",
 typeid:47,
 uuid:"5A152DAD-C4E2-4AF2-A2FE-62B7255367B9"
 }
