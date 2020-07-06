@@ -178,6 +178,7 @@ function createValueListLookup(valuelistName, titleText) {
 		    
 			// create realValue column
 			var realValueColumn = qbSelect.getColumn(realDataProviders[0]);
+		    // FIXME is this necessary? the code below is doing the same when there is only one real dataprovider
 			qbSelect.groupBy.add(realValueColumn);
 	
 			if (realDataProviders.length === 3) {
@@ -220,28 +221,31 @@ function createValueListLookup(valuelistName, titleText) {
 		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull);
 	    }
 		
+	    var sortString;
+	    
 	    if (!isPkValueList) {
 	    	// create in-memory datasource
 	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
+		    // sort by display value
+	    	sortString = 'displayvalue asc';
 	    } else {
 	    	dataSource = jsList.dataSource;
-	    	
 		    // get the valuelist sort string
-		    var sortString = jsList.sortOptions ? jsList.sortOptions : null;
+	    	sortString = jsList.sortOptions ? jsList.sortOptions : null;
 	    	
 	    	// Set default sort String if not defined yet
 	    	if (!sortString) {
 	    		sortString = displayDataProviders.join(" asc,");
 	    		sortString = sortString ? sortString + ' asc' : null;
 	    	}
-	    	
-	    	// get a sorted foundset to be used to create the valuelist
-	    	if (sortString) {
-	    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
-	    		valuelistFoundSet.sort(sortString, true);
-	    		valuelistFoundSet.loadAllRecords();
-	    	}
 	    }
+	    	
+    	// get a sorted foundset to be used to create the valuelist
+    	if (sortString) {
+    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+    		valuelistFoundSet.sort(sortString, true);
+    		valuelistFoundSet.loadAllRecords();
+    	}
 	}
 	
 	/** @type {Lookup} */
