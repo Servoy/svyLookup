@@ -175,10 +175,6 @@ function createValueListLookup(valuelistName, titleText) {
 		    	
 		    	qbSelect.sort.add(qbSelect.getColumn(displayDataProviders[0]).asc);
 		    }
-		    
-			// create realValue column
-			var realValueColumn = qbSelect.getColumn(realDataProviders[0]);
-			qbSelect.groupBy.add(realValueColumn);
 	
 			if (realDataProviders.length === 3) {
 		    	qbSelect.result.add(
@@ -199,7 +195,7 @@ function createValueListLookup(valuelistName, titleText) {
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[1]));  	
-		    } else if (displayDataProviders.length === 1) {
+		    } else if (realDataProviders.length === 1) {
 		    	qbSelect.result.add(qbSelect.getColumn(realDataProviders[0]), 'realvalue');
 		    	
 		    	qbSelect.groupBy.add(qbSelect.getColumn(realDataProviders[0]));    	
@@ -220,14 +216,17 @@ function createValueListLookup(valuelistName, titleText) {
 		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull);
 	    }
 		
+	    var sortString;
+	    
 	    if (!isPkValueList) {
 	    	// create in-memory datasource
 	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
+	    	sortString = 'displayvalue asc';
 	    } else {
 	    	dataSource = jsList.dataSource;
 	    	
 		    // get the valuelist sort string
-		    var sortString = jsList.sortOptions ? jsList.sortOptions : null;
+		    sortString = jsList.sortOptions ? jsList.sortOptions : null;
 	    	
 	    	// Set default sort String if not defined yet
 	    	if (!sortString) {
@@ -235,13 +234,14 @@ function createValueListLookup(valuelistName, titleText) {
 	    		sortString = sortString ? sortString + ' asc' : null;
 	    	}
 	    	
-	    	// get a sorted foundset to be used to create the valuelist
-	    	if (sortString) {
-	    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
-	    		valuelistFoundSet.sort(sortString, true);
-	    		valuelistFoundSet.loadAllRecords();
-	    	}
 	    }
+
+	    // get a sorted foundset to be used to create the valuelist
+    	if (sortString) {
+    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+    		valuelistFoundSet.sort(sortString, true);
+    		valuelistFoundSet.loadAllRecords();
+    	}
 	}
 	
 	/** @type {Lookup} */
