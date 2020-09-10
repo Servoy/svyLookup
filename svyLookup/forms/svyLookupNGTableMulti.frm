@@ -194,7 +194,6 @@ gridOptions:{
 sideBar:"false"
 },
 onCellClick:"6F9D9117-156C-411A-8D5F-0E200A378829",
-onCellDoubleClick:"B484C148-1C11-4DD4-A3B3-8EF5813BC87D",
 rowHeight:35,
 styleClass:"ag-theme-servoy"
 },
