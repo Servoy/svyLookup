@@ -936,7 +936,7 @@ function init_Lookup() {
 	 *
 	 * @public
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
-	 * @param {RuntimeComponent} target The component to show relative to
+	 * @param {RuntimeComponent|RuntimeWebComponent} target The component to show relative to
 	 * @param {Number} [width] The width of the lookup. Optional. Default is same as target component
 	 * @param {Number} [height] The height of the lookup. Optional. Default is implementation-specifc.
 	 * @param {String} [initialValue] And initial value to show in the search

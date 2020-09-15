@@ -206,7 +206,7 @@ function search(txt) {
  *
  * @public
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
- * @param {RuntimeComponent} target The component which will be shown
+ * @param {RuntimeComponent|RuntimeWebComponent} target The component which will be shown
  * @param {Number} [width] The width of the pop-up. Optional. Default is component width
  * @param {Number} [height] The height of the pop-up. Optional. Default is form height.
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
