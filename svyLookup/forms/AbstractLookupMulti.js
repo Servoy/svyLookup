@@ -15,6 +15,7 @@ function selectRecord(record) {
 /**
  * Implement this to select all records
  * @protected 
+ * @return {Array}
  * @properties={typeid:24,uuid:"C2698839-E2AB-4E6E-8F34-FAF3C0223F79"}
  */
 function selectAllRecords() {
