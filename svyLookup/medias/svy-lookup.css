@@ -73,18 +73,19 @@
 
 .svy-lookup .ag-table .svy-lookup-icon-selection > div, 
 .svy-lookup  td.svy-lookup-icon-selection > div {
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Font Awesome\ 5 Free';
     text-align: center;
+    font-weight: 400;
 }
 
 .svy-lookup .ag-table .svy-lookup-icon-selection > div:before, 
 .svy-lookup td.svy-lookup-icon-selection > div:before {
-	content: "\e157";
+	content: "\f0c8";
 	cursor: pointer;
 }
 
 .svy-lookup .ag-table .svy-lookup-icon-selection > div.true:before,
 .svy-lookup td.svy-lookup-icon-selection.true > div:before {
-	content: "\e067";
+	content: "\f14a";
 	cursor: pointer;
 }
