@@ -12,6 +12,7 @@
         {"version":"2.0.1","url":"https://github.com/Servoy/svyLookup/releases/download/v2.0.1/svyLookup.servoy", "servoy-version":"2019.9", "dependency":"svySearch#>=1.2.1,bootstrapcomponents#>=1.7.0,servoyextra#>=2.1.0,aggrid#>=2.2.2,svykeylistener#>=1.2.1"},
         {"version":"2.0.2","url":"https://github.com/Servoy/svyLookup/releases/download/v2.0.2/svyLookup.servoy", "servoy-version":"2019.12.1", "dependency":"svySearch#>=1.2.2,bootstrapcomponents#>=1.7.0,servoyextra#>=2.1.0,aggrid#>=2.4.1,svykeylistener#>=1.2.1"}, 
         {"version":"2.1.0","url":"https://github.com/Servoy/svyLookup/releases/download/v2.1.0/svyLookup.servoy", "servoy-version":"2020.9", "dependency":"svySearch#>=1.2.3,bootstrapcomponents#>=3.0.3,servoyextra#>=3.0.0,aggrid#>=2.5.1,svykeylistener#>=1.2.1"},
-        {"version":"2.1.1","url":"https://github.com/Servoy/svyLookup/releases/download/v2.1.1/svyLookup.servoy", "servoy-version":"2020.9", "dependency":"svySearch#>=1.2.3,bootstrapcomponents#>=3.0.3,servoyextra#>=3.0.0,aggrid#>=2.5.1,svykeylistener#>=1.2.1"}
+        {"version":"2.1.1","url":"https://github.com/Servoy/svyLookup/releases/download/v2.1.1/svyLookup.servoy", "servoy-version":"2020.9", "dependency":"svySearch#>=1.2.3,bootstrapcomponents#>=3.0.3,servoyextra#>=3.0.0,aggrid#>=2.5.1,svykeylistener#>=1.2.1"},
+        {"version":"2.1.2","url":"https://github.com/Servoy/svyLookup/releases/download/v2.1.2/svyLookup.servoy", "servoy-version":"2020.12", "dependency":"svySearch#>=1.2.3,bootstrapcomponents#>=3.0.3,servoyextra#>=3.0.0,aggrid#>=2.5.1,svykeylistener#>=1.3.0,fontawesome#>=5.7.2"}
     ]
 }
