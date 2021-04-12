@@ -121,7 +121,7 @@ function createValueListLookup(valuelistName, titleText) {
 		}	
 		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType], ['realvalue']);
 	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
-		var jsTable = databaseManager.getTable(jsList.dataSource);
+		var jsTable = databaseManager.getTable(jsList.dataSource||scopes.svyDataUtils.getRelationForeignDataSource(jsList.relationName));
 		var pkColumns = jsTable.getRowIdentifierColumnNames();
 		
 	    var displayDataProviders = jsList.getDisplayDataProviderIds();
@@ -130,8 +130,14 @@ function createValueListLookup(valuelistName, titleText) {
 	    var isPkValueList = scopes.svyJSUtils.areObjectsEqual(pkColumns, realDataProviders);
 	    var valuelistFoundSet;
 	    
+	    if(jsList.relationName) {
+	    	if(!scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
+	    		application.output('Using related valuelists is not fully supported, only relations based on globals are supported', LOGGINGLEVEL.WARNING);
+	    	}
+	    }
+	    
 	    if (!isPkValueList) {
-		    var qbSelect = databaseManager.createSelect(jsList.dataSource);
+		    var qbSelect = databaseManager.createSelect(jsList.dataSource||scopes.svyDataUtils.getRelationForeignDataSource(jsList.relationName));
 		    
 		    // create displayValue column
 		    if (displayDataProviders.length === 3) {
@@ -204,6 +210,11 @@ function createValueListLookup(valuelistName, titleText) {
 		    	}
 		    }
 			
+		    if(jsList.relationName && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
+		    	var relation = qbSelect.joins.add(jsList.relationName);
+				relation.joinType = JSRelation.INNER_JOIN;
+		    }
+		    
 		    // realvalue should not be null
 		    qbSelect.where.add(qbSelect.getColumn(realDataProviders[0]).not.isNull);
 	    }
@@ -215,7 +226,7 @@ function createValueListLookup(valuelistName, titleText) {
 	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
 	    	sortString = 'displayvalue asc';
 	    } else {
-	    	dataSource = jsList.dataSource;
+	    	dataSource = jsList.dataSource||scopes.svyDataUtils.getRelationForeignDataSource(jsList.relationName);
 	    	
 		    // get the valuelist sort string
 		    sortString = jsList.sortOptions ? jsList.sortOptions : null;
@@ -230,7 +241,12 @@ function createValueListLookup(valuelistName, titleText) {
 
 	    // get a sorted foundset to be used to create the valuelist
     	if (sortString) {
-    		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+    		if(jsList.relationName && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
+    			valuelistFoundSet = databaseManager.getFoundSet(dataSource)[jsList.relationName]
+    		} else {
+    			valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+    		}
+    		
     		valuelistFoundSet.sort(sortString, true);
     		valuelistFoundSet.loadAllRecords();
     	}
