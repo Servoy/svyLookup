@@ -1077,9 +1077,15 @@ function init_Lookup() {
 	 * @param {JSRecord} record
 	 * @this {Lookup}
 	 */
-	Lookup.prototype.addSelectedRecord = function(record) {
-		this.selectedPks.push(record.getPKs());
-	}	
+     Lookup.prototype.addSelectedRecord = function(record) {
+		this.selectedPks.push(record.getPKs().map(function(item) {
+			if(item instanceof UUID) {
+				return item.toString();
+			} else {
+				return item;
+			}
+		}));
+	}
 	
 	/**
 	 * Removes the given record from the list of selected records
@@ -1089,12 +1095,20 @@ function init_Lookup() {
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.removeSelectedRecord = function(record) {
+		var selectedPKs = record.getPKs().map(function(item) {
+			if(item instanceof UUID) {
+				return item.toString();
+			} else {
+				return item;
+			}
+		});
+		
 		for (var s = 0; s < this.selectedPks.length; s++) {
-			if (scopes.svyJSUtils.areObjectsEqual(this.selectedPks[s], record.getPKs())) {
+			if (scopes.svyJSUtils.areObjectsEqual(this.selectedPks[s], selectedPKs)) {
 				this.selectedPks.splice(s, 1);
 			}
 		}
-	}	
+	}
 	
 	/**
 	 * Sets the selected records of this Lookup from the given primary keys
