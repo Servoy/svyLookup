@@ -210,9 +210,165 @@ function createValueListLookup(valuelistName, titleText) {
 		    	}
 		    }
 			
-		    if(jsList.relationName && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
-		    	var relation = qbSelect.joins.add(jsList.relationName);
-				relation.joinType = JSRelation.INNER_JOIN;
+		    // create an in-mem DS using global relation conditions
+		    if (jsList.relationName && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
+		    	
+		    	var jsRelation = solutionModel.getRelation(jsList.relationName);
+		    	var relationItems = jsRelation.getRelationItems();
+		    	
+				for (var i = 0; i < relationItems.length; i++) {
+					var relationItem = relationItems[i];
+					
+					/** @type {String} */
+					var relPrimaryValue;
+					if (relationItem.primaryLiteral != null) {
+						relPrimaryValue = relationItem.primaryLiteral
+					} else if (relationItem.primaryDataProviderID) {
+						relPrimaryValue = eval(relationItem.primaryDataProviderID);
+					}
+
+					var op;
+					var useNot = false;
+					var useCaseInsensitive = false;
+					var useIsNull = false;
+					switch (relationItem.operator) {
+					case "=":
+						op = "eq"
+						break;
+					case ">":
+						op = "gt"
+						break;
+					case ">=":
+						op = "ge"
+						break;
+					case "<":
+						op = "lt"
+						break;
+					case "<=":
+						op = "le"
+						break;
+					case "!=":
+						op = "eq"
+						useNot = true
+						break;
+					case "like":
+						op = "like"
+						break;
+					case "not like":
+						op = "like"
+						useNot = true;
+						break;
+					case "#=":
+						op = "eq"
+						useCaseInsensitive = true
+						break;
+					case "#!=":
+						op = "eq"
+						useCaseInsensitive = true;
+						useNot = true;
+						break;
+					case "#like":
+						op = "like"
+						useCaseInsensitive = true;
+						break;
+					case "#not like":
+						op = "like"
+						useCaseInsensitive = true;
+						useNot = true;
+						break;
+					case "^||=":
+						op = "eq";
+						useIsNull = true;
+						break;
+					case "^||>":
+						op = "gt"
+						useIsNull = true;
+						break;
+					case "^||>=":
+						op = "ge"
+						useIsNull = true;
+						break;
+					case "^||<":
+						op = "lt"
+						useIsNull = true;
+						break;
+					case "^||<=":
+						op = "le"
+						useIsNull = true;
+						break;
+					case "^||!=":
+						op = "eq"
+						useNot = true
+						useIsNull = true;
+						break;
+					case "^||like":
+						op = "like"
+						useIsNull = true;
+						break;
+					case "^||not like":
+						op = "like"
+						useNot = true;
+						useIsNull = true;
+						break;
+					case "^||#=":
+						op = "eq";
+						useCaseInsensitive = true;
+						useIsNull = true;
+						break;
+					case "^||#!=":
+						op = "eq";
+						useCaseInsensitive = true;
+						useNot = true;
+						useIsNull = true;
+						break;
+					case "^||#like":
+						op = "like";
+						useCaseInsensitive = true;
+						useIsNull = true;
+						break;
+					case "^||#not like":
+						op = "like";
+						useCaseInsensitive = true;
+						useNot = true;
+						useIsNull = true;
+						break;
+
+					default:
+						application.output("Operator for related valuelist '" + jsList.name + "' unknown: " + relationItem.operator, LOGGINGLEVEL.WARNING);
+						continue;
+					}
+
+					// get the column 
+					var qbColumn = qbSelect.getColumn(relationItem.foreignColumnName);
+					var qbColumnQuery = qbColumn;
+					
+					// like search
+					if (op == "like" && relPrimaryValue && relPrimaryValue instanceof String) {
+						relPrimaryValue = "%" + relPrimaryValue + "%";
+					}
+					
+					// case insensitive
+					if (useCaseInsensitive) {
+						qbColumnQuery = qbColumnQuery.lower;
+						relPrimaryValue =  (relPrimaryValue && relPrimaryValue instanceof String) ? relPrimaryValue.toLowerCase() : relPrimaryValue;
+					}
+					
+					// apply not operator
+					if (useNot) {
+						qbColumnQuery = qbColumnQuery.not;
+					}
+					
+					// include null
+					if (useIsNull) {
+						qbSelect.where.add(qbSelect.or.add(qbColumn.isNull).add(qbColumnQuery[op](relPrimaryValue)))
+					} else {
+						qbSelect.where.add(qbColumnQuery[op](relPrimaryValue));
+					}
+
+				}
+		    	
+//		    	var relation = qbSelect.joins.add(jsList.relationName, jsList.relationName);
+//				relation.joinType = JSRelation.INNER_JOIN;
 		    }
 		    
 		    // realvalue should not be null
@@ -239,14 +395,18 @@ function createValueListLookup(valuelistName, titleText) {
 	    	
 	    }
 
+		// use related foundset for related valuelists (only if realValue is pks)
+		if (jsList.relationName && isPkValueList && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
+			valuelistFoundSet = databaseManager.getFoundSet(dataSource)[jsList.relationName];
+		}
+	    
 	    // get a sorted foundset to be used to create the valuelist
     	if (sortString) {
-    		if(jsList.relationName && scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
-    			valuelistFoundSet = databaseManager.getFoundSet(dataSource)[jsList.relationName]
-    		} else {
+    		if (!valuelistFoundSet) {
     			valuelistFoundSet = databaseManager.getFoundSet(dataSource);
     		}
     		
+    		// sort the foundset
     		valuelistFoundSet.sort(sortString, true);
     		valuelistFoundSet.loadAllRecords();
     	}
