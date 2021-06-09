@@ -4,9 +4,8 @@
 	<comment></comment>
 	<projects>
 		<project>keylistener</project>
-		<project>bootstrapcomponents</project>
-		<project>servoy-extra-components</project>
 		<project>12grid</project>
+		<project>svySearch</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
