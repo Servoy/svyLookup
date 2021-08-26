@@ -511,6 +511,7 @@ function createValuelistLookup(valuelistName, titleText) {
  * @param {QBSelect} qbSelect the query
  * @param {String} [dsName] the name of the datasource in case it should be reused
  * @param {Boolean} [overrideData] when true, the datasource with the given name is filled again from the given query, when false, an existing datasource with the same datasource name would be reused; default is false
+ * @param {Array} [pkNames] contains all pk
  * 
  * @return {Lookup}
  * 
@@ -541,14 +542,19 @@ function createValuelistLookup(valuelistName, titleText) {
  *
  * @properties={typeid:24,uuid:"A3D0175E-FD07-426C-B0EC-B951337075D0"}
  */
-function createQueryLookup(qbSelect, dsName, overrideData) {
+function createQueryLookup(qbSelect, dsName, overrideData, pkNames) {
 	var dataSource = null;
 	if (!dsName) {
 		dsName = application.getUUID().toString().replace(/-/g, '_');
 	}
 	var dataSourceName = "svy_lookup_" + dsName;
 	if (!databaseManager.dataSourceExists(dataSourceName) || overrideData === true) {
-		dataSource = databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1);
+		if (!pkNames) {
+			dataSource = databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1);
+		}
+		else{
+			dataSource = databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, pkNames);
+		}
 	}
 	
 	var columnNames = datasources.mem[dataSourceName].getColumnNames();
