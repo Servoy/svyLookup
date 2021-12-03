@@ -112,7 +112,8 @@ function createFieldInstance(field) {
 	column.styleClass = field.getStyleClass();
 	column.styleClassDataprovider = field.getStyleClassDataprovider();
 	column.width = field.getWidthAsInteger();
-	column.minWidth = field.getWidthAsInteger()
+	column.minWidth = field.getWidthAsInteger();
+	column.showAs = "sanitizedHtml";
 	column.columnDef = {
 		suppressMenu: true
 	}

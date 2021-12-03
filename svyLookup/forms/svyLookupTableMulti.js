@@ -74,6 +74,7 @@ function createFieldInstance(lookupFieldObj) {
 	column.styleClass = lookupFieldObj.getStyleClass();
 	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
 	column.width = lookupFieldObj.getWidth();
+	column.showAs = "sanitizedHtml";
 	if (column.width != "auto") {
 		column.autoResize = false;
 	}
