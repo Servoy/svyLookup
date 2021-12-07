@@ -1,6 +1,5 @@
 customProperties:"formComponent:false",
 encapsulation:60,
-extendsID:"1046CC5D-E653-4F9C-B8B9-E3FCDA83A211",
 items:[
 {
 formIndex:1,
@@ -138,12 +137,6 @@ typeid:4,
 uuid:"79FE7392-462F-4D53-9641-FA9E5D86C8EC"
 },
 {
-extendsID:"CCD8084B-3484-41E7-8FBA-CBF44DD9BF67",
-height:490,
-typeid:19,
-uuid:"825B0EFA-A64C-431A-B028-34990DA1AC78"
-},
-{
 dataProviderID:"selectedLooupValue$valuelist",
 enabled:false,
 location:"31,314",
@@ -156,6 +149,12 @@ styleClass:"lookup-field",
 typeid:4,
 uuid:"8FE51C1F-C9E7-4A08-B938-33CCD59D427D",
 visible:false
+},
+{
+height:507,
+partType:5,
+typeid:19,
+uuid:"96D77678-60CC-40A7-B1F8-77BD6EFE1820"
 },
 {
 location:"580,76",

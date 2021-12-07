@@ -74,12 +74,12 @@ function getName() {
 
 /**
  *
- * @return {RuntimeForm<AbstractMicroSample>}
+ * @return {RuntimeForm}
  *
  * @properties={typeid:24,uuid:"89EF3ABD-8869-42D5-B4F6-8514EB31E354"}
  */
 function getParent() {
-	return forms.dataSamples;
+	return forms['dataSamples'];
 }
 
 /**
@@ -89,7 +89,7 @@ function getParent() {
  * @properties={typeid:24,uuid:"0F4EEB30-BCBA-4DAD-B483-6AB55F0EBD0D"}
  */
 function getSampleCode() {
-	return printMethodCode(onShowLookup).concat(printMethodCode(onSelectLookup));
+	return [''] // printMethodCode(onShowLookup).concat(printMethodCode(onSelectLookup));
 }
 
 /**

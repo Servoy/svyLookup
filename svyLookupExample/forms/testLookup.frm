@@ -1,6 +1,5 @@
 customProperties:"formComponent:false",
 encapsulation:60,
-extendsID:"1046CC5D-E653-4F9C-B8B9-E3FCDA83A211",
 items:[
 {
 formIndex:1,
@@ -124,12 +123,6 @@ typeid:7,
 uuid:"997962BF-5620-44B9-A8BD-73435F0A0B1E"
 },
 {
-extendsID:"CCD8084B-3484-41E7-8FBA-CBF44DD9BF67",
-height:490,
-typeid:19,
-uuid:"9F6EFF41-6297-49CE-96CA-2CE3A215D42A"
-},
-{
 customProperties:"methods:{\
 onActionMethodID:{\
 arguments:[\
@@ -186,6 +179,12 @@ typeid:7,
 uuid:"C9175E5C-6A3A-44F5-BD31-486B4E9B7502"
 },
 {
+height:511,
+partType:5,
+typeid:19,
+uuid:"D67F164C-5E26-414F-8A74-D25F9406FC5D"
+},
+{
 formIndex:1,
 location:"584,198",
 onActionMethodID:"30B3D178-9C86-462E-9265-B770C082F331",
@@ -238,6 +237,6 @@ uuid:"FD585D92-3F86-4183-9D57-97B4E89C7488"
 name:"testLookup",
 navigatorID:"-1",
 showInMenu:true,
-size:"676,490",
+size:"676,315",
 typeid:3,
 uuid:"DFFCE56B-362B-4EC6-925B-4991070D5815"
