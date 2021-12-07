@@ -1419,6 +1419,12 @@ function LookupField(lookup, dataProvider) {
 	 * @type {String}
 	 */
 	this.width = 'auto';
+	
+	/**
+	 * @protected
+	 * @type {String}
+	 */
+	this.showAs = 'sanitizedHtml';
 
 	/**
 	 * @protected
@@ -1640,6 +1646,28 @@ function init_LookupField() {
 	 */
 	LookupField.prototype.getWidth = function() {
 		return this.width;
+	}
+	
+	/**
+	 * Sets the showAs of this field
+	 * @public
+	 * @param {String} showAs Default "sanitizedHtml"
+	 * @return {LookupField}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.setShowAs = function(showAs) {
+		this.showAs = showAs;
+		return this;
+	}
+	
+	/**
+	 * Returns the showAs of this field
+	 * @public
+	 * @return {String}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.getShowAs = function() {
+		return this.showAs;
 	}
 
 	/**

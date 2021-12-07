@@ -43,6 +43,7 @@ function createFieldInstance(lookupFieldObj) {
 	column.styleClass = lookupFieldObj.getStyleClass();
 	column.styleClassDataprovider = lookupFieldObj.getStyleClassDataprovider();
 	column.width = lookupFieldObj.getWidth();
+	column.showAs = lookupFieldObj.getShowAs();
 	return column;
 }
 
