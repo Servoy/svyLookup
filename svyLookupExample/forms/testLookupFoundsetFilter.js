@@ -23,6 +23,13 @@ var selectedLookupValues = '';
 var selectedLookupValues$valuelist = '';
 
 /**
+ * @type {scopes.svyLookup.Lookup}
+ *
+ * @properties={typeid:35,uuid:"D4394C28-16DE-445F-BD60-CAAD6628E773",variableType:-4}
+ */
+var lookupMultiObj;
+
+/**
  * @public
  * @return {String}
  *
@@ -128,7 +135,7 @@ function onShowLookup(event, expand) {
 	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
 
 	// Valuelists and non-searchable fields supported
-	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability');
+	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability').setShowAs('sanitizedHtml');
 
 	// formatted, non-searchable field example
 	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50');
@@ -185,35 +192,41 @@ function clearLookup(event) {
  */
 function onShowLookupMultiSelection(event, expand) {
 	// create lookup object
-	var lookupObj = scopes.svyLookup.createLookup(getProductFoundSet());
-
-	lookupObj.setLookupDataProvider("productname");
-
-	// add fields
-
-	// related data is supported
-	lookupObj.addField('products_to_categories.categoryname').setTitleText('Category');
-	lookupObj.addField('productname').setTitleText('Product');
-	lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
-
-	// Valuelists and non-searchable fields supported
-	lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability');
-
-	// formatted, non-searchable field example
-	lookupObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
-
-	// change lookup provider
-	lookupObj.setLookupForm(forms.svyLookupTableMulti);
+	if (!lookupMultiObj) {
+		lookupMultiObj = scopes.svyLookup.createLookup(getProductFoundSet());
+	
+		lookupMultiObj.setLookupDataProvider("productname");
+	
+		// add fields
+	
+		// related data is supported
+		lookupMultiObj.addField('products_to_categories.categoryname').setTitleText('Category');
+		lookupMultiObj.addField('productname').setTitleText('Product');
+		//lookupObj.addField('products_to_suppliers.companyname').setTitleText('Supplier');
+	
+		// Valuelists and non-searchable fields supported
+		// lookupObj.addField('discontinued').setTitleText('Available').setSearchable(false).setValueListName('product_availability').setShowAs('sanitizedHtml');
+	
+		// formatted, non-searchable field example
+		lookupMultiObj.addField('unitprice').setSearchable(false).setTitleText('Price').setFormat('#,###.00').setWidth('50')
+	
+		// change lookup provider
+		// lookupObj.setLookupForm(forms.svyLookupTableMulti);
+		lookupMultiObj.setLookupForm(forms.svyLookupNGTableMulti);
+		
+		lookupMultiObj.setSelectedPks([[2],[3]])
+	}
+	
 
 	// show pop-up
 	var component = elements[event.getElementName()];
 	var initialValue = selectedLookupValues ? selectedLookupValues.split(",")[selectedLookupValues.split(",").length - 1] : null;
 
 	if (expand) {
-		var values = lookupObj.showModalWindow(null, event.getX(), event.getY(), 400, 400, initialValue);
+		var values = lookupMultiObj.showModalWindow(null, event.getX() - 400, event.getY() - 400, 400, 400, null);
 		selectedLookupValues = values.join(",");
 	} else {
-		lookupObj.showPopUp(onSelectMulti, component, null, null, initialValue);
+		lookupMultiObj.showPopUp(onSelectMulti, component, null, null, initialValue);
 	}
 }
 
@@ -346,13 +359,14 @@ function clearLookupValuelistMulti(event) {
 
 
 /**
+ * @return {JSFoundSet<db:/example_data/products>}
  * @protected 
  * @properties={typeid:24,uuid:"F1CC7301-3CC7-4159-B603-33D93610C480"}
  */
 function getProductFoundSet() {
 	var fs = datasources.db.example_data.products.getFoundSet();
-	fs.addFoundSetFilterParam("unitprice",">","30","unitprice");
-	fs.sort("unitprice desc", true);
+	fs.addFoundSetFilterParam("unitprice",">","1","unitprice");
+	//fs.sort("unitprice desc", true);
 	fs.loadAllRecords();
 	return fs;
 }

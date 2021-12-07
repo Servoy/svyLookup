@@ -1,6 +1,8 @@
 addEmptyValue:1,
-customValues:"Discontinued|-1\r\
-Available|0",
+customValues:"<i class=\"fas fa-circle text-warning\"><\/i> Discontinued|-1\r\
+<i class=\"fas fa-circle text-success\"><\/i> Available|0",
+displayValueType:12,
 name:"product_availability",
+realValueType:4,
 typeid:34,
 uuid:"43A0CB17-4ABB-4CEC-969A-0E3515245F0F"

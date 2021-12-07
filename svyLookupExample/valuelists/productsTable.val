@@ -1,0 +1,13 @@
+addEmptyValue:1,
+customProperties:"lazyLoading:false",
+dataProviderID1:"productid",
+dataProviderID2:"productname",
+dataSource:"db:/example_data/products",
+displayValueType:12,
+name:"productsTable",
+realValueType:4,
+returnDataProviders:1,
+showDataProviders:2,
+typeid:34,
+uuid:"E707E3DB-5A61-4E1A-A44C-557EF62B1A44",
+valueListType:1
