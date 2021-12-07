@@ -511,7 +511,7 @@ function createValuelistLookup(valuelistName, titleText) {
  * @param {QBSelect} qbSelect the query
  * @param {String} [dsName] the name of the datasource in case it should be reused
  * @param {Boolean} [overrideData] when true, the datasource with the given name is filled again from the given query, when false, an existing datasource with the same datasource name would be reused; default is false
- * @param {Array} [pkNames] contains all pk
+ * @param {Array<String>} [pkNames] contains all pk
  * 
  * @return {Lookup}
  * 
