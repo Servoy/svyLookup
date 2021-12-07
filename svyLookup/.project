@@ -3,8 +3,6 @@
 	<name>svyLookup</name>
 	<comment></comment>
 	<projects>
-		<project>keylistener</project>
-		<project>12grid</project>
 		<project>svySearch</project>
 	</projects>
 	<buildSpec>
