@@ -155,7 +155,7 @@ specname:\"div\"\
 items:[
 {
 json:{
-faclass:"fa fa-close",
+imageStyleClass:"fa-solid fa-xmark",
 location:{
 x:3,
 y:3
@@ -165,13 +165,12 @@ size:{
 height:25,
 width:25
 },
-styleClass:"fa fa-close pull-right btn-close",
-styleclass:"fa fa-close pull-right btn-close"
+styleClass:"pull-right close-button"
 },
 location:"3,3",
 name:"faClose",
 size:"25,25",
-styleClass:"fa fa-close pull-right btn-close",
+styleClass:"pull-right close-button",
 typeName:"bootstrapcomponents-label",
 typeid:47,
 uuid:"1F48624E-2692-4AB4-8C1E-1C458CED8440"

@@ -135,7 +135,7 @@ uuid:"21B71BCC-E262-4F2B-812C-9F8891B111F5"
 },
 {
 json:{
-faclass:"far fa-window-close fa-lg",
+imageStyleClass:"fa-solid fa-xmark",
 location:{
 x:3,
 y:3
@@ -145,12 +145,12 @@ size:{
 height:25,
 width:25
 },
-styleclass:"far fa-window-close fa-lg pull-right btn-close"
+styleClass:"pull-right close-button"
 },
 location:"3,3",
 name:"faClose",
 size:"25,25",
-styleClass:"far fa-window-close fa-lg pull-right btn-close",
+styleClass:"pull-right close-button",
 typeName:"bootstrapcomponents-label",
 typeid:47,
 uuid:"5A152DAD-C4E2-4AF2-A2FE-62B7255367B9"

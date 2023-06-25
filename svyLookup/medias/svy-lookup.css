@@ -56,7 +56,7 @@
 	border-top: 1px solid #ddd
 }
 
-.svy-lookup-multi .btn-close {
+.svy-lookup-multi .close-button {
 	position: absolute;
     line-height: 24px;
     top: 5px;
@@ -88,4 +88,8 @@
 .svy-lookup td.svy-lookup-icon-selection.true > div:before {
 	content: "\f14a";
 	cursor: pointer;
+}
+
+.svy-lookup > .svy-lookup-table-container > .svy-lookup-table-select-labels > .view-block {
+	padding: 0px 15px;
 }
