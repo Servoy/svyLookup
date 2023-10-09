@@ -135,7 +135,7 @@ uuid:"21B71BCC-E262-4F2B-812C-9F8891B111F5"
 },
 {
 json:{
-imageStyleClass:"fa-solid fa-xmark",
+imageStyleClass:"fa fa-times fa-solid fa-xmark",
 location:{
 x:3,
 y:3
