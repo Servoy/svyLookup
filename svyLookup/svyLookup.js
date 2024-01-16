@@ -107,9 +107,17 @@ function createValueListLookup(valuelistName, titleText) {
 	
 	var dataSourceName = "svylookup_valuelist_" + valuelistName;
 	var dataSource = "mem:" + dataSourceName;
+    var valuelistFoundSet;
 	
 	if (jsList.valueListType === JSValueList.CUSTOM_VALUES) {
 		var items = application.getValueListItems(valuelistName);
+		
+		// make sure value list entries are sorted as given
+		items.addColumn('sort');
+		for (var d = 1; d <= items.getMaxRowIndex(); d++) {
+			items.setValue(d, 3, d);
+		}
+		
 		// check if valuelist is of old type, default realValue to text
 		var realValueType = jsList.realValueType;
 		if (realValueType === 0) {
@@ -119,7 +127,12 @@ function createValueListLookup(valuelistName, titleText) {
 		if (jsList.addEmptyValue == JSValueList.EMPTY_VALUE_ALWAYS && items.getValue(1,1) === "") {
 			items.removeRow(1);
 		}	
-		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType], ['realvalue']);
+		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType, JSColumn.INTEGER], ['realvalue']);
+		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
+		
+		// sort the foundset by the order of the original value list
+		valuelistFoundSet.sort('sort asc', true);
+		valuelistFoundSet.loadAllRecords();
 	} else if (jsList.valueListType === JSValueList.DATABASE_VALUES) {
 		var jsTable = databaseManager.getTable(jsList.dataSource||scopes.svyDataUtils.getRelationForeignDataSource(jsList.relationName));
 		var pkColumns = jsTable.getRowIdentifierColumnNames();
@@ -128,7 +141,6 @@ function createValueListLookup(valuelistName, titleText) {
 	    var realDataProviders = jsList.getReturnDataProviderIds();
 	    
 	    var isPkValueList = scopes.svyJSUtils.areObjectsEqual(pkColumns, realDataProviders);
-	    var valuelistFoundSet;
 	    
 	    if(jsList.relationName) {
 	    	if(!scopes.svyDataUtils.isGlobalRelation(jsList.relationName)) {
