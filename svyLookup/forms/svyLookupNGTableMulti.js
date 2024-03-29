@@ -41,7 +41,9 @@ function onShow(firstShow, event) {
 		}
 	}
 	
-	elements.searchText.requestFocus(true);
+	if(elements.searchText.visible) {
+		elements.searchText.requestFocus(true);
+	}
 }
 
 /**
@@ -91,7 +93,9 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
  */
 function onActionSearch(event) {
 	search(searchText);
-	elements.searchText.requestFocus();
+	if(elements.searchText.visible) {
+		elements.searchText.requestFocus();
+	}
 }
 
 /**
