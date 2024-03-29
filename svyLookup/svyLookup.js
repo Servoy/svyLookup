@@ -1433,6 +1433,24 @@ function LookupField(lookup, dataProvider) {
 	this.width = 'auto';
 	
 	/**
+	 * @protected 
+	 * @type {String}
+	 */
+	this.headerStyleClass = ''
+	
+	/**
+	 * @protected 
+	 * @type {Boolean}
+	 */
+	this.autoResize = true;
+	
+	/**
+	 * @protected 
+	 * @type {Boolean}
+	 */
+	this.resizable = false;
+	
+	/**
 	 * @protected
 	 * @type {String}
 	 */
@@ -1643,6 +1661,28 @@ function init_LookupField() {
 	LookupField.prototype.getStyleClassDataprovider = function() {
 		return this.styleClassDataprovider;
 	}
+	
+	/**
+	 * Sets the header style class of this field
+	 * @public
+	 * @param {String} headerStyleClass
+	 * @return {LookupField}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.setHeaderStyleClass = function(headerStyleClass) {
+		this.headerStyleClass = headerStyleClass;
+		return this;
+	}
+
+	/**
+	 * Returns the header style class of this field
+	 * @public
+	 * @return {String}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.getHeaderStyleClass = function() {
+		return this.headerStyleClass;
+	}
 
 	/**
 	 * Sets the width of this field
@@ -1655,7 +1695,52 @@ function init_LookupField() {
 		this.width = width;
 		return this;
 	}
+	
+	/**
+	 * Sets the autoresize of this field
+	 * @public
+	 * @param {Boolean} resize Default "true"
+	 * @return {LookupField}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.setAutoResize = function(resize) {
+		this.autoResize = resize;
+		return this;
+	}
+	
+	/**
+	 * Returns the autoresize of this field
+	 * @public
+	 * @return {Boolean}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.getAutoResize = function() {
+		return this.autoResize;
+	}
+	
+	/**
+	 * Sets the resizable property of this field
+	 * @public
+	 * @param {Boolean} resizable Default "false"
+	 * @return {LookupField}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.setFieldResizable = function(resizable) {
+		this.resizable = resizable;
+		return this;
+	}
+	
+	/**
+	 * Returns the resizable property of this field
+	 * @public
+	 * @return {Boolean}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.getFieldResizable = function() {
+		return this.resizable;
+	}
 
+	
 	/**
 	 * Returns the width of this field
 	 * @public

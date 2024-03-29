@@ -177,6 +177,11 @@ function createFieldInstance(field) {
 	column.width = field.getWidthAsInteger();
 	column.minWidth = field.getWidthAsInteger();
 	column.showAs = field.getShowAs();
+	column.autoResize = field.getAutoResize();
+	column.id = (field.getDataProvider()|| field.getStyleClassDataprovider())
+	column.headerStyleClass = field.getHeaderStyleClass();
+	column.enableResize = field.getFieldResizable();
+	column.enableRowGroup = false;
 	column.columnDef = {
 		suppressMenu: true
 	}
