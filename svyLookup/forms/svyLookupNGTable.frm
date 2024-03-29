@@ -32,6 +32,7 @@ json:{
 anchors:15,
 columns:[
 {
+id:"svyColumn1",
 svyUUID:"0B12E2E9-53F9-45E1-8C39-3596BDB72AD1",
 width:70
 }
