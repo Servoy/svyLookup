@@ -1445,6 +1445,12 @@ function LookupField(lookup, dataProvider) {
 	this.styleClassDataprovider = null;
 	
 	/**
+	 * @protected
+	 * @type {Boolean}
+	 */
+	this.castIntegerToString = false;
+	
+	/**
 	 * @protected 
 	 * @type {Lookup}
 	 */
@@ -1697,7 +1703,28 @@ function init_LookupField() {
 			return intValue;
 		}
 		return null;
-	}	
+	}
+	
+	/**
+	 * Cast integer search field to string
+	 * @public
+	 * @return {LookupField}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.setCastInteger = function(cast) {
+		this.castIntegerToString = cast;
+		return this;
+	}
+	
+	/**
+	 * Returns if the integer needs to be cast to string
+	 * @public
+	 * @return {Boolean}
+	 * @this {LookupField}
+	 */
+	LookupField.prototype.getCastInteger = function() {
+		return this.castIntegerToString;
+	}
 }
 
 /**

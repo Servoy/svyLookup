@@ -193,7 +193,10 @@ function search(txt) {
 		var field = lookup.getField(i);
 		// TODO check if dataprovider actually exists
 		if (field.isSearchable() && field.getDataProvider()) {
-			simpleSearch.addSearchProvider(field.getDataProvider()).setAlias(field.getTitleText());
+			var sp = simpleSearch.addSearchProvider(field.getDataProvider()).setAlias(field.getTitleText());
+			if(sp.getJSColumn().getType() == JSColumn.INTEGER && field.getCastInteger()) {
+				sp.setCastInteger(true)
+			}
 		}
 	}
 
