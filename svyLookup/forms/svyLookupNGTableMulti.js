@@ -110,7 +110,9 @@ function onActionSearch(event) {
  * @properties={typeid:24,uuid:"9F9E9FD4-A3A9-4FDB-9342-93CAB7CF729F"}
  */
 function onHide(event) {
-	onSelect();
+	if (confirmSelection !== false) {
+		onSelect();
+	}
 	return _super.onHide(event);
 }
 
@@ -157,6 +159,32 @@ function onCellClick(foundsetindex, columnindex, record, event) {
 		toggleRecordSelection(actualRecord);
 	}
 }
+
+/**
+ * @param {JSEvent} event
+ *
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"C84C2A19-E359-4DAF-8248-145B5C1D9A1D"}
+ */
+function onSelectAll(event) {
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	selectAllRecords();
+}
+
+/**
+ * @param {JSEvent} event
+ * @protected
+ *
+ * @properties={typeid:24,uuid:"4CCAEE03-9FF6-475F-8AD1-C3F0E1DD7A5A"}
+ */
+function onDeselectAll(event) {
+	// confirm selection at change. Dismissed only by explicit cancel
+	confirmSelection = true;
+	deselectAllRecords();
+}
+
 
 /**
  * @protected 

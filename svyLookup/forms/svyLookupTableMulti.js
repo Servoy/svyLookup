@@ -204,6 +204,8 @@ function setupDataSource(dataSourceName) {
  */
 function onHide(event) {
 	// return selected items
+	if (confirmSelection !== false) {
 	onSelect();
+	}
 	return _super.onHide(event);
 }

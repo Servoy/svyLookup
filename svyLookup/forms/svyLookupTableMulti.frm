@@ -37,7 +37,7 @@ location:{
 x:1,
 y:1
 },
-onActionMethodID:"C2698839-E2AB-4E6E-8F34-FAF3C0223F79",
+onActionMethodID:"379EC9E6-AB8B-4393-94DE-77C4CFCBF71D",
 size:{
 height:100,
 width:100
@@ -61,7 +61,7 @@ location:{
 x:2,
 y:2
 },
-onActionMethodID:"0AAC4CAD-309E-4B2A-AE9F-D364A59193B1",
+onActionMethodID:"457DDE15-213F-4BA3-AFA4-B2EE5417CDE6",
 size:{
 height:100,
 width:100
@@ -160,7 +160,7 @@ location:{
 x:3,
 y:3
 },
-onActionMethodID:"699F9BA4-D0C3-4C45-8812-96B8796C45A3",
+onActionMethodID:"EC688038-CEFE-4DEA-9748-5E29EA0A4BF2",
 size:{
 height:25,
 width:25
