@@ -10,7 +10,11 @@ function onCreateInstance(jsForm, lookupObj) {
 	var jsDataSourceNode = solutionModel.getDataSourceNode(lookupObj.getDataSource());
 
 	if (!jsDataSourceNode.getCalculation("svy_lookup_selected")) {
-		jsDataSourceNode.newCalculation("function svy_lookup_selected() { return ' ' }", JSColumn.TEXT);
+		jsDataSourceNode.newCalculation("function svy_lookup_selected() {}", JSColumn.TEXT);
+	}
+	// NG Grid styleClassDataprovider does not work with null value. Therefore using empty string for unselected values.
+	if (!jsDataSourceNode.getCalculation("svy_lookup_selected_ngstyleclass")) {
+		jsDataSourceNode.newCalculation("function svy_lookup_selected_ngstyleclass() { return svy_lookup_selected === 'true' ? svy_lookup_selected : ' '}", JSColumn.TEXT);
 	}
 }
 
@@ -32,7 +36,7 @@ function onShow(firstShow, event) {
 	if (firstShow) {
 		elements.table.myFoundset.foundset.multiSelect = true;
 		var checkColumn = elements.table.getColumn(0);
-		checkColumn.styleClassDataprovider = 'svy_lookup_selected';
+		checkColumn.styleClassDataprovider = 'svy_lookup_selected_ngstyleclass';
 		
 		for (var i = 0; i < getLookup().getFieldCount(); i++) {
 			var field = getLookup().getField(i);
