@@ -159,7 +159,7 @@ function updateDataSource(txt) {
 				var ds = lookupGLMethod(txt, null, null, valueListName, false);
 				if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
 				if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
-				ds.createDataSource(foundset.getDataSource().split(':')[1]);
+				ds.createDataSource(foundset.getDataSource().split(':')[1], [jsList.displayValueType, jsList.realValueType]);
 			}
 		}
 	}
