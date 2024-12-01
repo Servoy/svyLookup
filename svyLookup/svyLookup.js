@@ -1143,7 +1143,7 @@ function init_Lookup() {
 	 * @public 
 	 * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that will be called when a selection is made; the callback returns the following arguments: {Array<JSRecord>} record, {Array<String|Date|Number>} lookupValue , {Lookup} lookup
 	 * @param {String} [initialValue] And initial value to show in the search
-	 * @return {plugins.window.FormPopup}
+	 * @return {CustomType<window.FormPopup>}
 	 * @this {Lookup}
 	 */
 	Lookup.prototype.createPopUp = function(callback, initialValue) {

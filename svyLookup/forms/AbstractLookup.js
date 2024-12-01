@@ -234,7 +234,7 @@ function showPopUp(callback, target, width, height, initialValue) {
  * @param {function(Array<JSRecord>,Array<String|Date|Number>,scopes.svyLookup.Lookup)} callback The function that is called when selection happens
  * @param {String} [initialValue] Initial value in search. Optional. Default is empty.
  *
- * @return {plugins.window.FormPopup}
+ * @return {CustomType<window.FormPopup>}
  *
  * @properties={typeid:24,uuid:"5C984EAD-5E26-406F-8624-F04ED865A7FF"}
  */
