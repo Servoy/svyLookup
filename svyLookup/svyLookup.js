@@ -653,7 +653,7 @@ function Lookup(datasource) {
 }
 
 /**
- * @constructor 
+ * @parse 
  * @private 
  * @properties={typeid:24,uuid:"C0E6C5B2-0E41-40B1-955F-6CC1FAD5FF71"}
  */
