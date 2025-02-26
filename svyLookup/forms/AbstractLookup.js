@@ -138,14 +138,16 @@ function onKey(value, event, keyCode, altKey, ctrlKey, shiftKey, capsLock) {
 
 /**
  * Update the datasource if necessary. e.g. ValueList has been created from a global valuelist
- * 
+ *
  * @private
  * @properties={typeid:24,uuid:"D13232CA-6183-4DD6-B935-A8EDC305AB7F"}
  */
 function updateDataSource(txt) {
 	//if we are using a global method valuelist:
 	//we need to refresh the foundset using global method
-	
+
+	// TODO i need to remember previous selection
+
 	/** @type {scopes.svyLookup.Lookup} */
 	var lookupObj = getLookup();
 	var valueListName = lookupObj.getValueListName()
@@ -160,9 +162,40 @@ function updateDataSource(txt) {
 				if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
 				if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
 				ds.createDataSource(foundset.getDataSource().split(':')[1], [jsList.displayValueType, jsList.realValueType]);
+
+				var selectedRealValues = [];
+				var selectedRecords = getSvyLookupSelectedRecords();
+				for (var i = 0; i < selectedRecords.length; i++) {
+					var selectedRecord = selectedRecords[i];
+					selectedRealValues.push(selectedRecord['realvalue'])
+					
+					var skip = false;
+					for (var j = 1; j <= ds.getMaxRowIndex(); j++) {
+						if (ds.getValue(j, 2) == selectedRecord['realvalue']) {
+							skip = true;
+							break;
+						}
+					}
+					if (skip) continue;
+					ds.addRow(1, [selectedRecord['displayvalue'], selectedRecord['realvalue']])
+				}
+
+				ds.createDataSource(foundset.getDataSource().split(':')[1]);
+
+				restoreSelectedRealValues(selectedRealValues)
 			}
 		}
 	}
+}
+
+/**
+ * @protected
+ * @param {Array} values
+ *
+ * @properties={typeid:24,uuid:"5C32DC3F-646B-403F-9735-635FC40E873E"}
+ */
+function restoreSelectedRealValues(values) {
+	// Implement in multi-select form
 }
 
 /**

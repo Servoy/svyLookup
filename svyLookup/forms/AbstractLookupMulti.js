@@ -180,3 +180,23 @@ function onShow(firstShow, event) {
 		}
 	}	
 }
+
+/**
+ * @protected 
+ * @param {Array} values
+ *
+ * @properties={typeid:24,uuid:"78BFFF61-8C13-4467-B485-A0696E318B15"}
+ * @override
+ */
+function restoreSelectedRealValues(values) {
+	if (values.length > 0) {
+		for (var s = 0; s < values.length; s++) {
+			if (values[s]) {
+				var fs = scopes.svyDataUtils.getFoundSetWithExactValues(foundset.getDataSource(), ['realvalue'], [values[s]])
+				if (fs.getRecord(1)) {
+					selectRecord(fs.getRecord(1));
+				}
+			}
+		}
+	}
+}
