@@ -176,12 +176,15 @@ function updateDataSource(txt) {
 							break;
 						}
 					}
+
+					// do not add again the same real value if is already present in DS
 					if (skip) continue;
 					ds.addRow(1, [selectedRecord['displayvalue'], selectedRecord['realvalue']])
 				}
 
 				ds.createDataSource(foundset.getDataSource().split(':')[1]);
 
+				// restore the previous selection after DS is created again
 				restoreSelectedRealValues(selectedRealValues)
 			}
 		}
