@@ -1354,6 +1354,43 @@ function init_Lookup() {
 			} else {
 				pks = ds.getColumnAsArray(1);
 			}
+			
+			// if valuelist is a global vl, selected PKs may not be in the loaded DS
+			if (pks.length < values.length ) {
+				var valueListName = this.getValueListName()
+				if (valueListName) {
+					var jsList = solutionModel.getValueList(valueListName);
+					if (jsList && jsList.globalMethod) {
+						/** @type {Function} */
+						var lookupGLMethod = scopes[jsList.globalMethod.getScopeName()][jsList.globalMethod.getName()];
+						if (lookupGLMethod) {
+							/** @type {JSDataSet} */
+							for (var n = 0; n < values.length; n++) {
+								// check if value exists in ds
+								
+								var value = values[n];
+								var fsRealValue = scopes.svyDataUtils.getFoundSetWithExactValues(dataSource, ['displayvalue'], [value])
+								if (!utils.hasRecords(fsRealValue)) {
+									// add missing value one by one
+									
+									/** @type {JSDataSet} */
+									var dsRealValue = lookupGLMethod(null, value, null, valueListName, false);
+									var realValue = dsRealValue.getMaxColumnIndex() > 1 ? dsRealValue.getValue(1,2) : dsRealValue.getValue(1,1)
+									if (realValue == value) {
+										// if there is a match add a new record into the in-mem datasource
+										fsRealValue.newRecord()
+										fsRealValue['displayvalue'] = dsRealValue.getValue(1, 1);
+										fsRealValue['realvalue'] = realValue;
+										databaseManager.saveData(fsRealValue);
+										pks.push(fsRealValue.getSelectedRecord().getPKs()[0]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		}
 		
 		// TODO in case of in-memory datasource, selection can still be lost if the datasource is re-created after this call.
