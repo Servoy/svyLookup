@@ -448,7 +448,12 @@ function createValueListLookup(valuelistName, titleText) {
 		var ds = vlGlobalMethod(null, null, null, jsList.name, false);
 		if (ds.getColumnName(1) != 'displayvalue') ds.setColumnName(1, 'displayvalue');
 		if (ds.getColumnName(2) != 'realvalue') ds.setColumnName(2, 'realvalue');
-		dataSource = ds.createDataSource(dataSourceName);
+		if (ds.getMaxRowIndex() === 0) {
+			// no data, column types cannot be guessed -> take the types defined in the valuelist
+			dataSource = ds.createDataSource(dataSourceName, [jsList.displayValueType, jsList.realValueType]);
+		} else {
+			dataSource = ds.createDataSource(dataSourceName);			
+		}
 	}
 
 	/** @type {Array<String>} */
