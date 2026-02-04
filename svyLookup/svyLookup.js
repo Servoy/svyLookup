@@ -123,9 +123,13 @@ function createValueListLookup(valuelistName, titleText) {
 		if (realValueType === 0) {
 			realValueType = JSColumn.TEXT
 		}
-		// skip null value if valuelist allow null values
-		if (jsList.addEmptyValue == JSValueList.EMPTY_VALUE_ALWAYS && items.getValue(1,1) === "") {
-			items.removeRow(1);
+		// Remove all null and empty values from the valuelist when the setting allow empty is enabled
+		if (jsList.addEmptyValue == JSValueList.EMPTY_VALUE_ALWAYS) {
+			for(var i = items.getMaxRowIndex(); i > 0; i--) {
+				if (items.getValue(i, 2) == null || items.getValue(i, 2) === '') {
+					items.removeRow(i)
+				}
+			}
 		}	
 		dataSource = items.createDataSource(dataSourceName, [JSColumn.TEXT, realValueType, JSColumn.INTEGER], ['realvalue']);
 		valuelistFoundSet = databaseManager.getFoundSet(dataSource);
