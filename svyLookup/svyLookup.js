@@ -125,9 +125,9 @@ function createValueListLookup(valuelistName, titleText) {
 		}
 		// Remove all null and empty values from the valuelist when the setting allow empty is enabled
 		if (jsList.addEmptyValue == JSValueList.EMPTY_VALUE_ALWAYS) {
-			for(var i = items.getMaxRowIndex(); i > 0; i--) {
-				if (items.getValue(i, 2) == null || items.getValue(i, 2) === '') {
-					items.removeRow(i)
+			for(var j = items.getMaxRowIndex(); j > 0; j--) {
+				if (items.getValue(j, 2) == null || items.getValue(j, 2) === '') {
+					items.removeRow(j)
 				}
 			}
 		}	
@@ -356,6 +356,7 @@ function createValueListLookup(valuelistName, titleText) {
 
 					// get the column 
 					var qbColumn = qbSelect.getColumn(relationItem.foreignColumnName);
+					/**@type {QBTextColumn} */
 					var qbColumnQuery = qbColumn;
 					
 					// like search
