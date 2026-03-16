@@ -2,7 +2,7 @@
     "name":"svyLookupExample",
     "displayName":"svyLookupExample",
     "packageType": "Solution",
-    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Gnome-folder-saved-search.svg/768px-Gnome-folder-saved-search.svg.png",
+    "icon": "https://raw.githubusercontent.com/Servoy/servoy-extra-components/master/servoy.png",
     "description": "Example Use of svyLookup",
     "wikiUrl": "https://github.com/Servoy/svyLookup/wiki",
     "sourceUrl" : "https://github.com/Servoy/svyLookup",
