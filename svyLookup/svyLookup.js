@@ -397,7 +397,15 @@ function createValueListLookup(valuelistName, titleText) {
 	    if (!isPkValueList) {
 	    	// create in-memory datasource
 	    	databaseManager.createDataSourceByQuery(dataSourceName, qbSelect, -1, null, ['realvalue']);
-	    	sortString = 'displayvalue asc';
+	    	// Honor the valuelist's sortOptions direction (asc/desc) if set,
+	    	// falling back to ascending when none is defined.
+	    	if (jsList.sortOptions) {
+	    		var parts = jsList.sortOptions.split(' ');
+	    		var direction = parts[parts.length - 1].toLowerCase();
+	    		sortString = direction === 'desc' ? 'displayvalue desc' : 'displayvalue asc';
+	    	} else {
+	    		sortString = 'displayvalue asc';
+	    	}
 	    } else {
 	    	dataSource = jsList.dataSource||scopes.svyDataUtils.getRelationForeignDataSource(jsList.relationName);
 	    	
